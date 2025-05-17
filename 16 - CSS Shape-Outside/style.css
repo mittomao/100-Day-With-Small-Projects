@@ -1,0 +1,195 @@
+body {
+  margin: 0 auto;
+  width: 600px;
+  font-family: "Playwrite NL Guides", cursive;
+}
+h1,
+h2 {
+  font-family: "Raleway", sans-serif;
+}
+.circle-boxmodel {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  background-color: lightgreen;
+  margin: 0 25px 5px 0;
+  float: left;
+}
+
+.circle {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  background-color: #7db9e8;
+  margin: 0 25px 5px 0;
+  float: left;
+  -webkit-shape-outside: circle();
+  shape-outside: circle();
+}
+
+.ellipse-boxmodel {
+  height: 200px;
+  width: 120px;
+  border-radius: 50%;
+  background-color: #7db9e8;
+  margin: 0 25px 5px 0;
+  float: left;
+}
+
+.ellipse {
+  height: 200px;
+  width: 120px;
+  border-radius: 50%;
+  background-color: #7db9e8;
+  margin: 0 55px 5px 0;
+  float: left;
+  -webkit-shape-outside: ellipse(50px 100px at 50% 50%);
+  shape-outside: ellipse(50px 100px at 50% 50%);
+}
+
+.leftTriangle {
+  width: 150px;
+  height: 300px;
+  background-color: #7db9e8;
+  margin: 0 25px 5px 0;
+  float: left;
+  -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  -webkit-shape-outside: polygon(0% 0%, 100% 0%, 50% 100%);
+  shape-outside: polygon(0% 0%, 100% 0%, 50% 100%);
+}
+.rightTriangle {
+  width: 150px;
+  height: 300px;
+  background-color: #7db9e8;
+  margin: 0 0 5px 25px;
+  float: right;
+  /*   -webkit-clip-path: polygon(0% 0%, 100% 0%, 50% 100%);*/
+  clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+  /*-webkit-shape-outside: polygon(0% 0%, 100% 0%, 50% 100%);*/
+  shape-outside: polygon(0% 0%, 100% 0%, 50% 100%);
+}
+
+.polygon-message {
+  width: 150px;
+  height: 150px;
+  background-color: #a4d4a0;
+  margin: 0 10px 5px 0px;
+  float: left;
+  clip-path: polygon(
+    0% 0%,
+    100% 0%,
+    100% 75%,
+    75% 75%,
+    75% 100%,
+    50% 75%,
+    0% 75%
+  );
+  shape-outside: polygon(
+    0% 0%,
+    100% 0%,
+    100% 75%,
+    75% 75%,
+    75% 100%,
+    50% 75%,
+    0% 75%
+  );
+}
+
+.polygon-message span {
+  text-align: center;
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.circulo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: lightblue;
+  float: left;
+  shape-outside: circle();
+  margin: 5px 15px 5px 0;
+}
+
+.main {
+  width: 530px;
+  margin: 0 auto;
+  margin-bottom: 4rem;
+}
+
+.left,
+.right {
+  width: 40%;
+  height: 5rem;
+  background-color: lightblue;
+}
+
+.left {
+  -webkit-shape-outside: polygon(0 0, 100% 100%, 0 100%);
+  shape-outside: polygon(0 0, 100% 100%, 0 100%);
+  float: left;
+  -webkit-clip-path: polygon(0 0, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+
+.right {
+  -webkit-shape-outside: polygon(100% 0, 100% 100%, 0 100%);
+  shape-outside: polygon(100% 0, 100% 100%, 0 100%);
+  float: right;
+  -webkit-clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.text {
+  text-align: center;
+}
+
+.tuna {
+  shape-outside: url(https://assets.codepen.io/238794/tuna.svg);
+  shape-margin: 0.5rem;
+  float: right;
+  margin-right: -25%;
+  width: 300px;
+}
+
+.side-by-side {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.side-by-side img {
+  display: block;
+  margin-left: auto;
+  width: 220px;
+  height: auto;
+}
+
+.side-by-side .textWrap {
+  max-width: 300px;
+  position: relative;
+
+  &:before {
+    content: "";
+    width: 50%;
+    height: 100%;
+    float: left;
+    shape-outside: url("https://assets.codepen.io/618359/car-maskLeft.png");
+  }
+}
+
+.side-by-side .text {
+  height: 100%;
+  font-size: 16px;
+  line-height: 1.25;
+  padding: 0;
+  &:before {
+    content: "";
+    width: 50%;
+    height: 100%;
+    float: right;
+    shape-outside: url("https://assets.codepen.io/618359/car-maskRight.png");
+  }
+}

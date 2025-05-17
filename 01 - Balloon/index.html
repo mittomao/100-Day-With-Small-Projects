@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bong Bóng & Mưa</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .bubbles {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #030303;
+            overflow: hidden;
+        }
+
+        .bubbles span {
+            position: absolute;
+            bottom: -50px;
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.473);
+            animation: go 8s linear infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bubbles span img {
+            width: 75%;
+            height: 75%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .bubbles span::after {
+            content: '';
+            position: absolute;
+            transform: translate(-30%, -30%) scale(0.05);
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            box-shadow: 0 0 40px #ffffff;
+            border-radius: 50%;
+        }
+
+        @keyframes go {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+
+            10%,
+            90% {
+
+                opacity: 1;
+                box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.473);
+            }
+
+            50% {
+                opacity: 0.8;
+
+            }
+
+            75% {
+                opacity: 0.1;
+
+            }
+
+            100% {
+                transform: translateY(-1000%);
+                opacity: 0;
+            }
+        }
+
+        /* Rain */
+
+
+        .drop {
+            position: absolute;
+            bottom: 100%;
+            width: 10px;
+            height: 120px;
+            pointer-events: none;
+            animation: drop 0.5s linear infinite;
+        }
+
+        @keyframes drop {
+            0% {
+                transform: translateY(0vh);
+            }
+
+            75% {
+                transform: translateY(90vh);
+            }
+
+            100% {
+                transform: translateY(90vh);
+            }
+        }
+
+        .stem {
+            width: 4px;
+            height: 30%;
+            margin-left: 7px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25));
+            animation: stem 0.5s linear infinite;
+        }
+
+        @keyframes stem {
+            0% {
+                opacity: 1;
+            }
+
+            65% {
+                opacity: 1;
+            }
+
+            75% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .splat {
+            width: 15px;
+            height: 10px;
+            border-top: 2px dotted rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            opacity: 1;
+            transform: scale(0);
+            animation: splat 0.5s linear infinite;
+            display: none;
+        }
+
+        .splat {
+            display: block;
+        }
+
+        @keyframes splat {
+            0% {
+                opacity: 1;
+                transform: scale(0);
+            }
+
+            80% {
+                opacity: 1;
+                transform: scale(0);
+            }
+
+            90% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.5);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bubbles"></div>
+    <div class="rain"></div>
+
+    <script>
+
+        const bubbles = document.querySelector('.bubbles');
+        const arrImage = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg', '6.jpg', '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg'];
+        function createBubbles() {
+            const size = Math.random() * 60;
+            const randomImage = getRandomArbitrary(0, arrImage.length);
+            const span = document.createElement('span');
+            const image = document.createElement('img');
+            image.src = `./images/${arrImage[randomImage]}`;
+
+
+            span.style.width = 100 + size + 'px';
+            span.style.height = 100 + size + 'px';
+            span.style.left = Math.random() * window.innerWidth + 'px';
+
+            span.appendChild(image);
+            bubbles.appendChild(span);
+
+            if (span.offsetTop < 100) {
+                span.style.background = 'red';
+                console.log('dasda');
+            }
+
+            setTimeout(() => {
+                bubbles.removeChild(span);
+            }, 4000);
+        }
+
+        function getRandomArbitrary(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        // Rain
+
+        var rain = function () {
+            const rain = document.querySelector('.rain');
+            rain.innerHTML = '';
+
+            var increment = 0;
+            var drops = "";
+
+            while (increment < 95) {
+                var randoHundo = (Math.floor(Math.random() * (98 - 1 + 1) + 1));
+                var randoFiver = (Math.floor(Math.random() * (4 - 2 + 1) + 2));
+                increment += randoFiver;
+                drops += '<div class="drop" style="left: ' + increment + '%; bottom: ' + (randoFiver + randoFiver - 1 + 100) + '%; animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"><div class="stem" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div><div class="splat" style="animation-delay: 0.' + randoHundo + 's; animation-duration: 0.5' + randoHundo + 's;"></div></div>';
+            }
+
+            rain.innerHTML = drops;
+        }
+
+        rain();
+
+        setInterval(createBubbles, 1500);
+    </script>
+</body>
+
+</html>

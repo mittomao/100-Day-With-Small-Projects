@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Menu to Grid Layout Animation</title>
+	<meta name="description" content="A menu that animates to a grid layout using GSAP flip" />
+	<meta name="keywords" content="gsap, flip, javascript, web design, grid, layout" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="https://use.typekit.net/gdf6msi.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+	<script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+</head>
+
+<body class="loading">
+	<main>
+		<section class="content">
+			<div class="cover"></div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Nobody's Love</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/6.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/7.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/8.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/9.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Good Wings</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/1.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/2.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/3.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/4.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/5.avif)"></div>
+					</div>
+				</div>
+			</div>
+            <div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Maniac Fly</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/10.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/11.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/12.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/13.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/14.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/15.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Crumble Toe</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/16.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/17.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/18.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Finger Wax</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/19.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/20.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/21.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/22.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Haunted X</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/23.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/24.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/25.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/26.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/27.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/28.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="cell cell--text">
+					<h2 class="cell__title oh"><span class="oh__inner">Next Horror</span></h2>
+				</div>
+				<div class="cell cell--images">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/29.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/30.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/1.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/10.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/12.avif)"></div>
+					</div>
+				</div>
+			</div>
+		</section><!-- /content -->
+		<section class="preview">
+			<button class="preview__close unbutton">&#9587;</button>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Nobody's Love</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/27.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/26.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/25.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/24.avif)"></div>
+					</div>
+				</div>
+			</div>
+            <div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Good Wings</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/30.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/29.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/28.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Maniac Fly</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/22.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/21.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Crumble Toe</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/20.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/19.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/30.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/31.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/2.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Finger Wax</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/15.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/14.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/13.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/12.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Haunted X</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/11.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/10.avif)"></div>
+					</div>
+				</div>
+			</div>
+			<div class="preview__item">
+				<h2 class="preview__item-title oh"><span class="oh__inner">Next Horror</span></h2>
+				<div class="grid">
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/6.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/8.avif)"></div>
+					</div>
+					<div class="cell__img">
+						<div class="cell__img-inner" style="background-image:url(img/5.avif)"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<script type="module" src="js/index.js"></script>
+</body>
+
+</html>

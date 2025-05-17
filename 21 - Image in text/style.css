@@ -1,0 +1,69 @@
+:root {
+    --main-bg: #1d1e22;
+}
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: 1rem;
+    min-height: 100vh;
+    font-weight: 700;
+    font-family: "Monoton", sans-serif;
+    color: #ffffff;
+    background-color: var(--main-bg);
+    overflow:  hidden;
+    width: 100%;
+    height: 100%;
+}
+
+svg {
+    position: absolute;
+}
+
+.wrapper {
+    position: relative;
+    width: 100%;
+    text-align: center;
+
+    & p {
+        font-size: 10rem;
+    }
+}
+
+.water {
+    filter: url("#water");
+}
+
+.smoke {
+    position: absolute;
+    width: 100%;
+    filter: url(#smoke) blur(5px) opacity(0.8);
+}
+
+.smoke::before {
+    content: attr(data-text);
+    position: absolute;
+    filter: url(#smoke) drop-shadow(0 0 40px #ffffff) blur(40px);
+}
+
+@media (max-width: 968px) {
+    html {
+        font-size: 10px;
+    }
+}

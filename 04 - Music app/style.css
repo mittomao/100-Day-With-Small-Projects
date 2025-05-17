@@ -1,0 +1,322 @@
+:root {
+    --bg-color: #7f5a83;
+    background-image: linear-gradient(315deg, #7f5a83 0%, #0d324d 74%);
+    --menu-color: #00000045;
+    --lyrics-color: white;
+    --font-family: "Dancing Script", cursive;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    overflow: hidden;
+}
+
+#music-player {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+}
+
+#music-player::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 70vh;
+    background-image: url(./assets/cover.jpg);
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+#music-player::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 70vh;
+    background: rgb(0 0 0 / 61%);
+    z-index: 2;
+}
+
+
+#lyrics {
+    width: 100%;
+    height: 70vh;
+    color: var(--lyrics-color);
+    text-align: center;
+    overflow-Y: scroll;
+    font-size: 24px;
+    padding-bottom: 20px;
+    position: relative;
+    z-index: 9999;
+}
+
+#lyrics-content {
+    margin: 0;
+    padding: 50px 0;
+    transition: ease 0.1s all;
+    width: 60%;
+    margin: 0 auto;
+    position: relative;
+}
+
+#lyrics-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #00000027;
+    border-radius: 30px;
+}
+
+#lyrics .song-name {
+    color: #fff;
+    font-size: 48px;
+    opacity: 1;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+#lyrics h2 {
+    opacity: 0.1;
+    margin-bottom: 15px;
+}
+
+
+#lyrics h2 img {
+    width: 36px;
+    line-height: 1;
+    display: none;
+}
+
+#lyrics h2.current {
+    opacity: 1;
+    font-size: 36px;
+    transform: translateY(25%);
+    color: rgb(30, 209, 30);
+    transition: transform .2s ease-in-out;
+    margin-bottom: 20px;
+}
+
+#lyrics h2.current.man {
+    color: #3572EF;
+}
+
+#lyrics h2.current.girl {
+    color: #FF8C9E;
+}
+
+
+#lyrics h2.current.man img, #lyrics h2.current.girl img {
+    display: inline-block;
+}
+
+#lyrics .current+h2 {
+    opacity: 0.5;
+    font-size: 28px;
+}
+
+#player {
+    position: fixed;
+    bottom: 0;
+    height: 30vh;
+    width: 100%;
+    z-index: 50;
+
+    background-color: #222;
+    background-image: linear-gradient(top,
+            rgba(#111, 1) 0%,
+            rgba(#222, 1) 50%,
+            rgba(#111, 1) 100%);
+    font-family: "Montserrat", sans-serif;
+    text-transform: uppercase;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#player.paying canvas {
+    display: block;
+}
+
+#player canvas {
+    display: none;
+}
+
+#menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+#menu>button {
+    padding: 10px 14px;
+    border-radius: 50%;
+    border: none;
+    margin: 0 5px;
+    background: inherit;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    opacity: 0.75;
+    cursor: pointer;
+}
+
+#menu>button>i {
+    padding: 5px 3px 5px 5px;
+}
+
+#menu>button#play {
+    opacity: 1;
+    position: relative;
+    height: 140px;
+    width: 140px;
+
+}
+
+#menu>button#play .play-bg {
+    content: "";
+    border: 2px solid white;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    border-radius: 50%;
+    background: transparent;
+    transition: .9s linear;
+    box-shadow: 0 8px 6px -8px rgba(0, 0, 0, 0.5), 0 0 1px 1px rgba(0, 0, 0, 0.5), 0 0 0 1px #666 inset, 0 0 0 2px #222 inset, 0 30px 0px -29px #444 inset, 0 -30px 0px -29px #444 inset, 0 0 0 3px #333 inset, 0 0 0 4px #222 inset, 0 0 0 5px #333 inset, 0 33px 0px -27px #444 inset, 0 -33px 0px -27px #444 inset, 0 0 0 6px #222 inset, 0 0 0 7px #333 inset, 0 0 0 8px #222 inset, 0 34px 0px -25px #444 inset, 0 -34px 0px -25px #444 inset, 0 0 0 9px #333 inset, 0 0 0 10px #222 inset, 0 0 0 11px #333 inset, 0 35px 0px -23px #444 inset, 0 -35px 0px -23px #444 inset, 0 0 0 12px #222 inset, 0 0 0 13px #333 inset, 0 0 0 14px #222 inset, 0 36px 0px -21px #444 inset, 0 -36px 0px -21px #444 inset, 0 0 0 15px #333 inset, 0 0 0 16px #222 inset, 0 0 0 17px #333 inset, 0 37px 0px -19px #444 inset, 0 -37px 0px -19px #444 inset, 0 0 0 18px #222 inset, 0 0 0 19px #333 inset, 0 0 0 20px #222 inset, 0 38px 0px -17px #444 inset, 0 -38px 0px -17px #444 inset, 0 0 0 21px #333 inset, 0 0 0 22px #222 inset, 0 0 0 23px #333 inset, 0 39px 0px -15px #444 inset, 0 -39px 0px -15px #444 inset, 0 0 0 24px #222 inset, 0 0 0 25px #333 inset, 0 0 0 26px #222 inset, 0 40px 0px -13px #444 inset, 0 -40px 0px -13px #444 inset, 0 0 0 27px #333 inset, 0 0 0 28px #222 inset, 0 0 0 29px #333 inset, 0 41px 0px -11px #444 inset, 0 -41px 0px -11px #444 inset, 0 0 0 30px #222 inset, 0 0 0 43px #333 inset, 0 0 0 45px #AF2A10 inset, 0 0 0 47px #333 inset, 0 0 0 62px #AF2A10 inset, 0 0 10px 78px rgba(0, 0, 0, 0.5) inset;
+}
+
+#menu>button#play .fa-pause~.play-bg {
+    background-color: #AF2A10;
+    animation: rotatePlay 3s ease-in-out infinite;
+}
+
+@keyframes rotatePlay {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#menu>button:focus {
+    outline: none;
+}
+
+
+#lyrics::-webkit-scrollbar,
+#show-box::-webkit-scrollbar {
+    width: 5px;
+}
+
+#lyrics::-webkit-scrollbar-track,
+#show-box::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+#lyrics::-webkit-scrollbar-thumb,
+#show-box::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+    border-radius: 15px;
+}
+
+.floating-icon {
+    position: absolute;
+    bottom: 5%;
+    z-index: 1000;
+    font-size: 4vh;
+    border: 1.5px solid white;
+    border-radius: 50%;
+    padding: 1vh 2vh;
+    background: #222;
+}
+
+.floating-icon:nth-child(1) {
+    right: 3vh;
+}
+
+.floating-icon:nth-child(2) {
+    right: 12vh;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+    font-weight: bold;
+    font-family: monospace;
+    display: inline-grid;
+    font-size: 30px;
+}
+
+#lyrics h2.current .loader-1:before,
+#lyrics h2.current .loader-1:after {
+    content: "💏🏻 💏🏻 💏🏻";
+    grid-area: 1/1;
+    -webkit-mask-size: 1.5ch 100%, 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: loading-1 1s infinite;
+}
+
+#lyrics h2.current .loader-1:before {
+    -webkit-mask-image:
+        linear-gradient(#000 0 0),
+        linear-gradient(#000 0 0);
+}
+
+#lyrics h2.current .loader-1:after {
+    -webkit-mask-image: linear-gradient(#000 0 0);
+    animation:
+    loading-1 1s infinite,
+    loading-2 .2s infinite cubic-bezier(0.5, 200, 0.5, -200);
+}
+
+@keyframes loading-1 {
+    0% {
+        -webkit-mask-position: 0 0, 0 0
+    }
+
+    20% {
+        -webkit-mask-position: .5ch 0, 0 0
+    }
+
+    40% {
+        -webkit-mask-position: 100% 0, 0 0
+    }
+
+    60% {
+        -webkit-mask-position: 4.5ch 0, 0 0
+    }
+
+    80% {
+        -webkit-mask-position: 6.5ch 0, 0 0
+    }
+
+    100% {
+        -webkit-mask-position: 2.5ch 0, 0 0
+    }
+}
+
+@keyframes loading-2 {
+    100% {
+        transform: translateY(0.2px)
+    }
+}

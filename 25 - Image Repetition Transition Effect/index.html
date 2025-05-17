@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image Repetition Transition Effect</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="./favicon.ico" />
+  <link rel="shortcut icon" href="./favicon.ico" />
+  <link rel="stylesheet" href="https://use.typekit.net/qvq2ysy.css" />
+  <link rel="stylesheet" type="text/css" href="css/base.css" />
+  <script>
+    document.documentElement.className = 'js';
+  </script>
+</head>
+
+<body class="loading">
+  <main>
+    <header class="frame">
+      <h1>Repeating Image Transition</h1>
+    </header>
+    <div class="grid">
+      <figure class="grid__item" role="img" aria-labelledby="caption1">
+        <div class="grid__item-image" style="background-image: url(assets/1.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption1">
+          <h3>Image — 001</h3>
+          <p>Yasuo</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption2">
+        <div class="grid__item-image" style="background-image: url(assets/2.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption2">
+          <h3>Image — 002</h3>
+          <p>Lee Sin</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption3">
+        <div class="grid__item-image" style="background-image: url(assets/3.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption3">
+          <h3>Image — 003</h3>
+          <p>Jinx</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption4">
+        <div class="grid__item-image" style="background-image: url(assets/4.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption4">
+          <h3>Image — 004</h3>
+          <p>Master Yi</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption5">
+        <div class="grid__item-image" style="background-image: url(assets/5.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption5">
+          <h3>Image — 005</h3>
+          <p>Ekko</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption6">
+        <div class="grid__item-image" style="background-image: url(assets/6.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption6">
+          <h3>Image — 006</h3>
+          <p>Vayne</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption7">
+        <div class="grid__item-image" style="background-image: url(assets/7.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption7">
+          <h3>Image — 007</h3>
+          <p>Janna</p>
+        </figcaption>
+      </figure>
+
+      <figure class="grid__item" role="img" aria-labelledby="caption8">
+        <div class="grid__item-image" style="background-image: url(assets/8.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption8">
+          <h3>Image — 008</h3>
+          <p>Riven</p>
+        </figcaption>
+      </figure>
+      <figure class="grid__item" role="img" aria-labelledby="caption9">
+        <div class="grid__item-image" style="background-image: url(assets/9.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption9">
+          <h3>Image — 009</h3>
+          <p>Warwick</p>
+        </figcaption>
+      </figure>
+      <figure class="grid__item" role="img" aria-labelledby="caption10">
+        <div class="grid__item-image" style="background-image: url(assets/10.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption10">
+          <h3>Image — 010</h3>
+          <p>Ezreal</p>
+        </figcaption>
+      </figure>
+      <figure class="grid__item" role="img" aria-labelledby="caption11">
+        <div class="grid__item-image" style="background-image: url(assets/11.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption11">
+          <h3>Image — 011</h3>
+          <p>Syndra</p>
+        </figcaption>
+      </figure>
+      <figure class="grid__item" role="img" aria-labelledby="caption12">
+        <div class="grid__item-image" style="background-image: url(assets/12.jpg)"></div>
+        <figcaption class="grid__item-caption" id="caption12">
+          <h3>Image — 012</h3>
+          <p>Nidalee</p>
+        </figcaption>
+      </figure>
+    </div>
+    <!-- panel for large preview -->
+    <figure class="panel" role="img" aria-labelledby="caption">
+      <div class="panel__img" style="background-image: url()"></div>
+      <figcaption class="panel__content" id="caption">
+        <h3>Title</h3>
+        <p>
+          Description
+        </p>
+        <button type="button" class="panel__close" aria-label="Close preview">Close</button>
+      </figcaption>
+    </figure>
+  </main>
+  <!-- GSAP library -->
+  <script src="js/gsap.min.js"></script>
+  <!-- ImagesLoaded -->
+  <script src="js/imagesloaded.pkgd.min.js"></script>
+  <!-- Add (Lenis) smooth scroll -->
+  <script src="js/lenis.min.js"></script>
+  <script src="js/smoothscroll.js"></script>
+  <!-- Scripts for the effect -->
+  <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

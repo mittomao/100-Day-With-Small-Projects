@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart 3D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- using three.js -->
+    <canvas id="canvas"></canvas>
+    
+    <script type="importmap">
+    {
+        "imports": {      
+        "three": "https://unpkg.com/three@0.154.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.154.0/examples/jsm/",
+        "three-mesh-bvh": "https://unpkg.com/three-mesh-bvh@0.6.0/build/index.module.js",
+        "three-bvh-csg": "https://unpkg.com/three-bvh-csg@0.0.7/build/index.module.js"
+        }
+    }
+    </script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

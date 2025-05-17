@@ -1,0 +1,6 @@
+{
+    "liveServer.settings.host": "wainii.dev",
+    "liveServer.settings.proxy": {
+        "proxyUri": "http://wainii.dev:80"
+    }
+}

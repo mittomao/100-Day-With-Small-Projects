@@ -1,0 +1,6 @@
+.qodo
+node_modules
+.vscode
+dist
+.parcel-cache
+build

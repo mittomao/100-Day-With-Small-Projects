@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Grid Layout with Scrollable Content View</title>
+	<meta name="description"
+		content="A Masonry-powered grid layout with a motion hover effect on the grid items and a scrollable content view." />
+	<meta name="keywords"
+		content="masonry, grid layout, hover effect, content preview, javascript, gsap, template, web design" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+		rel="stylesheet">
+
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/base.css" />
+	<script>document.documentElement.className = "js"; var supportsCssVars = function () { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e }; supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+</head>
+
+<body class="loading">
+	<main>
+		<header>
+			<h1>Grid Layout <span>with Scrollable Content View</span></h1>
+		</header>
+		<div class="grid-wrap">
+
+			<div class="grid">
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/1.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Aries</h3>
+					<h4 class="grid__item-number">B01</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/2.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Taurus</h3>
+					<h4 class="grid__item-number">B02</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/3.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Gemini</h3>
+					<h4 class="grid__item-number">B03</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/4.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Cancer</h3>
+					<h4 class="grid__item-number">B04</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/5.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Leo</h3>
+					<h4 class="grid__item-number">B05</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/6.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Virgo</h3>
+					<h4 class="grid__item-number">B06</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/7.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Libra</h3>
+					<h4 class="grid__item-number">B07</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/8.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Scorpio</h3>
+					<h4 class="grid__item-number">B08</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/9.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Sagittarius</h3>
+					<h4 class="grid__item-number">B09</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/10.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Capricorn</h3>
+					<h4 class="grid__item-number">B10</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/11.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Aquarius</h3>
+					<h4 class="grid__item-number">B11</h4>
+				</a>
+				<a href="#" class="grid__item">
+					<div class="grid__item-bg"></div>
+					<div class="grid__item-wrap">
+						<img class="grid__item-img" src="img/12.jpg" alt="Baby Three" />
+					</div>
+					<h3 class="grid__item-title">Pisces</h3>
+					<h4 class="grid__item-number">B12</h4>
+				</a>
+			</div>
+		</div><!-- /grid-wrap -->
+		<div class="content">
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/1.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Aries</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/2.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Taurus</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/3.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Gemini</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/4.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Cancer</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/5.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Leo</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/6.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Virgo</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/7.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Libra</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/8.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Scorpio</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/9.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Sagittarius</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/10.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Capricorn</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/11.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Aquarius</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<div class="content__item">
+				<div class="content__item-intro">
+					<img class="content__item-img" src="img/12.jpg" alt="Baby Three" />
+					<h2 class="content__item-title">Pisces</h2>
+				</div>
+				<h3 class="content__item-subtitle">"Introduction"</h3>
+				<div class="content__item-text">
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem tempora optio sequi placeat vero
+						minima error, provident voluptatem adipisci excepturi labore id iure obcaecati illum nihil
+						quisquam ducimus possimus consectetur.</p>
+				</div>
+			</div><!-- /content__item -->
+			<button class="content__close">Close</button>
+			<svg class="content__indicator icon icon--caret">
+				<use xlink:href="#icon-caret"></use>
+			</svg>
+		</div>
+	</main>
+	<script src="js/imagesloaded.pkgd.min.js"></script>
+	<script src="js/masonry.pkgd.min.js"></script>
+	<script src="js/charming.min.js"></script>
+	<script src="js/TweenMax.min.js"></script>
+	<script src="js/demo.js"></script>
+</body>
+
+</html>
