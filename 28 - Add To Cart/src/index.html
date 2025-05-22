@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Shopping Cart Animation</title>
+		<meta name="description" content="An engaging shopping cart animation concept where items animate to the cart in an interesting way." />
+		<meta name="keywords" content="shopping cart, animation, gsap" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<link rel="stylesheet" href="https://use.typekit.net/goq1kra.css">
+		<script>document.documentElement.className="js";</script>
+	</head>
+	<body class="loading">
+		<main>
+			<span class="noise"></span>
+
+			<header class="frame">
+				<h1 class="frame__title">Add-To-Shopping Cart Animation</h1> 
+				<div class="cart-button">
+					<div class="cart-button__label-wrap">
+						<span class="cart-button__label">Cart</span>
+						<span class="cart-button__line" />
+					</div>
+
+					<div class="cart-button__number-wrap">
+						<span class="cart-button__number-bg"></span>
+						<span class="cart-button__number">0</span>
+					</div>
+				</div>
+				<nav class="frame__tags">
+					<a href="#">shopping-cart</a>
+					<a href="#">grid</a>
+				</nav>
+			</header>
+
+			<section class="content">
+				<div class="products">
+					<ul class="products__list">
+						<li class="products__item" data-id="product-01" data-price="15" data-name="Product 01" data-cover="./images/product-01-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-01-cover.jpg" alt="Product 01">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-01/01.jpg" alt="Product 01 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-01/02.jpg" alt="Product 01 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-01/03.jpg" alt="Product 01 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-01/04.jpg" alt="Product 01 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-01/05.jpg" alt="Product 01 gallery">
+									<img class="products__gallery-item" src="./images/product-01-cover.jpg" alt="Product 01 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+
+						<li class="products__item" data-id="product-02" data-price="8" data-name="Product 02" data-cover="./images/product-02-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-02-cover.jpg" alt="Product 02">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-02/01.jpg" alt="Product 02 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-02/02.jpg" alt="Product 02 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-02/03.jpg" alt="Product 02 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-02/04.jpg" alt="Product 02 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-02/05.jpg" alt="Product 02 gallery">
+									<img class="products__gallery-item" src="./images/product-02-cover.jpg" alt="Product 02 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+
+						<li class="products__item" data-id="product-03" data-price="12" data-name="Product 03" data-cover="./images/product-03-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-03-cover.jpg" alt="Product 03">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-03/01.jpg" alt="Product 03 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-03/02.jpg" alt="Product 03 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-03/03.jpg" alt="Product 03 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-03/04.jpg" alt="Product 03 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-03/05.jpg" alt="Product 03 gallery">
+									<img class="products__gallery-item" src="./images/product-03-cover.jpg" alt="Product 03 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+
+						<li class="products__item" data-id="product-04" data-price="5" data-name="Product 04" data-cover="./images/product-04-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-04-cover.jpg" alt="Product 04">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-04/01.jpg" alt="Product 04 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-04/02.jpg" alt="Product 04 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-04/03.jpg" alt="Product 04 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-04/04.jpg" alt="Product 04 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-04/05.jpg" alt="Product 04 gallery">
+									<img class="products__gallery-item" src="./images/product-04-cover.jpg" alt="Product 04 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+
+						<li class="products__item" data-id="product-05" data-price="20" data-name="Product 05" data-cover="./images/product-05-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-05-cover.jpg" alt="Product 05">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-05/01.jpg" alt="Product 05 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-05/02.jpg" alt="Product 05 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-05/03.jpg" alt="Product 05 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-05/04.jpg" alt="Product 05 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-05/05.jpg" alt="Product 05 gallery">
+									<img class="products__gallery-item" src="./images/product-05-cover.jpg" alt="Product 05 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+
+						<li class="products__item" data-id="product-06" data-price="8" data-name="Product 06" data-cover="./images/product-06-cover.jpg">
+							<div class="products__images">
+								<img class="products__main-image" src="./images/product-06-cover.jpg" alt="Product 06">
+		
+								<div class="products__gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-06/01.jpg" alt="Product 06 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-06/02.jpg" alt="Product 06 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-06/03.jpg" alt="Product 06 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-06/04.jpg" alt="Product 06 gallery">
+									<img class="products__gallery-item" src="./images/galleries/product-06/05.jpg" alt="Product 06 gallery">
+									<img class="products__gallery-item" src="./images/product-06-cover.jpg" alt="Product 06 gallery">
+								</div>
+							</div>
+							<button type="button" class="products__cta button">Add to cart</button>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<aside class="cart">
+				<div class="cart__bg"></div>
+		
+				<div class="cart__inner">
+					<div class="cart__inner-close">Close</div>
+					<div class="cart__inner-bg"></div>
+		
+					<div class="cart-items"></div>
+		
+					<div class="cart-total cart-grid">
+						<div class="cart-total__inner">
+							<div class="cart-total__label">Total:</div>
+							<div class="cart-total__amount">€ 0</div>
+							<div class="cart-total__taxes">
+								Delivery fee and tax<br>
+								calculated at checkout
+							</div>
+							<a class="cart-total__checkout-btn button" href="#">Checkout</a>
+						</div>
+					</div>
+				</div>
+			</aside>
+		</main>
+
+		<script type="module" src="/js/main.js"></script>
+	</body>
+</html>

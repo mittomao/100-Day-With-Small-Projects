@@ -1,0 +1,57 @@
+@keyframes noise {
+  0% { transform: translate3d(1%,-1%,0) }
+  10% { transform: translate3d(-5%,-2%,0) }
+  20% { transform: translate3d(10%,5%,0) }
+  30% { transform: translate3d(5%,-11%,0) }
+  40% { transform: translate3d(-12%,-5%,0) }
+  50% { transform: translate3d(10%,9%,0) }
+  60% { transform: translate3d(15%,0,0) }
+  70% { transform: translate3d(-10%,8%,0) }
+  80% { transform: translate3d(10%,2%,0) }
+  90% { transform: translate3d(1%,5%,0) }
+  100% { transform: translate3d(0,8%,0) }
+}
+
+.noise {
+  position: fixed;
+
+  background: url('/images/noise.png');
+  opacity: 1;
+
+  width: 200%;
+  height: 200%;
+
+  left: -50%;
+  top: -50%;
+
+  pointer-events: none;
+  will-change: auto;
+  mix-blend-mode: multiply;
+  z-index: 10;
+
+  animation: noise 1.2s steps(3) infinite both;
+}
+
+.button {
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1;
+
+  padding: 8px 10px;
+
+  place-self: end;
+  background-color: var(--color-accent);
+
+  transition: background-color 0.5s cubic-bezier(0.33, 1, 0.68, 1);
+
+  @media(hover:hover) {
+    &:hover {
+      text-decoration: none;
+      background-color: var(--color-hover);
+    }
+  }
+}
+
+.locked {
+  overflow: hidden;
+}
