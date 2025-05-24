@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Enhance Required Form Fields with CSS3 | Mark Color</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Enhance Required Form Fields with CSS3" />
+	<meta name="keywords" content="form, html5, css3, animated, transition, required, filter" />
+	<link rel="shortcut icon" href="../favicon.ico">
+	<link rel="stylesheet" type="text/css" href="css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+	<script type="text/javascript" src="js/modernizr.custom.04022.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<header>
+			<h1>Enhance Required Form Fields <span>with CSS3</span></h1>
+			<nav class="codrops-demos">
+				<a class="current-demo" href="index.html">Mark Color</a>
+				<a href="index2.html">Hide/Show</a>
+				<a href="index3.html">Shadow 3D</a>
+			</nav>
+			<p>Click on the button to enhance required fields or de-emphasize/hide optional ones.</p>
+			<p class="ie-note">D'oh!</p>
+		</header>
+
+		<section class="af-wrapper">
+			<h3>Registration Form</h3>
+
+			<input id="af-showreq" class="af-show-input" type="checkbox" name="showreq" />
+			<label for="af-showreq" class="af-show">Check required fields</label>
+
+			<form class="af-form" id="af-form" novalidate>
+
+				<div class="af-outer af-required">
+					<div class="af-inner">
+						<label for="input-fname">First Name <span class="required">(*)</span></label>
+						<input type="text" name="fname" id="input-fname" required>
+					</div>
+				</div>
+
+				<div class="af-outer af-required">
+					<div class="af-inner">
+						<label for="input-lname">Last Name <span class="required">(*)</span></label>
+						<input type="text" name="lname" id="input-lname" required>
+					</div>
+				</div>
+
+				<div class="af-outer">
+					<div class="af-inner">
+						<label for="input-email">Phone Number</span></label>
+						<input type="text" name="phone" id="input-phone">
+					</div>
+				</div>
+
+				<div class="af-outer af-required">
+					<div class="af-inner">
+						<label for="input-email">Email address <span class="required">(*)</span></label>
+						<input type="email" name="email_address" id="input-email" required>
+					</div>
+				</div>
+
+				<div class="af-outer af-required">
+					<div class="af-inner">
+						<label for="input-country">Password <span class="required">(*)</span></label>
+						<input type="text" name="password" id="input-password" required>
+					</div>
+				</div>
+
+				<div class="af-outer">
+					<div class="af-inner">
+						<label for="input-bdate">Date Of Birth </label>
+						<input type="date" name="birthdate" id="input-bdate" placeholder="MM/DD/YYYY">
+					</div>
+				</div>
+
+				<div class="af-outer af-required">
+					<div class="af-inner">
+						<label for="input-country">Country <span class="required">(*)</span></label>
+						<input type="email" name="country" id="input-country" required>
+					</div>
+				</div>
+
+
+				<input type="submit" value="Signup" />
+
+			</form>
+		</section>
+	</div>
+</body>
+
+</html>

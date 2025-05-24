@@ -66,7 +66,7 @@ class Cart {
       cartAmount+= item.price * item.quantity
     })
 
-    this.cartTotal.innerHTML = `€ ${cartAmount}`;
+    this.cartTotal.innerHTML = `$ ${cartAmount}`;
   }
 
   appendItem(item) {
@@ -89,7 +89,7 @@ class Cart {
             <span class="cart-item__quantity">${item.quantity}</span>
             <button class="cart-item__plus-button">+</button>
           </div>
-          <span class="cart-item__details-price">€ ${item.price}</span>
+          <span class="cart-item__details-price">$ ${item.price}</span>
         </div>
       </div>
     `;
