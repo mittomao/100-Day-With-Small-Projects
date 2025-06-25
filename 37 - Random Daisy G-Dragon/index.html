@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Random Daisy G-Dragon</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+
+<body>
+    <script>
+        let objs = [];
+        let colors = ['#0065CB', '#FF0042', '#758FE4', '#FB4103', '#26A692', '#FAAB0C', '#F9E000', '#FD9B85', '#f9f8f8'];
+
+
+        function setup() {
+            createCanvas(1000, 1200);
+            rectMode(CENTER);
+            addObj();
+        }
+
+        function draw() {
+            background('#021123');
+            for (let i of objs) {
+                i.show();
+                i.move();
+            }
+
+            for (let i = 0; i < objs.length; i++) {
+                if (objs[i].isDead) {
+                    objs.splice(i, 1);
+                }
+            }
+
+            if (frameCount % 3 == 0) {
+                if (objs.length < 50) addObj()
+            }
+        }
+
+        function easeInOutQuart(x) {
+            return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
+        }
+
+        function addObj() {
+            for (let i = 0; i < 1; i++) {
+                objs.push(new ROK(random(width), random(width), random(60, 120), 0));
+            }
+        }
+
+        class ROK {
+            constructor(x, y, w, t) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+
+                this.bw1 = 0;
+                this.ew1 = w;
+                this.bw2 = 0;
+                this.ew2 = w * random(0.1, 0.4);
+                this.w1 = this.bw1;
+                this.w2 = this.bw2;
+
+                this.ptn = int(random(12, 18)); // số cánh điển hình hoa cúc
+                this.missingIndex = int(random(this.ptn)); // chỉ thiếu 1 cánh duy nhất
+
+                this.ewh = random(0.2, 0.35);
+                this.ehh = random(0.05, 0.1);
+                this.esh = random(0.25, 0.35);
+
+                this.t = t;
+                this.t1 = 20;
+                this.t2 = this.t1 + 30;
+                this.t3 = this.t2 + 20;
+
+                this.ang = random(10);
+
+                this.col1 = random(colors);
+                this.col2 = random(colors);
+
+                this.as = random(-1, 1) * 0.02;
+                this.ys = -width * 0.001;
+
+                this.xs = random(-1, 1) * width * 0.001;
+
+                this.isDead = false;
+            }
+
+            show() {
+                push();
+                translate(this.x, this.y);
+                rotate(this.ang);
+                noStroke();
+                fill(this.col1);
+
+                // thiếu 1 cánh ngẫu nhiên
+                for (let i = 0; i < this.ptn; i++) {
+                    if (i === this.missingIndex) continue;
+                    rotate(TAU / this.ptn);
+                    ellipse(this.w1 * this.esh, 0, this.w1 * this.ewh, this.w1 * this.ehh);
+                }
+
+                fill(this.col2);
+                circle(0, 0, this.w2);
+                pop();
+            }
+
+
+            move() {
+                if (0 < this.t && this.t < this.t2) {
+                    let n = norm(this.t, 0, this.t2 - 1);
+                    this.w2 = lerp(this.bw2, this.ew2, easeInOutQuart(n));
+                }
+                if (this.t1 < this.t && this.t < this.t3) {
+                    let n = norm(this.t, this.t1, this.t3 - 1);
+                    this.w1 = lerp(this.bw1, this.ew1, easeInOutQuart(n));
+                }
+                this.y += this.ys;
+                this.ys += 0.02;
+
+                if (this.y > height + this.w) {
+                    this.isDead = true;
+                }
+                this.t++;
+                this.ang += this.as;
+                this.x += this.xs
+            }
+        }
+    </script>
+</body>
+
+</html>
