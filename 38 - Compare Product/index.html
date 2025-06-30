@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Product Comparison Layout &amp; Effect</title>
+	<meta name="description"
+		content="Blueprint: A basic responsive product grid layout with comparison functionality" />
+	<meta name="keywords"
+		content="blueprint, template, html, css, javascript, grid, layout, effect, product comparison" />
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="css/common.css" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<!-- Modernizr is used for flexbox fallback -->
+	<script src="js/modernizr.custom.js"></script>
+</head>
+
+<body>
+	<!-- Compare basket -->
+	<div class="compare-basket">
+		<button class="action action--button action--compare"><i class="fa fa-check"></i><span
+				class="action__text">Compare</span></button>
+	</div>
+	<!-- Main view -->
+	<div class="view">
+		<!-- Blueprint header -->
+		<header class="bp-header cf">
+			<h1>Product Comparison Layout Effect</h1>
+		</header>
+		<!-- Product grid -->
+		<section class="grid" id="productGrid">
+			<!-- Sản phẩm sẽ được load bằng JS từ JSON -->
+		</section>
+
+	</div><!-- /view -->
+	<!-- product compare wrapper -->
+	<section class="compare">
+		<button class="action action--close"><i class="fa fa-remove"></i><span
+				class="action__text action__text--invisible">Close comparison overlay</span></button>
+	</section>
+
+	<script>
+		const DATA_SMARTPHONE = [
+			{
+				"brand": "Apple",
+				"model": "iPhone 15 Pro Max",
+				"image": "./images/iPhone 15 Pro Max.png",
+				"display": "6.7\" Super Retina XDR 120Hz",
+				"chipset": "Apple A17 Pro",
+				"ram": "8GB",
+				"camera": "48MP + 12MP + 12MP",
+				"battery": "4422mAh",
+				"os": "iOS 17"
+			},
+			{
+				"brand": "Samsung",
+				"model": "Galaxy S24 Ultra",
+				"image": "./images/Galaxy S24 Ultra.png",
+				"display": "6.8\" QHD+ AMOLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3 (for Galaxy)",
+				"ram": "12GB",
+				"camera": "200MP + 12MP + 10MP + 10MP",
+				"battery": "5000mAh",
+				"os": "Android 14 (One UI 6.1)"
+			},
+			{
+				"brand": "Xiaomi",
+				"model": "Xiaomi 14 Ultra",
+				"image": "./images/Xiaomi 14 Ultra.png",
+				"display": "6.73\" LTPO AMOLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "16GB",
+				"camera": "50MP (1\") + 3x + 5x + UW",
+				"battery": "5300mAh",
+				"os": "Android 14 (HyperOS)"
+			},
+			{
+				"brand": "OPPO",
+				"model": "Find X7 Ultra",
+				"image": "./images/Find X7 Ultra.png",
+				"display": "6.82\" AMOLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "16GB",
+				"camera": "50MP (Sony LYT-900) x4",
+				"battery": "5000mAh",
+				"os": "Android 14 (ColorOS 14)"
+			},
+			{
+				"brand": "vivo",
+				"model": "vivo X100 Pro+",
+				"image": "./images/vivo X100 Pro+.png",
+				"display": "6.78\" LTPO AMOLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "16GB",
+				"camera": "50MP IMX989 + tele + periscope",
+				"battery": "5400mAh",
+				"os": "Android 14 (Funtouch/OriginOS)"
+			},
+			{
+				"brand": "Google",
+				"model": "Pixel 8 Pro",
+				"image": "./images/Pixel 8 Pro.png",
+				"display": "6.7\" LTPO OLED 120Hz",
+				"chipset": "Google Tensor G3",
+				"ram": "12GB",
+				"camera": "50MP + 48MP + 48MP",
+				"battery": "5050mAh",
+				"os": "Android 14 (Pixel UI)"
+			},
+			{
+				"brand": "OnePlus",
+				"model": "OnePlus 12",
+				"image": "./images/OnePlus 12.png",
+				"display": "6.82\" AMOLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "12–16GB",
+				"camera": "50MP + 64MP + 48MP",
+				"battery": "5400mAh",
+				"os": "Android 14 (OxygenOS 14)"
+			},
+			{
+				"brand": "Huawei",
+				"model": "Huawei Pura 70 Ultra",
+				"image": "./images/Huawei Pura 70 Ultra.png",
+				"display": "6.8\" LTPO OLED 120Hz",
+				"chipset": "Kirin 9010",
+				"ram": "16GB",
+				"camera": "50MP + periscope",
+				"battery": "5200mAh",
+				"os": "HarmonyOS 4"
+			},
+			{
+				"brand": "Sony",
+				"model": "Xperia 1 VI",
+				"image": "./images/Xperia 1 VI.png",
+				"display": "6.5\" OLED 120Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "12GB",
+				"camera": "48MP + 12MP + 12MP",
+				"battery": "5000mAh",
+				"os": "Android 14"
+			},
+			{
+				"brand": "Asus",
+				"model": "ROG Phone 8 Pro",
+				"image": "./images/ROG Phone 8 Pro.png",
+				"display": "6.78\" AMOLED 165Hz",
+				"chipset": "Snapdragon 8 Gen 3",
+				"ram": "16–24GB",
+				"camera": "50MP + 32MP tele",
+				"battery": "5500mAh",
+				"os": "Android 14 (ROG UI)"
+			}
+		];
+
+		const products = DATA_SMARTPHONE.map((item, index) => `
+					<div class="product">
+						<div class="product__info">
+							<img class="product__image" src="${item.image}" alt="Product ${index + 1}" />
+							<h3 class="product__title">${item.model}</h3>
+							<span class="product__year extra highlight">${item.display}</span>
+							<span class="product__region extra highlight">${item.chipset}</span>
+							<span class="product__varietal extra highlight">${item.ram}</span>
+							<span class="product__alcohol extra highlight">${item.camera}</span>
+							<span class="product__alcohol extra highlight">${item.battery}</span>
+							<span class="product__alcohol extra highlight">${item.os}</span>
+							<span class="product__price highlight">${item.brand}</span>
+							<button class="action action--button action--buy"><i class="fa fa-shopping-cart"></i><span
+									class="action__text">Add to cart</span></button>
+						</div>
+						<label class="action action--compare-add"><input class="check-hidden" type="checkbox" /><i
+								class="fa fa-plus"></i><i class="fa fa-check"></i><span
+								class="action__text action__text--invisible">Add to compare</span></label>
+					</div>
+				`).join('');
+		document.getElementById('productGrid').innerHTML = products;
+
+	</script>
+
+	<script src="js/classie.js"></script>
+	<script src="js/main.js"></script>
+</body>
+
+</html>
