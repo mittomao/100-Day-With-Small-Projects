@@ -1,0 +1,285 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100vh;
+  font-family: "Playfair", serif;
+
+  perspective: 1000px;
+  background: radial-gradient(circle at center, #200236, #000000 80%);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#scene {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease-out;
+}
+
+.falling-text {
+  position: absolute;
+  font-size: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 1;
+  transform-style: preserve-3d;
+  animation: 3s fadeInOut ease-in-out alternate; /* Fade in and out */
+  font-weight: bold;
+  user-select: none;
+  color: #fff;
+}
+
+.falling-text.text-1 {
+  text-shadow:
+    0 0 5px #25d7fb,
+    0 0 10px #25d7fb,
+    0 0 15px #25d7fb,
+    0 0 20px #25d7fb,
+    0 0 25px #25d7fb,
+    0 0 30px #25d7fb;
+}
+
+.falling-text.text-2 {
+  text-shadow:
+    0 0 5px #00ff66,
+    0 0 10px #00ff66,
+    0 0 15px #00ff66,
+    0 0 20px #00ff66,
+    0 0 25px #00ff66,
+    0 0 30px #00ff66;
+}
+
+.falling-text.text-3 {
+  text-shadow:
+    0 0 5px #ff63a2,
+    0 0 10px #ff63a2,
+    0 0 15px #ff63a2,
+    0 0 20px #ff63a2,
+    0 0 25px #ff63a2,
+    0 0 30px #ff63a2;
+}
+
+.heart,
+.rose {
+  position: absolute;
+  pointer-events: none;
+  opacity: 1;
+  transform-style: preserve-3d;
+  animation: float 4s infinite ease-in-out;
+}
+
+.heart {
+  width: 50px;
+  height: 50px;
+  clip-path: url(#heart);
+  overflow: hidden;
+}
+
+.heart img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  animation: scale3D 2s infinite ease-in-out;
+}
+
+.rose {
+  color: #e70a0a;
+  font-size: 20px;
+  transform: rotate(45deg);
+  text-shadow: 0 0 5px #5491a0, 0 0 10px #7092a7;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
+}
+
+@keyframes scale3D {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Canvas Block */
+#background3D {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(circle at center, #200236, #000000 80%);
+  z-index: -1;
+}
+
+canvas {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#pinkboard {
+  animation: anim 1.5s ease-in-out infinite;
+  -webkit-animation: anim 1.5s ease-in-out infinite;
+  -o-animation: anim 1.5s ease-in-out infinite;
+  -moz-animation: anim 1.5s ease-in-out infinite;
+}
+
+@keyframes anim {
+  0% {
+    transform: scale(0.8);
+  }
+
+  25% {
+    transform: scale(0.7);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(0.7);
+  }
+
+  100% {
+    transform: scale(0.8);
+  }
+}
+
+@-webkit-keyframes anim {
+  0% {
+    -webkit-transform: scale(0.8);
+  }
+
+  25% {
+    -webkit-transform: scale(0.7);
+  }
+
+  50% {
+    -webkit-transform: scale(1);
+  }
+
+  75% {
+    -webkit-transform: scale(0.7);
+  }
+
+  100% {
+    -webkit-transform: scale(0.8);
+  }
+}
+
+@-o-keyframes anim {
+  0% {
+    -o-transform: scale(0.8);
+  }
+
+  25% {
+    -o-transform: scale(0.7);
+  }
+
+  50% {
+    -o-transform: scale(1);
+  }
+
+  75% {
+    -o-transform: scale(0.7);
+  }
+
+  100% {
+    -o-transform: scale(0.8);
+  }
+}
+
+@-moz-keyframes anim {
+  0% {
+    -moz-transform: scale(0.8);
+  }
+
+  25% {
+    -moz-transform: scale(0.7);
+  }
+
+  50% {
+    -moz-transform: scale(1);
+  }
+
+  75% {
+    -moz-transform: scale(0.7);
+  }
+
+  100% {
+    -moz-transform: scale(0.8);
+  }
+}
+
+#name {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: -20px;
+  font-size: 46px;
+  color: #ea80b0;
+}
+
+#imgParticles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  /* dưới pinkboard */
+}
+
+#pinkboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+/* End Canvas Block */

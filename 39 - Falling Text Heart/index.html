@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falling 3D Text</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div id="background3D"></div>
+    <div id="scene"></div>
+    <canvas id="pinkboard" width="1920" height="947"></canvas>
+    <svg width="0" height="0">
+        <defs>
+            <clipPath id="heart" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,0.2 C0.35,-0.05,0,-0.01,0,0.3 
+               C0,0.5,0.25,0.7,0.5,1 
+               C0.75,0.7,1,0.5,1,0.3 
+               C1,-0.01,0.65,-0.05,0.5,0.2Z"></path>
+            </clipPath>
+        </defs>
+    </svg>
+    <script src="js/app.js">
+    </script>
+    <script src="js/canvas.js">
+    </script>
+    <script src="js/three.min.js"></script>
+    <script src="js/vanta.birds.min.js"></script>
+    <script>
+        VANTA.BIRDS({
+            el: "#background3D",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            backgroundColor: 0x0,
+            birdSize: 0.70,
+            speedLimit: 3.00,
+            quantity: 4.00
+        })
+    </script>
+</body>
+
+</html>
