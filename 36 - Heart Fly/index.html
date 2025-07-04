@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Heart Fly</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background: #fff0f5;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .body_left {
+            position: absolute;
+            left: 0;
+            bottom: 0px;
+            width: 200px;
+
+            z-index: 10;
+        }
+
+        .body_left img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Nhân vật bắn tim -->
+    <div class="body_left">
+        <img src="./biubiubiu.gif" width="150" alt="gif" ondragstart="return false;">
+    </div>
+
+    <canvas id="heartCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const startX = 150;
+        const startY = canvas.height - 150;
+        const cellSize = 36;
+
+        const heartBitmap = [
+            "0000011100011100000",
+            "0000111110111110000",
+            "0001111111111111000",
+            "0011111111111111100",
+            "0011111100011111100",
+            "0011111110111111100",
+            "0011111110111111100",
+            "0001111110111111000",
+            "0000111111111110000",
+            "0000011111111100000",
+            "0000001111111000000",
+            "0000000111110000000",
+            "0000000011100000000",
+            "0000000001000000000"
+        ];
+
+        const letterBitmaps = {
+            "I": [
+                "111",
+                " 1 ",
+                " 1 ",
+                " 1 ",
+                "111"
+            ],
+            "L": [
+                "1  ",
+                "1  ",
+                "1  ",
+                "1  ",
+                "111"
+            ],
+            "O": [
+                "111",
+                "1 1",
+                "1 1",
+                "1 1",
+                "111"
+            ],
+            "V": [
+                "1   1",
+                "1   1",
+                "1   1",
+                " 1 1 ",
+                "  1  "
+            ],
+            "E": [
+                "111",
+                "1  ",
+                "111",
+                "1  ",
+                "111"
+            ],
+            "Y": [
+                "1   1",
+                " 1 1 ",
+                "  1  ",
+                "  1  ",
+                "  1  "
+            ],
+            "U": [
+                "1 1",
+                "1 1",
+                "1 1",
+                "1 1",
+                "111"
+            ],
+            " ": [
+                "   ",
+                "   ",
+                "   ",
+                "   ",
+                "   "
+            ]
+        };
+
+        const hearts = [];
+        const queue = [];
+        let allArrived = false;
+        let pulseTime = 0;
+
+        const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+        class FlyingHeart {
+            constructor(targetX, targetY, size = 30) {
+                this.x = startX;
+                this.y = startY;
+                this.targetX = targetX;
+                this.targetY = targetY;
+                this.t = 0;
+                this.speed = 0.03 + Math.random() * 0.04;
+                this.size = size;
+                this.opacity = 0;
+                this.arrived = false;
+                this.arrivedTime = 0;
+            }
+
+            update() {
+                if (!this.arrived) {
+                    this.t += this.speed;
+                    if (this.t >= 1) {
+                        this.t = 1;
+                        this.arrived = true;
+                    }
+                    this.x = startX + (this.targetX - startX) * this.t;
+                    this.y = startY + (this.targetY - startY) * this.t;
+                    this.opacity = this.t;
+                } else {
+                    this.arrivedTime += 0.05; // tăng thời gian để dùng cho animation
+                }
+            }
+
+            draw(ctx, pulse = 1) {
+                ctx.save();
+                ctx.globalAlpha = this.opacity;
+                let scale = 1;
+                if (this.arrived) {
+                    scale = 1 + 0.1 * Math.sin(this.arrivedTime * 2); // đập nhẹ
+                }
+                const s = this.size * scale;
+                drawHeartShape(ctx, this.x, this.y - s * 0.5, s);
+                ctx.restore();
+            }
+        }
+
+        //Tạo hình trái tim
+        function drawHeartShape(ctx, x, y, size) {
+            ctx.beginPath();
+            const topCurveHeight = size * 0.3;
+            ctx.moveTo(x, y + topCurveHeight);
+            ctx.bezierCurveTo(x, y, x - size / 2, y, x - size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x - size / 2, y + (size + topCurveHeight) / 2, x, y + (size + topCurveHeight) / 1.2, x, y + size);
+            ctx.bezierCurveTo(x, y + (size + topCurveHeight) / 1.2, x + size / 2, y + (size + topCurveHeight) / 2, x + size / 2, y + topCurveHeight);
+            ctx.bezierCurveTo(x + size / 2, y, x, y, x, y + topCurveHeight);
+            ctx.closePath();
+            ctx.fillStyle = "#ff4d6d";
+            ctx.fill();
+        }
+
+        // Vị trí hiển thị các trái tim nhỏ
+        function getHeartPositions() {
+            const totalCols = heartBitmap[0].length;
+            const totalRows = heartBitmap.length;
+            const offsetX = canvas.width / 2 - (totalCols * cellSize) / 2;
+            const offsetY = canvas.height / 2 - (totalRows * cellSize) / 2;
+
+            const positions = [];
+            for (let row = 0; row < totalRows; row++) {
+                for (let col = 0; col < totalCols; col++) {
+                    if (heartBitmap[row][col] === '1') {
+                        const x = offsetX + col * cellSize;
+                        const y = offsetY + row * cellSize;
+                        positions.push({ x, y });
+                    }
+                }
+            }
+
+            return shuffle(positions);
+        }
+
+        // Render Text "I Love You"
+        function getTextHeartPositionsSimple(text, baseY) {
+            const cell = 10;      // 👉 Kích thước nhỏ hơn
+            const gap = 18;       // Khoảng cách giữa ký tự
+            const chars = text.toUpperCase().split('');
+            const positions = [];
+
+            const totalWidth = chars.reduce((w, c) => {
+                const bmp = letterBitmaps[c] || [];
+                return w + (bmp[0]?.length || 0) * cell + gap;
+            }, 0);
+
+            const startX = canvas.width / 2 - totalWidth / 2;
+            let xOffset = startX;
+
+            for (let char of chars) {
+                const bmp = letterBitmaps[char];
+                if (!bmp) continue;
+
+                for (let row = 0; row < bmp.length; row++) {
+                    for (let col = 0; col < bmp[row].length; col++) {
+                        if (bmp[row][col] === '1') {
+                            const x = xOffset + col * cell;
+                            const y = baseY + row * cell;
+                            positions.push({ x, y });
+                        }
+                    }
+                }
+
+                xOffset += ((bmp[0]?.length || 0) * cell) + gap + cell / 2; // thêm cell/2 để tạo khoảng cách rõ ràng hơn
+            }
+
+            return positions;
+        }
+
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function prepareHeartPixels() {
+            const heartPositions = getHeartPositions();
+            for (let pos of heartPositions) {
+                queue.push(new FlyingHeart(pos.x, pos.y)); // trái tim lớn: mặc định size = 30
+            }
+
+            const heartTextY = canvas.height / 2 + 280;
+            const textPositions = getTextHeartPositionsSimple("I Love You", heartTextY);
+            for (let pos of textPositions) {
+                queue.push(new FlyingHeart(pos.x, pos.y, 10)); // trái tim nhỏ cho chữ
+            }
+        }
+
+        //Tốc độ di chuyển của trái tim
+        let spawnIndex = 0;
+        function spawnLoop() {
+            if (spawnIndex < queue.length) {
+                hearts.push(queue[spawnIndex++]);
+                setTimeout(spawnLoop, 40);
+            } else {
+                allArrived = true;
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const scale = allArrived ? 1.5 + 0.03 * Math.sin(pulseTime) : 1;
+            if (allArrived) pulseTime += 0.1;
+
+            for (const heart of hearts) {
+                heart.update();
+                heart.draw(ctx, scale);
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = () => {
+            prepareHeartPixels();
+            setTimeout(spawnLoop, 6000);
+            animate();
+        };
+    </script>
+</body>
+
+</html>
