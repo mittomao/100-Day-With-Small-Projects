@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Alternate Column Scroll</title>
+	<meta name="description" content="A layout with an alternate scroll on image columns and a content preview." />
+	<meta name="keywords" content="layout, scroll, locomotive scroll, column, javascript, web design" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Libertinus+Math&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.typekit.net/njz5ajv.css">
+	<link rel="stylesheet" type="text/css" href="css/base.css" />
+</head>
+
+<body class="loading">
+	<main>
+		<div class="frame">
+			<h1 class="frame__title">Alternate Column Scroll</h1>
+		</div>
+		<div class="columns" data-scroll-container>
+			<div class="column-wrap column-wrap--height">
+				<div class="column">
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="2">
+							<div class="column__item-img" style="background-image:url(img/1.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 001</span>
+							<span>2011</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="5">
+							<div class="column__item-img" style="background-image:url(img/2.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 002</span>
+							<span>2012</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="8">
+							<div class="column__item-img" style="background-image:url(img/3.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 003</span>
+							<span>2013</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="11">
+							<div class="column__item-img" style="background-image:url(img/4.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 004</span>
+							<span>2014</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="14">
+							<div class="column__item-img" style="background-image:url(img/5.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 005</span>
+							<span>2015</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="17">
+							<div class="column__item-img" style="background-image:url(img/6.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 006</span>
+							<span>2016</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="20">
+							<div class="column__item-img" style="background-image:url(img/7.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 007</span>
+							<span>2017</span>
+						</figcaption>
+					</figure>
+
+				</div><!-- /column -->
+			</div><!-- /column-wrap -->
+			<div class="column-wrap">
+				<div class="column" data-scroll-section>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="23">
+							<div class="column__item-img" style="background-image:url(img/8.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 008</span>
+							<span>2018</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="1">
+							<div class="column__item-img" style="background-image:url(img/9.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 009</span>
+							<span>2019</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="4">
+							<div class="column__item-img" style="background-image:url(img/10.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 010</span>
+							<span>2020</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="7">
+							<div class="column__item-img" style="background-image:url(img/11.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 011</span>
+							<span>2021</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="10">
+							<div class="column__item-img" style="background-image:url(img/12.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 012</span>
+							<span>2009</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="13">
+							<div class="column__item-img" style="background-image:url(img/13.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 013</span>
+							<span>2010</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="16">
+							<div class="column__item-img" style="background-image:url(img/14.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 014</span>
+							<span>2011</span>
+						</figcaption>
+					</figure>
+
+				</div><!-- /column -->
+			</div>
+			<div class="column-wrap column-wrap--height">
+				<div class="column">
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="19">
+							<div class="column__item-img" style="background-image:url(img/15.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 015</span>
+							<span>2012</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="22">
+							<div class="column__item-img" style="background-image:url(img/16.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 016</span>
+							<span>2013</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="3">
+							<div class="column__item-img" style="background-image:url(img/17.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 017</span>
+							<span>2014</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="6">
+							<div class="column__item-img" style="background-image:url(img/18.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 018</span>
+							<span>2015</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="9">
+							<div class="column__item-img" style="background-image:url(img/19.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 019</span>
+							<span>2016</span>
+						</figcaption>
+					</figure>
+					<figure class="column__item">
+						<div class="column__item-imgwrap" data-pos="12">
+							<div class="column__item-img" style="background-image:url(img/20.jpg)"></div>
+						</div>
+						<figcaption class="column__item-caption">
+							<span>Chibi - 020</span>
+							<span>2017</span>
+						</figcaption>
+					</figure>
+				</div><!-- /column -->
+			</div><!-- /column-wrap -->
+		</div><!-- columns -->
+		<div class="content">
+			<div class="content__item">
+				<h2 class="content__item-title">Lucky Wood</h2>
+				<div class="content__item-text">
+					<span>Faith, you're driving me away
+						You do it every day
+						You don't mean it
+						But it hurts like hell</span>
+					<span>2019</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Cyber Blue</h2>
+				<div class="content__item-text">
+					<span>My brain says I'm receiving pain
+						A lack of oxygen
+						From my life support
+						My iron lung
+					</span>
+					<span>2011</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Bold Human</h2>
+				<div class="content__item-text">
+					<span>We're too young to fall asleep
+						Too cynical to speak
+						We are losing it
+						Can't you tell?</span>
+					<span>2014</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Good Earth</h2>
+				<div class="content__item-text">
+					<span>We scratch our eternal itch
+						A twentieth century bitch
+						And we are grateful for
+						Our iron lung</span>
+					<span>2020</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Gnostic Will</h2>
+				<div class="content__item-text">
+					<span>The head shrinkers
+						They want everything
+						My Uncle Bill
+						My Belisha beacon</span>
+					<span>2012</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Loyal Royal</h2>
+				<div class="content__item-text">
+					<span>The head shrinkers
+						They want everything
+						My Uncle Bill
+						My Belisha beacon</span>
+					<span>2015</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Empty Words</h2>
+				<div class="content__item-text">
+					<span>Suck, suck your teenage thumb
+						Toilet trained and dumb
+						When the power runs out
+						We'll just hum</span>
+					<span>2021</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">French Kiss</h2>
+				<div class="content__item-text">
+					<span>This, this is our new song
+						Just like the last one
+						A total waste of time
+						My iron lung</span>
+					<span>2013</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Lone Cone</h2>
+				<div class="content__item-text">
+					<span>And if you're frightened
+						You can be frightened
+						You can be, it's OK</span>
+					<span>2016</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Nonage Line</h2>
+				<div class="content__item-text">
+					<span>Lost in the mountain
+						Rust in my brain
+						The air is sacred here
+						In spite of your claim</span>
+					<span>2009</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Half Life</h2>
+				<div class="content__item-text">
+					<span>Up on the rooftops
+						Out of reach
+						Trickster is meaningless
+						Trickster is weak</span>
+					<span>2014</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Dutch Green</h2>
+				<div class="content__item-text">
+					<span>He's talking out the world
+						Talking out the world</span>
+					<span>2017</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Blue Hell</h2>
+				<div class="content__item-text">
+					<span>Hey, hey, hey
+						This is only halfway
+						Hey, hey, hey
+						This is only halfway</span>
+					<span>2010</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Love Boat</h2>
+				<div class="content__item-text">
+					<span>I wanted you so bad
+						That I couldn't say
+						All these things fall apart</span>
+					<span>2015</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Valley Hill</h2>
+				<div class="content__item-text">
+					<span>We wanted out so bad
+						We couldn't say
+						These things fall apart</span>
+					<span>2018</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Cold Blood</h2>
+				<div class="content__item-text">
+					<span>Truant kids
+						A can of brick dust worms
+						Who do not want to climb down from
+						Their chestnut tree</span>
+					<span>2011</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Golden Ray</h2>
+				<div class="content__item-text">
+					<span>Long white gloves
+						Police tread carefully
+						Escaped from the zoo
+						The perfect child facsimile is</span>
+					<span>2016</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Kale Hale</h2>
+				<div class="content__item-text">
+					<span>Please could you stop the noise?
+						I'm trying to get some rest
+						From all the unborn chicken
+						voices in my head</span>
+					<span>2019</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Tulip Heat</h2>
+				<div class="content__item-text">
+					<span>What's that?
+						I may be paranoid, but not an android</span>
+					<span>2012</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Blame Game</h2>
+				<div class="content__item-text">
+					<span>When I am king you will be first against the wall
+						With your opinion which is of no consequence at all</span>
+					<span>2017</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Fake Cake</h2>
+				<div class="content__item-text">
+					<span>Ambition makes you look pretty ugly
+						Kicking and squealing, Gucci little piggy</span>
+					<span>2017</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Red Wrath</h2>
+				<div class="content__item-text">
+					<span>You don't remember, you don't remember
+						Why don't you remember my name?</span>
+					<span>2013</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Lone Dust</h2>
+				<div class="content__item-text">
+					<span>Off with his head, man, off with his head, man
+						Why don't you remember my name? I guess he does</span>
+					<span>2018</span>
+				</div>
+			</div>
+			<div class="content__item">
+				<h2 class="content__item-title">Book Belly</h2>
+				<div class="content__item-text">
+					<span>Rain down, rain down
+						Come on, rain down on me
+						From a great height
+						From a great height, height</span>
+					<span>2021</span>
+				</div>
+			</div>
+			<nav class="content__nav">
+				<div class="content__nav-wrap">
+					<div class="content__nav-item" style="background-image:url(img/1.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/2.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/3.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/4.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/5.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/6.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/7.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/8.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/9.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/10.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/11.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/12.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/13.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/14.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/15.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/16.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/17.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/18.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/19.jpg)"></div>
+					<div class="content__nav-item" style="background-image:url(img/20.jpg)"></div>
+				</div>
+			</nav>
+			<button class="unbutton button-back"><svg viewBox="0 0 50 9" width="100%">
+					<path d="M0 4.5l5-3M0 4.5l5 3M50 4.5h-77"></path>
+				</svg></button>
+		</div>
+	</main>
+	<script type="module" src="js/index.js"></script>
+</body>
+
+</html>
