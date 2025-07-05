@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RequestFullscreen Demo</title>
+    <style>
+        *,
+        *:before,
+        *:after {
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: hsl(220, 34%, 24%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        div>*+* {
+            margin-top: 2rem;
+        }
+
+        div * {
+            display: block;
+        }
+
+        div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        button {
+            color: hsl(0, 10%, 100%);
+            background: hsl(90, 50%, var(--l, 40%));
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 1.25rem;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            outline: transparent;
+        }
+
+        button:hover {
+            --l: 30%;
+        }
+
+        button:active {
+            --l: 20%;
+        }
+
+        img {
+            width: 50vmin;
+            object-fit: cover;
+        }
+
+        .fullscreen img {
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .fullscreen button {
+            position: absolute;
+            left: 50%;
+            bottom: 10vh;
+            transform: translate(-50%, 0);
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <img src="1.jpg" />
+        <button>Toggle "Fullscreen"</button>
+    </div>
+
+    <script>
+        const BUTTON = document.querySelector('button')
+        const DIV = document.querySelector('div')
+
+        const toggleFullscreen = () => {
+            if (document.fullscreenElement)
+                document.exitFullscreen()
+            else
+                DIV.requestFullscreen()
+        }
+
+        BUTTON.addEventListener('click', toggleFullscreen)
+
+        const onChange = () => {
+            DIV.className = document.fullscreenElement ? 'fullscreen' : ''
+        }
+
+        document.addEventListener('fullscreenchange', onChange)
+    </script>
+</body>
+
+</html>
