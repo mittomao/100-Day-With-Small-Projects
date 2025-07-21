@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Mao Dev Carousel Plugin - 5 Slide</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libertinus+Math&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 class="about-title">5 Slide</h1>
+
+    <div class="carousel-container" id="carousel">
+        <div class="cards carousel-track">
+            <div class="card" data-index="0">
+                <img src="./images/1.jpg" alt="Image 1">
+            </div>
+            <div class="card" data-index="1">
+                <img src="./images/2.jpg" alt="Image 2">
+            </div>
+            <div class="card" data-index="2">
+                <img src="./images/3.jpg" alt="Image 3">
+            </div>
+            <div class="card" data-index="3">
+                <img src="./images/4.jpg" alt="Image 4">
+            </div>
+            <div class="card" data-index="4">
+                <img src="./images/5.jpg" alt="Image 5">
+            </div>
+            <div class="card" data-index="5">
+                <img src="./images/6.jpg" alt="Image 6">2
+            </div>
+        </div>
+        <button class="nav-arrow left">‹</button>
+        <button class="nav-arrow right">›</button>
+
+        <div class="dots">
+        </div>
+
+        <div class="card-info">
+            <h2 class="card-name" data-content="name"></h2>
+            <p class="card-description" data-content="description"></p>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <script src="plugin/maodev-carousel.js"></script>
+    <script>
+        const $carousel = $("#carousel");
+
+        const datas = [
+            { name: "Chibi 01", description: "Xử nữ" },
+            { name: "Chibi 02", description: "Sư tử" },
+            { name: "Chibi 03", description: "Ma kết" },
+            { name: "Chibi 04", description: "Thiên bình" },
+            { name: "Chibi 05", description: "Cự giải" },
+            { name: "Chibi 06", description: "Bảo bình" }
+        ];
+
+        $carousel.maoDevCarousel({
+            dots: true,
+            datas,
+            selectors: { name: '.card-name', description: '.card-description' },
+            breakpoints: {
+                default: 5,
+                mobile: 3
+            }
+        });
+
+        $carousel.on('carousel:change', function (event, data) {
+            console.log(data);
+        });
+
+    </script>
+</body>
+
+</html>
