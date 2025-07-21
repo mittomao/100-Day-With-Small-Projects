@@ -1,0 +1,33 @@
+/* src/Smiley.css */
+
+.smiley-grid {
+  height: 100vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  gap: 20px;
+}
+
+.circle {
+  width: 125px;
+  height: 125px;
+  position: relative;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 65% 15%,
+    white 1px,
+    #dadadae0 3%,
+    #e4e4e4de 60%,
+    #dadadae0 100%
+  );
+  box-shadow: inset -25px -15px 40px rgba(0, 0, 0, 0.3), -15px 15px 30px #cecece,
+    15px -15px 30px #ffffff;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate3d(0, 0, 0);
+  overflow: hidden;
+  will-change: transform;
+  cursor: url("./currsor-dollar.png"), auto;
+}
