@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Convert image mirror</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.css" />
+    <!-- Add the slick-theme.css if you want default styling -->
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick-theme.css" />
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: sans-serif;
+            background: #ffdfc4;
+        }
+
+        .container-gallary {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            padding-bottom: 80px;
+            background-image: url(https://img.blacklead.work/grid.svg)
+        }
+
+        .canvas-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 450px;
+            height: 450px;
+            transform: translate(-50%, -50%);
+            clip-path: circle(50% at 50% 50%);
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .border-inside {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 440px;
+            height: 440px;
+            border: 10px solid black;
+            border-radius: 100%;
+            transform: translate(-50%, -50%);
+            clip-path: circle(50% at 50% 50%);
+        }
+
+
+        .border-outside {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 464px;
+            height: 464px;
+            background: black;
+            border-radius: 100%;
+            transform: translate(-50%, -50%);
+            clip-path: circle(50% at 50% 50%);
+        }
+
+        .border-outside::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 454px;
+            height: 454px;
+            background-image: linear-gradient(180deg, #ffff82, #f4d2ba00 50%, #e8a5f3);
+            border-radius: 100%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        .thumbnails {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            max-width: 50%;
+
+        }
+
+        .thumbnail {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            width: 60px;
+            height: 80px;
+            cursor: pointer;
+            opacity: 0.75;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            padding: 3px;
+        }
+
+        .thumbnail .frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://cdn.prod.website-files.com/675835c7f4ae1fa1a79b3733/6762b98cb5e68f0b74323e61_collection-card-frame.svg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .thumbnail.active .frame,
+        .thumbnail:hover .frame {
+            opacity: 1;
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+        }
+
+        .thumbnail.active img{
+            transform: scale(1.15);
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        button.slick-arrow {
+            background: transparent;
+        }
+
+        button.slick-arrow::before {
+            color: #dd00ff;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-gallary">
+        <div class="border-outside">
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <span class="border-inside"></span>
+            </div>
+        </div>
+        <div class="thumbnails" id="thumbnails"></div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/gh/kenwheeler/slick@1.8.1/slick/slick.min.js"></script>
+    <script src="https://unpkg.com/three@0.153.0/build/three.min.js"></script>
+    <script>
+        let renderer, scene, camera;
+        let plane, material;
+        let textures = [];
+        let activeImage = 0;
+        let transitionImage = null;
+        let progress = 1;
+        let isAnimating = false;
+
+        const images = Array.from({ length: 20 }, (_, i) => {
+            return {
+                url: `images/${i + 1}.jpg`,
+                title: `Image ${i + 1}`,
+            }
+        });
+
+        const PIXELS = new Float32Array(
+            [
+                1, 1.5, 2, 2.5, 3, 1, 1.5, 2, 2.5, 3, 3.5, 4, 2, 2.5, 3, 3.5, 4, 4.5, 5,
+                5.5, 6, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 20, 100,
+            ].map((v) => v / 100)
+        );
+
+        function init() {
+            const containerNext = document.getElementById("canvasWrapper");
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.z = 10;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(450, 450);
+            containerNext.appendChild(renderer.domElement);
+
+            const loader = new THREE.TextureLoader();
+            let loadCount = 0;
+            images.forEach((img, idx) => {
+                loader.load(img.url, (tex) => {
+                    tex.minFilter = THREE.LinearFilter;
+                    tex.magFilter = THREE.LinearFilter;
+
+                    textures[idx] = tex;
+                    loadCount++;
+                    if (loadCount === images.length) {
+                        createScene();
+                        animate();
+                    }
+                });
+            });
+
+            createThumbnails();
+        }
+
+        function createScene() {
+            const vertexShader = `
+          varying vec2 vUv;
+          void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `;
+
+            const fragmentShader = `
+          uniform float uTime;
+          uniform vec3 uFillColor;
+          uniform float uProgress;
+          uniform float uType;
+          uniform float uPixels[36];
+          uniform vec2 uTextureSize;
+          uniform vec2 uElementSize;
+          uniform sampler2D uTexture;
+          varying vec2 vUv;
+
+          vec2 fade(vec2 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+          vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+          vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+          vec3 fade3(vec3 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+          float mapf(float value, float min1, float max1, float min2, float max2) {
+            float val = min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+            return clamp(val, min2, max2);
+          }
+
+          float quadraticInOut(float t) {
+            float p = 2.0 * t * t;
+            return t < 0.5 ? p : -p + (4.0 * t) - 1.0;
+          }
+
+          void main() {
+            vec2 uv = vUv - vec2(0.5);
+            float aspect1 = uTextureSize.x/uTextureSize.y;
+            float aspect2 = uElementSize.x/uElementSize.y;
+            if(aspect1>aspect2){uv *= vec2( aspect2/aspect1,1.);} 
+            else{uv *= vec2( 1.,aspect1/aspect2);}
+            uv += vec2(0.5);
+            vec4 defaultColor = texture2D(uTexture, uv);
+
+            if(uType==3.0){
+              float progress = quadraticInOut(1.0-uProgress);
+              float s = 50.0;
+              float imageAspect = uTextureSize.x/uTextureSize.y;
+              vec2 gridSize = vec2(
+                s,
+                floor(s/imageAspect)
+              );
+
+              float v = smoothstep(0.0, 1.0, vUv.y + sin(vUv.x*4.0+progress*6.0) * mix(0.3, 0.1, abs(0.5-vUv.x)) * 0.5 * smoothstep(0.0, 0.2, progress) + (1.0 - progress * 2.0));
+              float mixnewUV = (vUv.x * 3.0 + (1.0-v) * 50.0)*progress;
+              vec2 subUv = mix(uv, floor(uv * gridSize) / gridSize, mixnewUV);
+
+              vec4 color = texture2D(uTexture, subUv);
+              color.a =  mix(1.0, pow(v, 5.0) , step(0.0, progress));
+              color.a = pow(v, 1.0);
+              color.rgb = mix(color.rgb, uFillColor, smoothstep(0.5, 0.0, abs(0.5-color.a)) * progress);
+              gl_FragColor = color;
+            }
+            gl_FragColor.rgb = pow(gl_FragColor.rgb,vec3(1.0/1.2));
+          }
+        `;
+
+            material = new THREE.ShaderMaterial({
+                vertexShader,
+                fragmentShader,
+                uniforms: {
+                    uTime: { value: 0 },
+                    uFillColor: { value: new THREE.Color("#000000") },
+                    uProgress: { value: 1 },
+                    uType: { value: 3 },
+                    uPixels: { value: PIXELS },
+                    uTextureSize: { value: new THREE.Vector2(1, 1) },
+                    uElementSize: { value: new THREE.Vector2(1, 1) },
+                    uTexture: { value: textures[activeImage] },
+                },
+                transparent: true,
+            });
+
+            material.uniforms.uTextureSize.value.set(
+                textures[activeImage].image.width,
+                textures[activeImage].image.height
+            );
+
+            const geometry = new THREE.PlaneGeometry(8.3, 8.3);
+            plane = new THREE.Mesh(geometry, material);
+            scene.add(plane);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+            updateAnimation();
+        }
+
+        function updateAnimation() {
+            if (transitionImage !== null && isAnimating) {
+                progress += 0.015;
+
+                if (
+                    progress > 0.1 &&
+                    material.uniforms.uTexture.value !== textures[transitionImage]
+                ) {
+                    material.uniforms.uTexture.value = textures[transitionImage];
+                    material.uniforms.uTextureSize.value.set(
+                        textures[transitionImage].image.width,
+                        textures[transitionImage].image.height
+                    );
+                }
+
+                if (progress >= 1) {
+                    progress = 1;
+                    activeImage = transitionImage;
+                    transitionImage = null;
+                    isAnimating = false;
+                }
+                material.uniforms.uProgress.value = progress;
+            }
+        }
+
+        function createThumbnails() {
+            const thumbsContainer = document.getElementById("thumbnails");
+            images.forEach((img, idx) => {
+                const thumb = document.createElement("div");
+                thumb.className = "thumbnail" + (idx === activeImage ? " active" : "");
+
+                const thumbnailImg = document.createElement("img");
+                thumbnailImg.src = img.url;
+                thumbnailImg.alt = img.title;
+                thumb.appendChild(thumbnailImg);
+
+                const frame = document.createElement("div");
+                frame.className = "frame";
+                thumb.appendChild(frame);
+
+                thumb.addEventListener("click", () => handleThumbnailClick(idx));
+
+                thumbsContainer.appendChild(thumb);
+            });
+
+            $('#thumbnails').length && $('#thumbnails').slick({
+                arrows: true,
+                dots: false,
+                infinite: true,
+                variableWidth: true,
+            });
+
+        }
+
+        function handleThumbnailClick(index) {
+            if (index === activeImage || isAnimating) return;
+            transitionImage = index;
+            progress = 0;
+            isAnimating = true;
+
+            const thumbs = document.querySelectorAll(".thumbnail");
+            thumbs.forEach((t, i) => {
+                t.classList.remove("active");
+                if (i === index + 1) t.classList.add("active");
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", init);
+
+    </script>
+</body>
+
+</html>
