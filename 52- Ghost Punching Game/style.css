@@ -1,0 +1,431 @@
+@import url("https://fonts.googleapis.com/css?family=Lato");
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    align-items: center;
+    background-color: #292c2a;
+    color: #fff;
+    counter-reset: score;
+    display: flex;
+    font-family: 'Lato', sans-serif;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.game {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    grid-template-rows: repeat(var(--rows), 1fr);
+    height: 250px;
+    position: relative;
+    width: 250px;
+    cursor: url('fist.png'), auto;
+}
+
+@media (min-width: 768px) {
+    .game {
+        grid-gap: 30px;
+        height: 500px;
+        width: 500px;
+    }
+}
+
+.ghost-pen {
+    position: relative;
+    transform: translate(0, 50%);
+}
+
+.ghost,
+.ghost__image {
+    -webkit-animation: bob calc(var(--speed) * 1s) infinite ease;
+    animation: bob calc(var(--speed) * 1s) infinite ease;
+    -webkit-animation-delay: calc(var(--delay) * 1s);
+    animation-delay: calc(var(--delay) * 1s);
+    height: 45px;
+    transform: translate(0, 100%) scale(1);
+    width: 30px;
+}
+
+@media (min-width: 768px) {
+
+    .ghost,
+    .ghost__image {
+        height: 75px;
+        width: 60px;
+    }
+}
+
+.ghost {
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+    cursor: url('fist.png'), auto;
+}
+
+.ghost__path {
+    fill: var(--color);
+}
+
+.ghost__mouth {
+    fill: #ffc0cb;
+}
+
+.ghost__eyes--busted {
+    display: none;
+}
+
+.ghost__image-body {
+    -webkit-animation: none;
+    animation: none;
+    height: 100%;
+    width: 100%;
+}
+
+.ghost__container {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+}
+
+.ghost__container:after {
+    background: #6c7a89;
+    border-radius: 50% 50% 0 0;
+    box-shadow: 10px 0 0 #2e3131;
+    bottom: 0;
+    color: #2e3131;
+    content: 'R.I.P';
+    text-align: center;
+    line-height: 60px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(0, 50%);
+    z-index: 3;
+}
+
+@media (min-width: 768px) {
+    .ghost__container:after {
+        font-size: 1.5rem;
+        line-height: 80px;
+    }
+}
+
+.ghost__container .ghost__container {
+    display: none;
+}
+
+.ghost:checked {
+    -webkit-animation: busted 1.75s 0.25s both;
+    animation: busted 1.75s 0.25s both;
+    counter-increment: score var(--score);
+}
+
+.ghost:checked~.ghost__image {
+    -webkit-animation: busted 1.75s 0.25s both;
+    animation: busted 1.75s 0.25s both;
+}
+
+.ghost:checked~.ghost__image .ghost__image-body {
+    -webkit-animation: wiggle 1.75s 0.25s;
+    animation: wiggle 1.75s 0.25s;
+}
+
+.ghost:checked~.ghost__image .ghost__image-body .ghost__eyes {
+    display: none;
+}
+
+.ghost:checked~.ghost__image .ghost__image-body .ghost__eyes--busted {
+    display: block;
+}
+
+.ghost:checked~.ghost__container {
+    display: flex;
+    -webkit-animation: fadeIn calc(var(--delay) * 1s) both steps(2);
+    animation: fadeIn calc(var(--delay) * 1s) both steps(2);
+}
+
+.menu {
+    opacity: 0;
+}
+
+.menu:checked,
+.menu:checked~.title-screen {
+    display: none;
+}
+
+.menu:checked~.end {
+    -webkit-animation: slideUp 30s both;
+    animation: slideUp 30s both;
+}
+
+.menu:checked~.end .credit-ghost {
+    -webkit-animation: float 2s 30s both;
+    animation: float 2s 30s both;
+}
+
+.menu:checked~.end .credit-ghost svg {
+    -webkit-animation: wiggle 2s 30s;
+    animation: wiggle 2s 30s;
+}
+
+.end,
+.title-screen,
+.backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.title-screen,
+.end {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 5;
+    background: linear-gradient(35deg, #333, #000);
+}
+
+.backdrop {
+    -webkit-animation: flash 10s infinite linear;
+    animation: flash 10s infinite linear;
+}
+
+@-webkit-keyframes flash {
+
+    71%,
+    73%,
+    75%,
+    77%,
+    79% {
+        background: rgba(255, 255, 204, 0.5);
+    }
+
+    0%,
+    70%,
+    72%,
+    74%,
+    76%,
+    78%,
+    80%,
+    100% {
+        background: transparent;
+    }
+}
+
+@keyframes flash {
+
+    71%,
+    73%,
+    75%,
+    77%,
+    79% {
+        background: rgba(255, 255, 204, 0.5);
+    }
+
+    0%,
+    70%,
+    72%,
+    74%,
+    76%,
+    78%,
+    80%,
+    100% {
+        background: transparent;
+    }
+}
+
+.menu {
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 6;
+}
+
+.end {
+    background: linear-gradient(35deg, #333, #000);
+    transform: translate(0, 100%);
+}
+
+.credit-ghost {
+    position: absolute;
+    left: 75%;
+    top: 100%;
+    -webkit-animation: none;
+    animation: none;
+}
+
+.title {
+    letter-spacing: 4px;
+    font-size: 1.75rem;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+    .title {
+        font-size: 3rem;
+    }
+}
+
+.title-screen__content {
+    display: grid;
+    grid-gap: 0 1rem;
+    align-content: center;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: repeat(3, auto);
+    max-width: 90vw;
+}
+
+.description {
+    grid-column: 2;
+    text-align: justify;
+    max-width: 100%;
+    width: 100%;
+}
+
+button {
+    cursor: pointer;
+    grid-column: 2;
+    background: #fff;
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    padding: 8px 12px;
+}
+
+.credit-ghost,
+.title-ghost {
+    height: 65px;
+    width: 50px;
+}
+
+.credit-ghost .ghost__path,
+.title-ghost .ghost__path {
+    fill: #fff;
+}
+
+.score {
+    margin-bottom: 2rem;
+}
+
+.score:after {
+    content: counter(score);
+}
+
+@-webkit-keyframes bob {
+    50% {
+        transform: translate(0, -100%) scale(1.25);
+    }
+}
+
+@keyframes bob {
+    50% {
+        transform: translate(0, -100%) scale(1.25);
+    }
+}
+
+@-webkit-keyframes slideUp {
+    95% {
+        transform: translate(0, 100%);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes slideUp {
+    95% {
+        transform: translate(0, 100%);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@-webkit-keyframes float {
+    to {
+        transform: translate(0, -125vh);
+    }
+}
+
+@keyframes float {
+    to {
+        transform: translate(0, -125vh);
+    }
+}
+
+@-webkit-keyframes busted {
+    0% {
+        transform: translate(0, -100%) scale(0.75);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(0, -100vh) scale(0);
+    }
+}
+
+@keyframes busted {
+    0% {
+        transform: translate(0, -100%) scale(0.75);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(0, -100vh) scale(0);
+    }
+}
+
+@-webkit-keyframes wiggle {
+
+    25%,
+    75% {
+        transform: translate(-50%, 0);
+    }
+
+    50% {
+        transform: translate(50%, 0);
+    }
+}
+
+@keyframes wiggle {
+
+    25%,
+    75% {
+        transform: translate(-50%, 0);
+    }
+
+    50% {
+        transform: translate(50%, 0);
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+}
