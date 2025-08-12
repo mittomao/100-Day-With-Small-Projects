@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Border Gradient Glow</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <svg>
+        <filter id="glow" y="-25%" height="150%">
+            <!-- extract just the gradient border-->
+            <feComponentTransfer result="border">
+                <feFuncA type="table" tableValues="0 1 0"></feFuncA>
+            </feComponentTransfer>
+            <!-- next 2 primitives just to make glow grainy-->
+            <!-- blur extracted border-->
+            <feGaussianBlur stdDeviation="15" result="blur"></feGaussianBlur>
+            <!-- create noise-->
+            <feTurbulence type="fractalNoise" baseFrequency="1.73"></feTurbulence>
+            <!-- use noise as displacement map for blurred border-->
+            <feDisplacementMap in="blur" scale="50" xChannelSelector="R"></feDisplacementMap>
+            <!-- place border on top of glow-->
+            <feBlend in="border"></feBlend>
+        </filter>
+    </svg>
+    <section>
+        <h2>Card 1</h2>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vitae, illo dicta. Voluptates voluptatum earum ea
+            veritatis aliquam!</p>
+    </section>
+    <section>
+        <h2>Card 2</h2>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Veritatis, quod cupiditate iure explicabo nisi
+            sapiente accusamus</p>
+    </section>
+    <section>
+        <h2>Card 3</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam perferendis nobis fugit modi. Praesentium
+            cum doloremque</p>
+    </section>
+    <section>
+        <h2>Card 4</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam perferendis nobis fugit modi. Praesentium
+            cum doloremque</p>
+    </section>
+    <section>
+        <h2>Card 5</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam perferendis nobis fugit modi. Praesentium
+            cum doloremque</p>
+    </section>
+    <section>
+        <h2>Card 6</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam perferendis nobis fugit modi. Praesentium
+            cum doloremque</p>
+    </section>
+</body>
+
+</html>

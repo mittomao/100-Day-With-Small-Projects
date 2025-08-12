@@ -1,0 +1,79 @@
+@property --a {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes a {
+    to {
+        --a: 1turn;
+    }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+section {
+    display: grid;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    place-items: center start;
+    background: url(https://images.unsplash.com/photo-1448067686092-1f4f2070baae?w=1400) 50%/cover #333;
+    background-blend-mode: multiply;
+}
+
+svg {
+    position: fixed;
+}
+
+section {
+    --_p: var(--p, 1);
+    --q: (1 - var(--_p));
+    justify-self: var(--p, end);
+    position: relative;
+    text-align: var(--p, right);
+    padding: 4em;
+    color: #fff;
+    font-size: 20px;
+    max-width: 40%;
+    margin-bottom: 10px;
+    font-family: "Playfair Display", serif;
+
+}
+
+section h2 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+section:nth-child(2n) {
+    --p: 0;
+}
+
+section::before {
+    --r0: calc(var(--_p)*50vh);
+    --r1: calc(var(--q)*50vh);
+    --p0: calc(var(--_p)*4px);
+    --p1: calc(var(--q)*4px);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    padding: 4px;
+    padding-inline: var(--p0) var(--p1);
+    border-radius: var(--r0) var(--r1) var(--r1) var(--r0);
+    background: linear-gradient(#000 0 0) content-box,
+        conic-gradient(in hsl longer hue from var(--a), rgba(255, 0, 0, 0.5) 0 100%);
+    filter: url(#glow);
+    animation: a 10s infinite linear;
+    content: "";
+}
