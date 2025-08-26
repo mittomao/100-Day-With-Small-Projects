@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>58 - Hover card upright effect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: #dfe6e9;
+            transform: perspective(900px);
+            transform-style: preserve-3d;
+            font-family: "Playfair Display", serif;
+        }
+
+        .title {
+            width: 100%;
+            text-align: center;
+        }
+
+        .title h1 {
+            font-size: 50px;
+        }
+
+        .card {
+            position: absolute;
+            text-align: center;
+            width: 250px;
+            height: 350px;
+            padding: 20px;
+            transform: rotateX(75deg) translateY(-200px) translateZ(-100px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            transition: 0.6s;
+        }
+
+        .card:hover {
+            transform: rotateX(0deg) rotateZ(0deg);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .card img {
+            transform: translateY(15px);
+            object-fit: cover;
+        }
+
+        /* Card variations */
+        .card1 {
+            left: 100px;
+            background: linear-gradient(rgb(225, 150, 58), rgb(227, 144, 91));
+        }
+
+        .card1 img {
+            width: 200px;
+            height: 120px;
+        }
+
+        .card2 {
+            left: 550px;
+            background: linear-gradient(rgb(93, 94, 170), rgb(93, 66, 103));
+            animation: animate 1s linear infinite;
+        }
+
+        .card2 img {
+            width: 180px;
+            height: 150px;
+        }
+
+        .card3 {
+            left: 1000px;
+            background: linear-gradient(#ff5252, #b33939);
+        }
+
+        .card3 img {
+            width: 200px;
+            height: 120px;
+        }
+
+        /* Typography */
+        h3 {
+            font-size: 25px;
+            color: #fff;
+            text-shadow: 0 0 2px #fff;
+            transform: translateY(10px);
+        }
+
+        p {
+            color: #fff;
+            text-align: center;
+            width: 220px;
+            transform: translateX(12px);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="title">
+        <h1><span style="color: #ff9f43">Hover </span><span style="color: #0abde3">card </span> <span
+                style="color: #ee5253">upright </span><span style="color: #00d2d3">effect <span></h1>
+    </div>
+    <div class="card card1">
+        <img src="./images/1.jpg" alt="">
+        <h3>Card 1</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis, ipsum.</p>
+    </div>
+
+    <div class="card card2">
+        <img src="./images/2.jpg" alt="Eiffel Tower">
+        <h3>Card 2</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis, ipsum.</p>
+    </div>
+
+    <div class="card card3">
+        <img src="./images/3.jpg" alt="">
+        <h3>Card 3</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Perspiciatis, ipsum.</p>
+    </div>
+</body>
+
+</html>
