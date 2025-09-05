@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Rain Matrix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libertinus+Serif:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --clr: #0f0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #1c1b1b;
+            font-family: "Lora", serif;
+            font-weight: 400;
+            font-style: normal;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            top: 100px;
+            height: 400px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+
+
+        .container .cloud {
+            position: relative;
+            width: 400px;
+            height: 120px;
+            background: #f2f9fe;
+
+            background: -webkit-linear-gradient(-90deg, #f2f9fe 5%, #d6f0fd 100%);
+
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+
+            position: relative;
+
+            margin: 150px auto;
+        }
+
+        .cloud h2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff00aa;
+            font-family: "Libertinus Serif", serif;
+            font-weight: bold;
+        }
+
+        .cloud:before,
+        .cloud:after {
+            content: '';
+            position: absolute;
+            background: #f2f9fe;
+            z-index: -1;
+        }
+
+        .cloud:after {
+            width: 120px;
+            height: 120px;
+            top: -50px;
+            left: 50px;
+
+            -webkit-border-radius: 100px;
+            -moz-border-radius: 100px;
+            border-radius: 100px;
+        }
+
+        .cloud:before {
+            width: 200px;
+            height: 200px;
+            top: -90px;
+            right: 50px;
+
+            -webkit-border-radius: 200px;
+            -moz-border-radius: 200px;
+            border-radius: 200px;
+        }
+
+
+        .rain-zone {
+            position: absolute;
+            top: 0;
+            /* ngay dưới mây */
+            left: 0;
+            width: 100%;
+            /* rộng bằng mây */
+            height: 300px;
+            /* vùng cho giọt rơi */
+            overflow: visible;
+        }
+
+        .rain-zone img {
+            border-radius: 50%;
+            box-shadow: 0 1px 5px rgba(255, 255, 255, 0.12), 0 1px 4px rgba(255, 255, 255, 0.24);
+            object-fit: cover;
+        }
+
+        .shadow {
+            width: 400px;
+            position: absolute;
+            bottom: -10px;
+            background: #f2f9fe;
+            z-index: 0;
+
+            -webkit-box-shadow: 0 0 25px 8px #f2f9fe2e;
+            -moz-box-shadow: 0 0 25px 8px #f2f9fe2e;
+            box-shadow: 0 0 25px 8px #f2f9fe2e;
+
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+        }
+
+        .container .cloud .drop {
+            position: absolute;
+            top: 150px;
+            height: 20px;
+            line-height: 20px;
+            color: var(--clr);
+            transform-origin: bottom;
+            animation: animate 2s linear infinite;
+        }
+
+        .container .cloud .drop>span {
+            animation: animateColor 5s linear infinite;
+        }
+
+
+        @keyframes animateColor {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+
+            100% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) scaleY(0);
+                transform-origin: top;
+            }
+
+            10% {
+                transform: translateY(0) scaleY(0.25);
+                transform-origin: top;
+            }
+
+            20% {
+                transform: translateY(0) scaleY(1);
+                /* transform-origin: top; */
+            }
+
+            70% {
+                transform: translateY(300px) scaleY(1);
+                transform-origin: bottom;
+            }
+
+            80% {
+                transform: translateY(300px) scaleY(1);
+                transform-origin: bottom;
+            }
+
+            100% {
+                transform: translateY(300px) scaleY(0);
+                transform-origin: bottom;
+                text-shadow: -180px 0 0 var(--clr), 180px 0 var(--clr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="cloud">
+            <span class="shadow"></span>
+            <h2>Love Cloud Rain</h2>
+            <div class="rain-zone"></div>
+        </div>
+    </div>
+</body>
+<script>
+
+    function randomImage() {
+        const index = Math.floor(Math.random() * 5) + 1;
+        return `images/${index}.png`;
+    }
+
+    function randomText() {
+        const text = [
+            "I",
+            "love",
+            "you",
+            "anh",
+            "iu",
+            "em"
+        ]
+        return text[Math.floor(Math.random() * text.length)];
+    }
+
+    function randomImage() {
+        const index = Math.floor(Math.random() * 20) + 1;
+        return `images/${index}.jpg`;
+    }
+
+    function rain() {
+        let rainZone = document.querySelector('.rain-zone');
+        let e = document.createElement('div');
+        e.classList.add('drop');
+        let isImg = false;
+        if (Math.random() < 0.85) {
+            let text = document.createElement('span');
+            text.innerText = randomText();
+            e.appendChild(text);
+        } else {
+            isImg = true;
+            let img = document.createElement('img');
+            img.src = randomImage();
+            img.style.width = "50px";
+            img.style.height = "50px";
+            e.appendChild(img);
+        }
+
+        rainZone.appendChild(e);
+
+        let zoneWidth = rainZone.offsetWidth;
+        let left = Math.floor(Math.random() * zoneWidth);
+        let size = Math.random() * 1.5;
+        let duration = Math.random() * 1;
+
+        e.style.left = left + 'px';
+        e.style.fontSize = (0.5 + size) + 'em';
+        e.style.animationDuration = (isImg ? 3 : 1.5 + duration) + 's';
+
+        setTimeout(() => {
+            rainZone.removeChild(e);
+        }, 3000);
+    }
+
+    setInterval(function () {
+        rain()
+    }, 100);
+
+</script>
+
+</html>
