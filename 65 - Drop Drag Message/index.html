@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>65 - Drop & Drag Message</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <style>
+        @import "https://unpkg.com/open-props";
+        @import "https://unpkg.com/open-props/normalize.min.css";
+
+        /* Animation drop-zone */
+        @keyframes drop-zone {
+            from {
+                box-shadow: 0 0 0 0 var(--link);
+            }
+
+            to {
+                box-shadow: 0 0 0 25px #0000;
+            }
+        }
+
+        /* li.over */
+        li.over {
+            outline: 2px dashed var(--link);
+        }
+
+        @media (prefers-reduced-motion: no-preference) {
+            li.over {
+                animation: drop-zone 1.5s var(--ease-out-5) infinite;
+            }
+        }
+
+        /* Ngăn sự kiện trên con */
+        li.over>* {
+            pointer-events: none;
+        }
+
+        /* Draggable */
+        [draggable] {
+            cursor: grab;
+            user-select: none;
+        }
+
+        [draggable]:active {
+            cursor: grabbing;
+        }
+
+        /* HTML root */
+        html {
+            view-transition-name: none;
+        }
+
+        /* Body layout */
+        body {
+            display: grid;
+            place-content: center;
+            padding: var(--size-5);
+            gap: var(--size-5);
+            font-family: Playfair Display, serif;
+        }
+
+        /* Danh sách */
+        ol {
+            display: grid;
+            gap: var(--size-3);
+            justify-items: start;
+        }
+
+        ol>li {
+            background: var(--surface-2);
+            border: 1px solid transparent;
+            padding-block: var(--size-3);
+            padding-inline: var(--size-4);
+            border-radius: var(--radius-3);
+            box-shadow: var(--shadow-4);
+        }
+
+        @media (prefers-color-scheme: light) {
+            ol>li {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <ol id="$demo">
+        <li draggable="true" style="view-transition-name: card-1">HTML CSS</li>
+        <li draggable="true" style="view-transition-name: card-2">SITECORE</li>
+        <li draggable="true" style="view-transition-name: card-3">JAVASCRIPT</li>
+        <li draggable="true" style="view-transition-name: card-4">.NET</li>
+        <li draggable="true" style="view-transition-name: card-5">DATABASE</li>
+        <li draggable="true" style="view-transition-name: yes-this-keeps-animating-during-morph">
+            <picture>
+                <source srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.webp" type="image/webp">
+                <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f92f/512.gif" alt="🤯" width="125"
+                    height="125">
+            </picture>
+        </li>
+    </ol>
+
+    <script>
+        const drag = {
+            src: null,
+            items: $demo.querySelectorAll(':scope > li'),
+        }
+
+        function handleDrop(e) {
+            e?.stopPropagation()
+
+            if (drag.src != this) {
+                if (document.startViewTransition)
+                    document.startViewTransition(() =>
+                        swapSiblings(drag.src, this))
+                else
+                    swapSiblings(drag.src, this)
+            }
+        }
+
+        function handleDragStart(e) {
+            requestAnimationFrame(() => {
+                this.style.opacity = '.4'
+            })
+            e.dataTransfer.setData("text/html", this.outerHTML)
+            drag.src = this
+        }
+
+        function handleDragOver(e) {
+            e?.preventDefault()
+        }
+
+        function handleDragEnter(e) {
+            this.classList.add('over')
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('over')
+        }
+
+        function handleDragEnd(e) {
+            this.style.opacity = '1'
+
+            drag.items.forEach(item => {
+                item.classList.remove('over')
+            })
+        }
+
+        function swapSiblings(sib1, sib2) {
+            let p1 = sib1.previousSibling
+            let p2 = sib2.previousSibling
+
+            p1.after(sib2)
+            p2.after(sib1)
+        }
+
+        drag.items.forEach(item => {
+            item.addEventListener('dragstart', handleDragStart, false)
+            item.addEventListener('dragenter', handleDragEnter, false)
+            item.addEventListener('dragover', handleDragOver, false)
+            item.addEventListener('dragleave', handleDragLeave, false)
+            item.addEventListener('drop', handleDrop, false)
+            item.addEventListener('dragend', handleDragEnd, false)
+        })
+    </script>
+</body>
+
+</html>
