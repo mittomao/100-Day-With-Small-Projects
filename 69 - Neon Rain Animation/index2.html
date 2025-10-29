@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animation Neon Rain 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            background-color: black;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: Playfair Display, serif;
+            cursor: pointer;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 36px;
+            position: absolute;
+            z-index: 10;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            text-align: center;
+            font-size: 36px;
+            text-shadow:
+                0 0 5px #ff63a2,
+                0 0 10px #ff63a2,
+                0 0 15px #ff63a2,
+                0 0 20px #ff63a2,
+                0 0 25px #ff63a2,
+                0 0 30px #ff63a2;
+
+            animation: neonGlow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% {
+                text-shadow:
+                    0 0 5px #ff63a2,
+                    0 0 10px #ff63a2,
+                    0 0 15px #ff63a2,
+                    0 0 20px #ff63a2,
+                    0 0 25px #ff63a2,
+                    0 0 30px #ff63a2;
+            }
+
+            100% {
+                text-shadow:
+                    0 0 10px #ff63a2,
+                    0 0 20px #ff63a2,
+                    0 0 30px #ff63a2,
+                    0 0 40px #ff63a2,
+                    0 0 50px #ff63a2,
+                    0 0 60px #ff63a2;
+
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Neon Rain Animation</h2>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script>
+        var drops = [];
+        var dropCount = 250;
+        const dropGap = 4;
+        const alpha = 0.25;
+        const highlight = 0.8;
+        const colors = [
+            '255, 255, 255',  // white
+            '255, 0, 0',      // red
+            '255, 128, 0',    // orange
+            '255, 255, 0',    // yellow
+            '128, 255, 0',    // lime
+            '0, 255, 0',      // green
+            '0, 255, 255',    // cyan
+            '0, 170, 255',    // blue
+            '255, 0, 255',    // magenta
+            '255, 128, 255',  // pink
+        ];
+
+        // initial canvas setup
+        function setup() {
+            createCanvas(windowWidth, windowHeight);
+            dropCount = floor(windowWidth / dropGap);
+            for (let i = 0; i < dropCount; i++) {
+                addDrop();
+            }
+        }
+
+        // draw loop
+        function draw() {
+            clear();
+            drops.forEach(drop => {
+                // draw drop
+                noStroke();
+                const opacity = dropGradient(drop.x) * drop.opacity;
+                fill(`rgba(${drop.color}, ${opacity})`);
+                ellipse(drop.x, drop.y, 3, drop.height);
+                // fall
+                const splashHeight = drop.splashHeight * windowHeight;
+                drop.y = min(drop.y + drop.speed, splashHeight);
+                if (drop.y >= splashHeight) {
+                    drop.height = max(drop.height - drop.length / 4, 0);
+                    if (drop.height <= 0) {
+                        // draw splash ripple
+                        noFill();
+                        strokeWeight(2);
+                        stroke(`rgba(${drop.color}, ${opacity})`);
+                        ellipse(drop.x, splashHeight + drop.length * 2 / 3, drop.radius * 2, drop.radius / 2);
+                        drop.radius = min(drop.radius + drop.speed * 0.1, drop.splashRadius);
+                        if (drop.radius >= drop.splashRadius) {
+                            // fade ripple
+                            if (drop.opacity > 0) {
+                                drop.opacity = max(drop.opacity - drop.speed * 0.001, 0);
+                            } else {
+                                drop.x = random(-200, windowWidth);
+                                drop.y = random(0, -100);
+                                drop.radius = 0;
+                                drop.height = drop.length;
+                                drop.opacity = alpha;
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
+        function windowResized() {
+            console.log(frameRate());
+            resizeCanvas(windowWidth, windowHeight);
+            const newCount = floor(windowWidth / dropGap);
+            if (newCount > dropCount) {
+                for (let i = 0; i < newCount - dropCount; i++) {
+                    addDrop();
+                }
+            } else if (newCount < dropCount) {
+                drops.splice(-(dropCount - newCount));
+            }
+            dropCount = newCount;
+        }
+
+        // create rain drop with random properties
+        const addDrop = () => {
+            const speed = random(8, 16);
+            drops.push({
+                x: random(0, windowWidth),
+                y: random(0, -1000),
+                speed: speed,
+                height: speed * 2,
+                length: speed * 2,
+                radius: 0,
+                splashRadius: random(15, 30),
+                splashHeight: random(0.75, 0.9),
+                color: random(colors),
+                opacity: alpha,
+            });
+        };
+
+        // returns adjusted drop opacity for radial gradient based on proximity to mouse pointer
+        const dropGradient = (x, r = windowWidth / 10) => {
+            const distance = abs(x - mouseX);
+            if (distance > r)
+                return 1;
+            return (1 - distance / r) * (highlight / alpha - 1) + 1;
+        }
+
+    </script>
+</body>
+
+</html>
