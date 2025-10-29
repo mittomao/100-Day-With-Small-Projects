@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>68 - Suggestions and auto fill value input</title>
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --accent: #2563eb;
+            --muted: #6b7280;
+        }
+
+        body {
+            font-family: Inter, Roboto, system-ui, Arial, sans-serif;
+            background: linear-gradient(180deg, var(--bg), #eef2ff);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 6px 24px rgba(20, 30, 60, 0.08);
+            width: 100%;
+            max-width: 640px;
+        }
+
+        h1 {
+            font-size: 18px;
+            margin: 0 0 12px
+        }
+
+        .search-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        input[type="search"] {
+            flex: 1;
+            padding: 12px 14px;
+            font-size: 15px;
+            border: 1px solid #e6e9ef;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        input[type="search"]:focus {
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08);
+            border-color: var(--accent);
+        }
+
+        button {
+            padding: 0 16px;
+            border-radius: 8px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .hint-list {
+            margin-top: 10px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .hint {
+            background: #f1f5f9;
+            color: var(--muted);
+            padding: 6px 10px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background .15s, transform .05s;
+        }
+
+        .hint:hover {
+            background: #e2e8f0;
+            transform: translateY(-2px)
+        }
+
+        .meta {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 8px
+        }
+
+        .placeholder-caret {
+            display: inline-block;
+            width: 10px;
+            height: 1.1em;
+            vertical-align: middle;
+            margin-left: 3px;
+            background: var(--muted);
+            opacity: 0.9;
+            animation: blink 1s steps(1, end) infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0
+            }
+        }
+
+        @media (max-width:480px) {
+            .card {
+                padding: 16px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" role="region" aria-label="Search sample">
+        <h1>Search (placeholder tự động gợi ý)</h1>
+
+        <form id="searchForm" onsubmit="event.preventDefault(); doSearch();">
+            <div class="search-row" aria-live="polite">
+                <input id="searchInput" type="search" autocomplete="off" placeholder="Tìm kiếm..."
+                    aria-label="Search input" />
+                <button type="submit">Search</button>
+            </div>
+        </form>
+
+        <div class="hint-list" id="hintList" aria-hidden="false"></div>
+        <div class="meta">Gợi ý tự động trong placeholder — sẽ tạm dừng khi bạn nhập.</div>
+    </div>
+
+    <script>
+        // Các gợi ý sẽ hiển thị tuần hoàn trong placeholder:
+        const suggestions = [
+            "hướng dẫn Sitecore cơ bản",
+            "ví dụ ASP.NET Core dependency injection",
+            "tối ưu hiệu suất Three.js cho mobile",
+            "tạo animation trái tim bằng canvas",
+            "lấy country code từ IP"
+        ];
+
+        const input = document.getElementById('searchInput');
+        const hintList = document.getElementById('hintList');
+
+        // Hiển thị các hint dưới input (click để điền)
+        function renderHintButtons() {
+            hintList.innerHTML = '';
+            suggestions.forEach(s => {
+                const btn = document.createElement('button');
+                btn.type = "button";
+                btn.className = "hint";
+                btn.textContent = s;
+                btn.addEventListener('click', () => {
+                    input.value = s;
+                    input.focus();
+                    stopPlaceholderLoop(); // user selected -> stop
+                });
+                hintList.appendChild(btn);
+            });
+        }
+        renderHintButtons();
+
+        let loopTimer = null;
+        let typingTimer = null;
+        let currentIndex = 0;
+        let isRunning = false;
+        let charPos = 0;
+        const TYPING_SPEED = 60; // ms per char
+        const PAUSE_AFTER_FULL = 1000; // ms before erase
+        const PAUSE_BETWEEN_HINTS = 600; // small pause between hints
+
+        function typeNextSuggestion() {
+            if (!isRunning) return;
+            const text = suggestions[currentIndex];
+            charPos = 0;
+            input.placeholder = ""; // start blank
+            function typeChar() {
+                if (!isRunning) return;
+                charPos++;
+                input.placeholder = text.slice(0, charPos);
+                if (charPos < text.length) {
+                    typingTimer = setTimeout(typeChar, TYPING_SPEED);
+                } else {
+                    typingTimer = setTimeout(eraseChars, PAUSE_AFTER_FULL);
+                }
+            }
+            function eraseChars() {
+                if (!isRunning) return;
+                let erasePos = text.length;
+                function stepErase() {
+                    if (!isRunning) return;
+                    erasePos--;
+                    input.placeholder = text.slice(0, erasePos);
+                    if (erasePos > 0) {
+                        typingTimer = setTimeout(stepErase, 35);
+                    } else {
+                        currentIndex = (currentIndex + 1) % suggestions.length;
+                        typingTimer = setTimeout(typeNextSuggestion, PAUSE_BETWEEN_HINTS);
+                    }
+                }
+                typingTimer = setTimeout(stepErase, 35);
+            }
+            typeChar();
+        }
+
+        function startPlaceholderLoop() {
+            if (isRunning) return;
+            isRunning = true;
+            loopTimer = setTimeout(typeNextSuggestion, 400);
+        }
+
+        function stopPlaceholderLoop() {
+            isRunning = false;
+            if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
+            if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+        }
+
+        input.addEventListener('focus', () => {
+            // if user hasn't typed anything, we still allow placeholder to run,
+            // but if they start typing, stop the loop.
+            // We'll stop on keydown if value changes.
+        });
+
+        function onUserInputStart() {
+            if (input.value && input.value.length > 0) {
+                stopPlaceholderLoop();
+            } else {
+                // if user clears value while focused, we may resume only after blur
+            }
+        }
+        input.addEventListener('input', onUserInputStart);
+
+        input.addEventListener('blur', () => {
+            if (!input.value || input.value.trim() === "") {
+                setTimeout(() => {
+                    if (!input.value || input.value.trim() === "") startPlaceholderLoop();
+                }, 200);
+            } else {
+                stopPlaceholderLoop();
+            }
+        });
+
+        window.addEventListener('load', () => {
+            if (!input.value || input.value.trim() === "") {
+                startPlaceholderLoop();
+            }
+        });
+
+        function doSearch() {
+            const q = input.value.trim();
+            if (!q) {
+                alert('Vui lòng nhập từ khóa tìm kiếm hoặc chọn gợi ý.');
+                input.focus();
+                return;
+            }
+            alert('Search: ' + q);
+        }
+
+        input.addEventListener('keydown', function (e) {
+            const navKeys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Tab', 'Enter', 'Escape'];
+            if (!navKeys.includes(e.key)) {
+                stopPlaceholderLoop();
+            }
+        });
+    </script>
+</body>
+
+</html>
