@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <title>Hover Mouse Eye Look</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Lora", serif;
+            cursor: url("heart-1.png"), auto;
+        }
+
+        .header {
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transform: translateY(300px);
+            background-color: #fff;
+        }
+
+        .header--title {
+            font-size: 200px;
+            width: 150px;
+            text-align: center;
+            line-height: 200px;
+        }
+
+        .eye {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 15px solid #000;
+            background: #fff;
+            position: relative;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+
+        .eye .iris {
+            width: 40px;
+            height: 40px;
+            background-image: url(heart.png);
+            background-size: cover;
+            background-position: center;
+            border-radius: 50%;
+            position: absolute;
+            left: 35px;
+            top: 35px;
+            transition: all .15s;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header--title">L</div>
+        <div class="eye" id="left-eye">
+            <div class="iris"></div>
+        </div>
+        <div class="eye" id="right-eye">
+            <div class="iris"></div>
+        </div>
+        <div class="header--title">K</div>
+    </header>
+
+    <script>
+        const eyes = [
+            document.getElementById("left-eye"),
+            document.getElementById("right-eye")
+        ];
+
+        function moveEyes(event) {
+            eyes.forEach(eye => {
+                const iris = eye.querySelector(".iris");
+                const rect = eye.getBoundingClientRect();
+
+                const eyeCenterX = rect.left + rect.width / 2;
+                const eyeCenterY = rect.top + rect.height / 2;
+
+                const dx = event.clientX - eyeCenterX;
+                const dy = event.clientY - eyeCenterY;
+
+                const angle = Math.atan2(dy, dx);
+
+                const maxMove = 25; // bán kính di chuyển tối đa
+
+                const x = Math.cos(angle) * maxMove;
+                const y = Math.sin(angle) * maxMove;
+
+                iris.style.transform = `translate(${x}px, ${y}px)`;
+            });
+        }
+
+        window.addEventListener("mousemove", moveEyes);
+    </script>
+
+</body>
+
+</html>
