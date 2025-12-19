@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS if() Syntax Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --token-selector: #be123c;
+            --token-property: #0369a1;
+            --token-function: #7c3aed;
+            --token-keyword: #db2777;
+            --token-punctuation: #64748b;
+            --token-value: #15803d;
+            --token-number: #b45309;
+            --token-operator: #475569;
+            --token-tag: #be123c;
+            --token-attr-name: #0369a1;
+            --token-attr-value: #15803d;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --token-selector: #fca5a5;
+                --token-property: #93c5fd;
+                --token-function: #c4b5fd;
+                --token-keyword: #f9a8d4;
+                --token-punctuation: #94a3b8;
+                --token-value: #86efac;
+                --token-number: #fbbf24;
+                --token-operator: #fff;
+                --token-tag: #fca5a5;
+                --token-attr-name: #93c5fd;
+                --token-attr-value: #86efac;
+            }
+        }
+
+        body {
+            font-family: system-ui, sans-serif;
+        }
+
+        .code-font {
+            font-family: "Fira Code", monospace;
+        }
+
+        .token.selector {
+            color: var(--token-selector);
+        }
+
+        .token.property {
+            color: var(--token-property);
+        }
+
+        .token.function {
+            color: var(--token-function);
+        }
+
+        .token.keyword {
+            color: var(--token-keyword);
+            font-weight: bold;
+        }
+
+        .token.punctuation {
+            color: var(--token-punctuation);
+        }
+
+        .token.value {
+            color: var(--token-value);
+        }
+
+        .token.number {
+            color: var(--token-number);
+        }
+
+        .token.operator {
+            color: var(--token-operator);
+            font-weight: bold;
+        }
+
+        .token.tag {
+            color: var(--token-tag);
+        }
+
+        .token.attr-name {
+            color: var(--token-attr-name);
+        }
+
+        .token.attr-value {
+            color: var(--token-attr-value);
+        }
+
+        .item {
+            background-color: dimgray;
+            background-color: if(style(attr(data-columns type(<integer>)) > 2) : royalblue; else : dimgray);
+            transition: background-color 0.3s ease;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+        }
+
+        .item:active {
+            cursor: grabbing;
+        }
+
+        .no-transition {
+            transition: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <body
+        class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+        <div class="max-w-4xl w-full space-y-6 sm:space-y-8">
+
+            <div class="text-center space-y-2">
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Syntax in
+                    CSS <code class="code-font text-violet-600 dark:text-violet-400">if()</code> function</h1>
+                <div
+                    class="inline-block mt-2 px-3 py-1 bg-amber-100 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 rounded text-amber-700 dark:text-amber-200 text-[10px] sm:text-xs">
+                    ⚠️ Requires <strong>Chrome 142+</strong>
+                </div>
+            </div>
+
+            <div
+                class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden transition-colors duration-300">
+
+                <!-- Code Section -->
+                <div class="p-4 sm:p-6 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-700 relative grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6"
+                    style="padding-bottom: 3.5rem">
+
+                    <!-- HTML Column -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2 ">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">HTML
+                                Markup</span>
+                            <span
+                                class="text-[10px] sm:text-xs px-2 py-1 rounded bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30">HTML</span>
+                        </div>
+                        <div
+                            class="relative group cursor-default bg-white dark:bg-slate-950/50 rounded-lg border border-slate-200 dark:border-slate-800 p-3 h-full flex items-center overflow-x-auto">
+                            <pre
+                                class="code-font text-xs sm:text-sm leading-relaxed whitespace-pre-wrap text-slate-700 dark:text-slate-300"><span class="token tag">&lt;div</span> <span class="token attr-name">class</span>=<span class="token attr-value">"item"</span>
+     <span class="token attr-name">data-columns</span>=<span class="token attr-value">"<span id="html-attr-val" class="font-bold text-amber-600 dark:text-amber-300 transition-all duration-200">1</span>"</span><span class="token tag">&gt;</span>
+  ...
+<span class="token tag">&lt;/div&gt;</span></pre>
+                        </div>
+                    </div>
+
+                    <!-- CSS Column -->
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">CSS
+                                Source</span>
+                            <span
+                                class="text-[10px] sm:text-xs px-2 py-1 rounded bg-indigo-100 dark:bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-500/30">CSS</span>
+                        </div>
+                        <div
+                            class="relative group cursor-default bg-white dark:bg-slate-950/50 rounded-lg border border-slate-200 dark:border-slate-800 p-3 h-full overflow-x-auto">
+                            <pre class="code-font text-xs sm:text-sm leading-relaxed whitespace-pre-wrap"><span class="token selector">.item</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> <span class="token function">if</span><span class="token punctuation">(</span>
+    <span class="token function">style</span><span class="token punctuation">(</span><span class="token function">attr</span><span class="token punctuation">(</span>data-columns type(&lt;integer&gt;)<span class="token punctuation">)</span> <span id="syntax-query"><span class="token operator">&gt;</span> <span class="token number">2</span></span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token value">royalblue</span><span class="token punctuation">;</span> 
+    <span class="token keyword">else</span><span class="token punctuation">:</span> <span class="token value">dimgray</span>
+  <span class="token punctuation">);</span>
+<span class="token punctuation">}</span></pre>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Interactive Section -->
+                <div class="p-4 sm:p-8 space-y-6 sm:space-y-8">
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-end">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                Interactive Grid
+                            </label>
+                            <span class="text-xs text-slate-500 dark:text-slate-400 hidden sm:inline">Drag the
+                                block</span>
+                        </div>
+
+                        <div
+                            class="flex items-center justify-between text-xs sm:text-sm bg-slate-100 dark:bg-slate-900/50 p-3 rounded border border-slate-200 dark:border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <div id="logic-dot"
+                                    class="w-2 h-2 rounded-full bg-slate-400 transition-colors duration-300"></div>
+                                <span class="text-slate-600 dark:text-slate-400">Condition: <code
+                                        class="code-font text-xs">col > 2</code></span>
+                            </div>
+                            <span id="logic-text-true" class="text-slate-700 dark:text-slate-300">Result: <span
+                                    class="text-slate-500">False</span></span>
+                        </div>
+                    </div>
+
+                    <div class="relative w-full h-28 sm:h-32" id="grid-container">
+
+                        <!-- Grid Background -->
+                        <div class="absolute inset-0 grid grid-cols-5 gap-2 sm:gap-4 pointer-events-none z-0">
+                            <div
+                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center">
+                                <span
+                                    class="text-slate-300 dark:text-slate-700 font-bold text-xl sm:text-2xl select-none">1</span>
+                            </div>
+                            <div
+                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center">
+                                <span
+                                    class="text-slate-300 dark:text-slate-700 font-bold text-xl sm:text-2xl select-none">2</span>
+                            </div>
+                            <div
+                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center">
+                                <span
+                                    class="text-slate-300 dark:text-slate-700 font-bold text-xl sm:text-2xl select-none">3</span>
+                            </div>
+                            <div
+                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center">
+                                <span
+                                    class="text-slate-300 dark:text-slate-700 font-bold text-xl sm:text-2xl select-none">4</span>
+                            </div>
+                            <div
+                                class="border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl flex items-center justify-center">
+                                <span
+                                    class="text-slate-300 dark:text-slate-700 font-bold text-xl sm:text-2xl select-none">5</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Layer -->
+                        <div class="absolute inset-0 grid grid-cols-5 gap-2 sm:gap-4 z-10 pointer-events-none">
+
+                            <div id="demo-box"
+                                class="item pointer-events-auto rounded-xl shadow-lg shadow-black/10 dark:shadow-[0_0_30px_-5px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center text-white border border-white/20 active:scale-105 active:shadow-2xl"
+                                style="grid-column-start: 1;" data-columns="1">
+
+                                <div class="text-center">
+                                    <span class="block font-bold text-xs sm:text-lg drop-shadow-md">DRAG ME</span>
+                                    <span
+                                        class="text-[10px] sm:text-xs opacity-90 font-mono drop-shadow-md">.item</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script>
+        const htmlAttrVal = document.getElementById('html-attr-val');
+        const demoBox = document.getElementById('demo-box');
+        const gridContainer = document.getElementById('grid-container');
+        const logicTrueText = document.getElementById('logic-text-true');
+        const logicDot = document.getElementById('logic-dot');
+        const syntaxQuery = document.getElementById('syntax-query');
+
+        let currentColumn = 1;
+        const totalColumns = 5;
+
+        let isDragging = false;
+        let startX = 0;
+        let containerWidth = 0;
+        let columnWidth = 0;
+
+        demoBox.addEventListener('pointerdown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+
+            const containerRect = gridContainer.getBoundingClientRect();
+            containerWidth = containerRect.width;
+            columnWidth = containerWidth / totalColumns;
+
+            demoBox.classList.add('no-transition');
+            demoBox.setPointerCapture(e.pointerId);
+        });
+
+        demoBox.addEventListener('pointermove', (e) => {
+            if (!isDragging) return;
+
+            const dx = e.clientX - startX;
+
+            demoBox.style.transform = `translateX(${dx}px)`;
+
+            const rawColIndex = currentColumn + (dx / columnWidth);
+            let previewCol = Math.round(rawColIndex);
+            previewCol = Math.max(1, Math.min(previewCol, totalColumns));
+
+            htmlAttrVal.textContent = previewCol;
+        });
+
+        demoBox.addEventListener('pointerup', (e) => {
+            if (!isDragging) return;
+            isDragging = false;
+            demoBox.releasePointerCapture(e.pointerId);
+            demoBox.classList.remove('no-transition');
+
+            const dx = e.clientX - startX;
+
+            const movedCols = Math.round(dx / columnWidth);
+            let newColumn = currentColumn + movedCols;
+
+            newColumn = Math.max(1, Math.min(newColumn, totalColumns));
+
+            currentColumn = newColumn;
+            updateState(currentColumn);
+
+            demoBox.style.transform = '';
+        });
+
+        function updateState(val) {
+            htmlAttrVal.textContent = val;
+
+            demoBox.style.gridColumnStart = val;
+
+            demoBox.setAttribute('data-columns', val);
+
+            const conditionMet = val > 2;
+
+            if (conditionMet) {
+                logicTrueText.innerHTML = `<span class="text-green-600 dark:text-green-400 font-bold">True</span> → CSS Applies <strong class="text-blue-600 dark:text-blue-400">royalblue</strong>`;
+                logicDot.className = "w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)] transition-colors duration-300";
+
+                // Update highlight for both themes (using rgba for transparency works well on both)
+                syntaxQuery.style.backgroundColor = 'rgba(34, 197, 94, 0.2)';
+                syntaxQuery.style.borderRadius = '4px';
+                syntaxQuery.style.boxShadow = '0 0 0 2px rgba(34, 197, 94, 0.4)';
+            } else {
+                logicTrueText.innerHTML = `<span class="text-red-600 dark:text-red-400 font-bold">False</span> → CSS Applies <strong class="text-slate-500 dark:text-slate-400">dimgray</strong>`;
+                logicDot.className = "w-2 h-2 rounded-full bg-red-500 shadow-[0_0_10px_rgba(248,113,113,0.5)] transition-colors duration-300";
+
+                syntaxQuery.style.backgroundColor = 'rgba(248, 113, 113, 0.2)';
+                syntaxQuery.style.borderRadius = '4px';
+                syntaxQuery.style.boxShadow = '0 0 0 2px rgba(248, 113, 113, 0.4)';
+            }
+        }
+
+        updateState(1);
+    </script>
+</body>
+
+</html>
