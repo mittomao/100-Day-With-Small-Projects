@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firework 2026</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #EF9595;
+        }
+    </style>
+</head>
+
+<body>
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.6.3/dist/es-module-shims.js"
+        crossorigin="anonymous"></script>
+    <script type="importmap">
+  {
+    "imports": {      
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+
+    <canvas id="canvas"></canvas>
+
+    <script type="module">
+        import * as THREE from "three";
+        import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+        const canvas = document.querySelector("#canvas");
+        let D = { w: window.innerWidth, h: window.innerHeight };
+        let renderer, camera, controls, scene, group, envMap;
+
+        const MAX_ROCKETS = 2;
+        const ROCKET_GAP = 1.2; // seconds
+        const COLORS = ['#E76161'];
+        const P_COUNTS = [85, 100, 102, 113, 120, 129, 140]
+        let rockets = [], fireworks = [];
+        /** Renderer */
+        renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+        renderer.setClearColor('#EF9595');
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        /** Camera */
+        camera = new THREE.PerspectiveCamera(20, D.w / D.h, 0.1, 100);
+        camera.position.set(0, 29, 36);
+        /** Orbit Controls */
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 5.5, 0);
+        controls.enableDamping = true;
+        controls.enablePan = false;
+        controls.dampingFactor = 0.02;
+        controls.maxPolarAngle = 85 * Math.PI / 180;
+        controls.minPolarAngle = 55 * Math.PI / 180;
+        controls.minDistance = 25;
+        controls.maxDistance = 41;
+        controls.autoRotate = true;
+
+        /** Scene */
+        scene = new THREE.Scene();
+        /** Light */
+        const light1 = new THREE.DirectionalLight('#ffffff', 1);
+        light1.position.set(0, 10, 0);
+        light1.castShadow = true;
+        light1.shadow.camera.left = -15;
+        light1.shadow.camera.right = 15;
+        light1.shadow.camera.top = 15;
+        light1.shadow.camera.bottom = -15;
+        scene.add(light1);
+        /** Fog */
+        scene.fog = new THREE.Fog('#EF9595', 45, 70);
+        /** Ground */
+        const ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(1000, 1000),
+            new THREE.MeshStandardMaterial({
+                color: '#FFC5C5',
+                emissive: '#FFC5C5',
+                emissiveIntensity: 0.8,
+            })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+        /** Group */
+        group = new THREE.Group();
+        group.position.y = 0.5;
+        scene.add(group);
+        /** Load envMap */
+        new THREE.TextureLoader().load('https://evanjin.s3.ap-northeast-2.amazonaws.com/console/texture.abstract.64.jpg', _envMap => {
+            _envMap.mapping = THREE.EquirectangularReflectionMapping
+            _envMap.encoding = THREE.sRGBEncoding;
+            envMap = _envMap
+        });
+
+        function Rocket({ color, position, particleCount }) {
+            this.color = color
+            this.targetPos = new THREE.Vector3(position.x, position.y, position.z)
+            let currentPos = new THREE.Vector3(0, 0, 0)
+            this.particleCount = particleCount
+            const self = this
+            init()
+
+            function init() {
+                const geometry = new THREE.SphereGeometry(0.1, 32, 32)
+                const material = new THREE.MeshStandardMaterial({
+                    color: self.color,
+                    metalness: 1,
+                    roughness: 0.1,
+                    envMap,
+                    envMapIntensity: 1
+                })
+                self.mesh = new THREE.Mesh(geometry, material)
+                self.mesh.frustumCulled = false
+                self.mesh.castShadow = true;
+                scene.add(self.mesh)
+            }
+            this.isCompleted = function () {
+                return currentPos.distanceTo(this.targetPos) < 0.25
+            }
+            this.update = function (delta) {
+                currentPos.lerp(this.targetPos, delta * 0.0027)
+                self.mesh.position.copy(currentPos)
+            }
+            this.remove = function () {
+                scene.remove(this.mesh)
+            }
+        }
+
+        function Firework({ color, targetPos, particleCount }) {
+            this.color = color
+            this.targetPos = targetPos
+            this.particleCount = particleCount
+            const self = this
+            let startTime;
+            init()
+
+            function init() {
+                const particleGeo = new THREE.SphereGeometry(0.2, 32);
+                const geometry = new THREE.InstancedBufferGeometry().copy(particleGeo);
+                geometry.index = particleGeo.index;
+                geometry.instanceCount = self.particleCount;
+
+                const pos = []
+                const rot = []
+                const scl = []
+                const delay = []
+                let dummy = new THREE.Object3D();
+
+                for (let i = 0; i < self.particleCount; i++) {
+                    const t = i / self.particleCount * Math.PI * 2;
+
+                    // Công thức trái tim 2D
+                    let x = 16 * Math.pow(Math.sin(t), 3);
+                    let y =
+                        13 * Math.cos(t)
+                        - 5 * Math.cos(2 * t)
+                        - 2 * Math.cos(3 * t)
+                        - Math.cos(4 * t);
+
+                    // Scale lại cho vừa
+                    x *= 0.04;
+                    y *= 0.04;
+
+                    // Tạo độ dày 3D
+                    const z = randomNum(-0.2, 0.2);
+
+                    // Đẩy lên trên cho cân
+                    pos.push(x, y + 0.5, z);
+
+                    dummy.rotation.set(
+                        randomNum(0, Math.PI * 2),
+                        randomNum(0, Math.PI * 2),
+                        randomNum(0, Math.PI * 2)
+                    );
+                    dummy.updateMatrix();
+
+                    rot.push(dummy.quaternion.x, dummy.quaternion.y, dummy.quaternion.z, dummy.quaternion.w);
+                    scl.push(1, 1, 1);
+
+                    delay.push(randomNum(0, 1));
+                }
+
+                geometry.setAttribute('instT', new THREE.InstancedBufferAttribute(new Float32Array(pos), 3, false))
+                geometry.setAttribute('instR', new THREE.InstancedBufferAttribute(new Float32Array(rot), 4, false))
+                geometry.setAttribute('instS', new THREE.InstancedBufferAttribute(new Float32Array(scl), 3, false))
+                geometry.setAttribute('instDelay', new THREE.InstancedBufferAttribute(new Float32Array(delay), 1, false))
+
+                const insertVertexAttributes = (shader) => {
+                    shader.vertexShader = `
+        uniform float uTime;
+        uniform float uProgress;
+        varying vec2 vUv;
+        varying float vInstDelay;
+  
+        attribute vec3 instT;
+        attribute vec4 instR;
+        attribute vec3 instS;
+        attribute float instDelay;
+        
+        // http://barradeau.com/blog/?p=1109
+        vec3 trs( inout vec3 position, vec3 T, vec4 R, vec3 S ) {
+            position *= S;
+            position += 2.0 * cross( R.xyz, cross( R.xyz, position ) + R.w * position );
+            position += T;
+            return position;
+        }
+        vec3 transformedNormal(vec3 normal, vec4 R) {
+            return normalize(normal + 2.0 * cross(R.xyz, cross(R.xyz, normal) + R.w * normal));
+        }
+        ${shader.vertexShader}
+      `
+                }
+                const overideVertexShader = (shader) => {
+                    shader.vertexShader = shader.vertexShader.replace(
+                        `#include <begin_vertex>`,
+                        `#include <begin_vertex>
+          float time = uTime;
+          vInstDelay = instDelay;
+          vUv = uv;
+  
+          transformed = trs(transformed, instT, instR, instS);
+  
+          vec3 vel_out = (log(time) + 1.5) * normalize(instT);
+          vec3 pos_out = instT + vel_out;
+  
+          transformed += pos_out; `
+                    )
+                }
+                const insertFragmentAttributes = (shader) => {
+                    shader.fragmentShader = `
+        uniform float uTime;
+        uniform float uProgress;
+        varying vec2 vUv;
+        varying float vInstDelay;
+  
+        float Hash(vec2 p) {
+          vec3 p2 = vec3(p.xy, 1.0);
+          return fract(sin(dot(p2, vec3(37.1, 61.7, 12.4))) * 3758.5453123);
+        }
+  
+        float noise(in vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          f *= f * (3.0 - 2.0 * f);
+  
+          return mix(mix(Hash(i + vec2(0., 0.)), Hash(i + vec2(1., 0.)), f.x),
+                 mix(Hash(i + vec2(0., 1.)), Hash(i + vec2(1., 1.)), f.x), f.y);
+        }
+  
+        float fbm(vec2 p) {
+          float v = 0.0;
+          v += noise(p * 1.) * .5;
+          v += noise(p * 2.) * .25;
+          v += noise(p * 4.) * .125;
+          return v;
+        }
+  
+        ${shader.fragmentShader}
+      `
+                }
+                const overideFragmentShader = (shader) => {
+                    shader.fragmentShader = shader.fragmentShader.replace(
+                        `#include <dithering_fragment>`,
+                        `#include <dithering_fragment>
+          float time = uProgress - 1.1 - 0.8 * vInstDelay;
+            
+          vec2 uv = vUv;
+          uv.x -= 1.5;
+  
+          vec3 origin = gl_FragColor.rgb;
+          vec3 tgt = vec3(0.);
+          vec3 col = origin;
+          // burn
+          float d = uv.x + uv.y * 0.5 + 0.5 * fbm(uv * 15.1) + time * 1.3;
+          if (d > 0.35) col = clamp(col - (d - 0.35) * 10., 0.0, 1.0);
+          if (d > 0.47) {
+            if (d < 0.5) col += (d - 0.4) * 33.0 * 0.5 * (0.0 + noise(100. * uv + vec2(-time * 2., 0.))) * vec3(1.5, 0.5, 0.0);
+            else col += tgt;
+          };
+          gl_FragColor = vec4(col, col.g);
+        `
+                    )
+                }
+
+                const mainMaterial = new THREE.MeshStandardMaterial({
+                    metalness: 1,
+                    roughness: 0.5,
+                    transparent: true,
+                    depthWrite: false,
+                    envMap,
+                    envMapIntensity: 1,
+                    onBeforeCompile: function (shader) {
+                        shader.uniforms.uTime = { value: 0 }
+                        shader.uniforms.uProgress = { value: 0 }
+
+                        insertVertexAttributes(shader)
+                        overideVertexShader(shader)
+
+                        shader.vertexShader = shader.vertexShader.replace(
+                            `#include <defaultnormal_vertex>`,
+                            `objectNormal = transformedNormal(objectNormal, instR);
+            #include <defaultnormal_vertex>`
+                        );
+
+                        insertFragmentAttributes(shader)
+                        overideFragmentShader(shader)
+
+                        this.userData.shader = shader
+                    }
+                })
+
+                const depthMaterial = new THREE.MeshDepthMaterial({
+                    depthPacking: THREE.RGBADepthPacking,
+                    onBeforeCompile: function (shader) {
+                        shader.uniforms.uTime = { value: 0 }
+                        shader.uniforms.uProgress = { value: 0 }
+
+                        insertVertexAttributes(shader)
+                        overideVertexShader(shader)
+
+                        insertFragmentAttributes(shader)
+                        shader.fragmentShader = shader.fragmentShader.replace(
+                            `gl_FragColor = packDepthToRGBA( fragCoordZ );`,
+                            `gl_FragColor = packDepthToRGBA( fragCoordZ );
+          float time = uProgress - 1. - 0.8 * vInstDelay;
+            
+          vec2 uv = vUv;
+          uv.x -= 1.5;
+  
+          vec3 origin = gl_FragColor.rgb;
+          vec3 tgt = vec3(0.);
+          vec3 col = origin;
+          // burn
+          float d = uv.x + uv.y * 0.5 + 0.5 * fbm(uv * 15.1) + time * 1.3;
+          if (d > 0.47) col = tgt;
+          gl_FragColor.a = origin.g - col.g;
+          `
+                        )
+                        this.userData.shader = shader
+                    }
+                })
+
+                depthMaterial.customProgramCacheKey = () => Math.random().toString();
+                self.mesh = new THREE.Mesh(geometry, mainMaterial);
+                self.mesh.position.copy(targetPos);
+                self.mesh.rotation.set(randomNum(-0.1, 0.1), randomNum(-0.1, 0.1), randomNum(-0.1, 0.1))
+                self.mesh.scale.setScalar(0.7);
+                self.mesh.customDepthMaterial = depthMaterial
+                self.mesh.frustumCulled = false
+                self.mesh.castShadow = true;
+                self.mesh.receiveShadow = true;
+                scene.add(self.mesh);
+            }
+            this.isCompleted = function () {
+                const { shader } = this.mesh.material.userData
+                if (!shader) return false
+                return shader.uniforms.uTime.value > 5
+            }
+            this.update = function (time) {
+                if (!startTime) startTime = time
+                const t = time - startTime
+                const { shader } = this.mesh.material.userData
+                const { shader: shader2 } = this.mesh.customDepthMaterial.userData
+                if (shader && shader2) {
+                    shader.uniforms.uTime.value = t;
+                    shader.uniforms.uProgress.value = t;
+                    shader2.uniforms.uTime.value = t;
+                    shader2.uniforms.uProgress.value = t;
+                }
+            }
+            this.remove = function () {
+                scene.remove(this.mesh)
+            }
+        }
+
+        function addRocket() {
+            if (rockets.length === MAX_ROCKETS) return
+            const rocket = new Rocket({
+                color: COLORS[randomInt(0, COLORS.length - 1)],
+                position: { x: randomNum(-5, 5), y: randomNum(6, 9), z: randomNum(-5, 5) },
+                particleCount: P_COUNTS[randomInt(0, P_COUNTS.length - 1)],
+            })
+            rockets.push(rocket)
+        }
+
+        function addFirework(color, targetPos, particleCount) {
+            const firework = new Firework({ color, targetPos, particleCount })
+            fireworks.push(firework)
+        }
+
+        /** Render Loop */
+        let lastTime = 0;
+        let now, delta;
+        let then = Date.now()
+        const interval = 1000 / 60
+        let clock = new THREE.Clock()
+
+        function tick() {
+            requestAnimationFrame(tick)
+            now = Date.now()
+            delta = now - then
+            if (delta < interval) return
+            then = now - (delta % interval)
+            render(clock.getElapsedTime(), delta)
+        }
+        requestAnimationFrame(tick)
+
+        function render(t, delta) {
+            if (t > lastTime + ROCKET_GAP) {
+                lastTime = t
+                addRocket();
+            }
+
+            for (let i = rockets.length - 1; i >= 0; i--) {
+                const rocket = rockets[i]
+                rocket.update(delta)
+                if (rocket.isCompleted()) {
+                    addFirework(rocket.color, rocket.targetPos, rocket.particleCount)
+                    rocket.remove()
+                    rockets.splice(i, 1)
+                }
+            }
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                const firework = fireworks[i]
+                firework.update(t)
+                if (firework.isCompleted()) {
+                    firework.remove()
+                    fireworks.splice(i, 1)
+                }
+            }
+
+            controls.update()
+            renderer.render(scene, camera);
+        }
+
+        /** Resize Handler */
+        function resize() {
+            D = { w: window.innerWidth, h: window.innerHeight };
+
+            renderer.setSize(D.w, D.h);
+            renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+
+            camera.aspect = D.w / D.h;
+            camera.updateProjectionMatrix();
+        }
+
+        /** Random float */
+        function randomNum(min, max) {
+            return Math.random() * (max - min) + min
+        }
+        /** Random Int */
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+
+        resize();
+        window.addEventListener("resize", resize);
+    </script>
+</body>
+
+</html>
