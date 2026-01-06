@@ -1,0 +1,2211 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>85 - 3D Fonts Playground – Interactive 3D Typography</title>
+    <meta name="description"
+        content="Play with interactive 3D typography: hover or tap to swap 3D letter models, textures, and download a PNG of your custom text.">
+    <meta name="keywords"
+        content="3D typography, 3D fonts, hover letters, WebGL, Three.js, interactive lettering, PNG export">
+    <meta name="theme-color" content="#0f0f0f">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0f0f0f;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        #hint {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            font-family: monospace;
+            color: #888;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        #darkModeBtn {
+            position: absolute;
+            top: auto;
+            bottom: 50px;
+            left: 16px;
+            padding: 10px 20px;
+            font-family: monospace;
+            font-size: 14px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        #darkModeBtn:hover {
+            background: #555;
+        }
+
+        /* Text Input Panel */
+        #textPanel {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 92%;
+            max-width: 1000px;
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px 20px 0 0;
+            padding: 15px 25px 20px;
+            z-index: 50;
+            box-sizing: border-box;
+        }
+
+        #textInputRow {
+            display: flex;
+            gap: 10px;
+        }
+
+        #textInput {
+            flex: 1;
+            padding: 12px 20px;
+            font-family: monospace;
+            font-size: 14px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(100, 200, 200, 0.4);
+            border-radius: 25px;
+            color: #fff;
+            text-align: center;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        #generateBtn {
+            padding: 12px 18px;
+            background: rgba(60, 120, 120, 0.7);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            min-width: 64px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #downloadBtn {
+            padding: 12px 18px;
+            background: rgba(90, 90, 90, 0.85);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 64px;
+        }
+
+        #downloadBtn .icon {
+            width: 33px;
+            height: 33px;
+            display: inline-block;
+        }
+
+        #generateBtn:hover {
+            background: rgba(80, 150, 150, 0.9);
+        }
+
+        #generateBtn.blink-go {
+            animation: goBlink 0.9s ease-in-out infinite alternate;
+        }
+
+        #downloadBtn:hover {
+            background: rgba(110, 110, 110, 0.95);
+        }
+
+        @keyframes goBlink {
+            from {
+                filter: brightness(1.1);
+                opacity: 0.75;
+                box-shadow: 0 0 14px rgba(107, 157, 160, 0.3), 0 0 28px rgba(107, 157, 160, 0.18);
+            }
+
+            to {
+                filter: brightness(1.5);
+                opacity: 1;
+                box-shadow: 0 0 22px rgba(107, 157, 160, 0.48), 0 0 42px rgba(107, 157, 160, 0.35);
+            }
+        }
+
+        #textInput::placeholder {
+            color: var(--placeholder-color, #666);
+        }
+
+        #textInput:focus {
+            border-color: rgba(100, 200, 200, 0.8);
+        }
+
+        #text3DContainer {
+            height: 200px;
+            margin-top: 15px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #text3DContainer canvas {
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+        }
+
+        #credit {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            padding: 6px 10px;
+            font-family: monospace;
+            font-size: 12px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            color: #bbb;
+            z-index: 60;
+            pointer-events: auto;
+        }
+
+        #credit a {
+            color: inherit;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        #credit a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile overrides */
+        @media (max-width: 640px) {
+            #darkModeBtn {
+                top: 16px;
+                right: 16px;
+                bottom: auto;
+                left: auto;
+            }
+
+            #credit {
+                top: 16px;
+                left: 12px;
+                bottom: auto;
+                font-size: 8.5px;
+                padding: 5px 8px;
+            }
+
+            #text3DContainer {
+                height: 140px;
+            }
+        }
+
+        /* Loading overlay */
+        #loadingOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            color: #cde6e8;
+            font-family: monospace;
+            font-size: 14px;
+            z-index: 200;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #loadingOverlay.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #loadingOverlay .loadingTips {
+            max-width: none;
+            text-align: center;
+            color: #d9f2f3;
+            line-height: 1.2;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        .loaderSpinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(205, 230, 232, 0.2);
+            border-top-color: rgba(205, 230, 232, 0.9);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Loading overlay mobile tweaks */
+        @media (max-width: 640px) {
+            #loadingOverlay .loadingTips {
+                white-space: normal;
+                max-width: 240px;
+                line-height: 1.3;
+            }
+        }
+    </style>
+</head>
+
+<body style="background: rgb(15, 15, 15);">
+    <div id="loadingOverlay" class="hide">
+        <div class="loaderSpinner"></div>
+        <div class="loadingTips">Hover the letters or type your own text, then hit GO.</div>
+    </div>
+    <button id="darkModeBtn" style="display: none;">Light Mode</button>
+    <div id="hint">Hover over the letters</div>
+
+    <!-- Text Input Panel -->
+    <div id="textPanel">
+        <div id="textInputRow">
+            <input type="text" id="textInput" placeholder="TYPE HERE" maxlength="30" />
+            <button id="generateBtn" class="">Preview</button>
+            <button id="downloadBtn" aria-label="Download PNG">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path
+                        d="M9.5 6.5h5l1 1.5H19a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3.5l1-1.5Z">
+                    </path>
+                    <circle cx="12" cy="13" r="3.25"></circle>
+                    <circle cx="17.5" cy="9.5" r="0.75" fill="currentColor" stroke="none"></circle>
+                </svg>
+            </button>
+        </div>
+        <div id="text3DContainer"></div>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.min.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+        import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+        import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // One GLB file per letter (each file already contains multiple mesh variants)
+        const letterModelFiles = {
+            A: 'a',
+            B: 'b',
+            C: 'c',
+            D: 'd',
+            E: 'e',
+            F: 'f',
+            G: 'g',
+            H: 'h',
+            I: 'i',
+            J: 'j',
+            K: 'k',
+            L: 'l',
+            M: 'm',
+            N: 'n',
+            O: 'o',
+            P: 'p',
+            Q: 'q',
+            R: 'r',
+            S: 's',
+            T: 't',
+            U: 'u',
+            V: 'v',
+            W: 'w',
+            X: 'x',
+            Y: 'y',
+            Z: 'z'
+        };
+
+        const solidPalette = [
+            0xff74e5, 0x5fa06b, 0x10b7cf, 0xb380ff, 0xff5a7a, 0x1fb31a,
+            0xff68c5, 0x00b3c9, 0xfff0dd, 0xff6d7c, 0xff865c, 0xffa600,
+            0xf4ffb2, 0xf98b02, 0xffc300, 0x00ab30, 0x00d5ea, 0xf9112f,
+            0xf9ffbb, 0xff6c58, 0xb0e9df, 0xbdff2f, 0xfff200, 0x8200ff,
+            0xffffff, 0x000000
+        ];
+
+        function getRandomPaletteColor() {
+            return solidPalette[Math.floor(Math.random() * solidPalette.length)];
+        }
+
+        function getNonRepeatingIndex(length, lastIdx) {
+            if (length <= 1) return 0;
+            let idx = Math.floor(Math.random() * length);
+            if (idx === lastIdx) {
+                idx = (idx + 1) % length;
+            }
+            return idx;
+        }
+
+        // 1. Scene Setup
+        const scene = new THREE.Scene();
+        const isMobile = /Mobi|Android/i.test(navigator.userAgent) || window.innerWidth <= 640;
+        const mobileTextureScale = isMobile ? 0.5 : 1; // Downscale textures on mobile to save bandwidth/memory
+        let isDarkMode = true; // Dark mode is default
+        const lightBg = 0xd9d9d9;
+        const darkBg = 0x0f0f0f;
+        scene.background = new THREE.Color(darkBg);
+
+        function applyTextUITheme() {
+            const textPanelEl = document.getElementById('textPanel');
+            const textInputEl = document.getElementById('textInput');
+            const generateBtnEl = document.getElementById('generateBtn');
+            const downloadBtnEl = document.getElementById('downloadBtn');
+            const creditEl = document.getElementById('credit');
+            if (!textPanelEl) return;
+
+            if (isDarkMode) {
+                textPanelEl.style.background = 'rgba(30, 30, 30, 0.85)';
+                textPanelEl.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                if (textInputEl) {
+                    textInputEl.style.background = 'rgba(0, 0, 0, 0.4)';
+                    textInputEl.style.color = '#fff';
+                    textInputEl.style.border = '1px solid rgba(100, 200, 200, 0.4)';
+                    textInputEl.style.setProperty('--placeholder-color', '#666');
+                }
+                if (generateBtnEl) {
+                    generateBtnEl.style.background = 'rgba(60, 120, 120, 0.7)';
+                    generateBtnEl.style.color = '#fff';
+                }
+                if (downloadBtnEl) {
+                    downloadBtnEl.style.background = 'rgba(80, 80, 80, 0.8)';
+                    downloadBtnEl.style.color = '#fff';
+                    downloadBtnEl.style.border = 'none';
+                }
+                if (creditEl) {
+                    creditEl.style.background = 'rgba(0, 0, 0, 0.35)';
+                    creditEl.style.color = '#bbb';
+                }
+            } else {
+                textPanelEl.style.background = 'rgba(220, 220, 220, 0.9)';
+                textPanelEl.style.border = '1px solid rgba(0, 0, 0, 0.12)';
+                if (textInputEl) {
+                    textInputEl.style.background = '#e5e5e5';
+                    textInputEl.style.color = '#111';
+                    textInputEl.style.border = '1px solid rgba(0, 0, 0, 0.16)';
+                    textInputEl.style.setProperty('--placeholder-color', '#666');
+                }
+                if (generateBtnEl) {
+                    generateBtnEl.style.background = '#5b8c90';
+                    generateBtnEl.style.color = '#fff';
+                }
+                if (downloadBtnEl) {
+                    downloadBtnEl.style.background = '#7a7a7a';
+                    downloadBtnEl.style.color = '#fff';
+                    downloadBtnEl.style.border = 'none';
+                }
+                if (creditEl) {
+                    creditEl.style.background = 'rgba(220, 220, 220, 0.8)';
+                    creditEl.style.color = '#333';
+                }
+            }
+        }
+
+        // Dark Mode Toggle
+        document.getElementById('darkModeBtn').addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            scene.background = new THREE.Color(isDarkMode ? darkBg : lightBg);
+            document.body.style.background = isDarkMode ? '#0f0f0f' : '#d9d9d9';
+            document.getElementById('darkModeBtn').textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+
+            // Update UI theme for text panel/input/button
+            applyTextUITheme();
+
+            // Update font mesh colors
+            for (const letterData of letters) {
+                if (letterData.fontMesh) {
+                    letterData.fontMesh.material.color.setHex(isDarkMode ? 0xffffff : 0x000000);
+                }
+            }
+        });
+
+        // Camera - adjusted for 5 rows of letters
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.z = 25;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        // Materials - using PhysicalMaterial for advanced lighting control
+        const matBlack = new THREE.MeshBasicMaterial({ color: 0xffffff }); // White for dark mode default
+        const matTextured = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            roughness: 0.2,
+            metalness: 0.1,
+            specularIntensity: 0.3 // 50% specular intensity
+        });
+
+        // 3-Point Lighting Setup (reduced for more 2D vibrant style)
+        // Key Light - main light from front-right
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        keyLight.position.set(15, 15, 20);
+        scene.add(keyLight);
+
+        // Fill Light - softer light from front-left
+        const fillLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        fillLight.position.set(-10, 5, 10);
+        scene.add(fillLight);
+
+        // Back Light (Rim Light) - reduced
+        const backLight = new THREE.DirectionalLight(0xffffff, 3.0);
+        backLight.position.set(0, 5, -15);
+        scene.add(backLight);
+
+        // Ambient light - higher for flatter, more vibrant look
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+        scene.add(ambientLight);
+
+        // ========== FLOATING PARTICLES SYSTEM (on hover) ==========
+        const particleColors = [0xff3366, 0x33ff99, 0x3399ff, 0xffff33, 0xff33ff, 0x33ffff, 0xff9933, 0x99ff33];
+
+        function createOrbitingParticles(letterData) {
+            // Remove existing particles
+            if (letterData.orbitParticles) {
+                for (const p of letterData.orbitParticles) {
+                    scene.remove(p);
+                    p.geometry.dispose();
+                    p.material.dispose();
+                }
+            }
+            letterData.orbitParticles = [];
+
+            const particleCount = 3 + Math.floor(Math.random() * 4); // 3-6 particles
+
+            for (let i = 0; i < particleCount; i++) {
+                const type = Math.floor(Math.random() * 4); // 0=sphere, 1=cube, 2=octahedron, 3=star
+                // Varying sizes
+                const sizeMultiplier = 0.06 + Math.random() * 0.1; // 0.06 to 0.16
+                let geometry;
+
+                if (type === 0) {
+                    geometry = new THREE.SphereGeometry(sizeMultiplier, 8, 8);
+                } else if (type === 1) {
+                    geometry = new THREE.BoxGeometry(sizeMultiplier * 1.2, sizeMultiplier * 1.2, sizeMultiplier * 1.2);
+                } else if (type === 2) {
+                    geometry = new THREE.OctahedronGeometry(sizeMultiplier);
+                } else {
+                    // 2D Star shape
+                    const starShape = new THREE.Shape();
+                    const points = 5;
+                    const outerRadius = sizeMultiplier;
+                    const innerRadius = sizeMultiplier * 0.4;
+                    for (let j = 0; j < points * 2; j++) {
+                        const angle = (j * Math.PI) / points - Math.PI / 2;
+                        const radius = j % 2 === 0 ? outerRadius : innerRadius;
+                        if (j === 0) {
+                            starShape.moveTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        } else {
+                            starShape.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        }
+                    }
+                    starShape.closePath();
+                    geometry = new THREE.ExtrudeGeometry(starShape, { depth: sizeMultiplier * 0.3, bevelEnabled: false });
+                    geometry.center();
+                }
+
+                const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+                const material = new THREE.MeshBasicMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: 0.9
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+
+                // Random offset from letter center
+                mesh.userData.baseOffsetX = (Math.random() - 0.5) * 3;
+                mesh.userData.baseOffsetY = (Math.random() - 0.5) * 3;
+                mesh.userData.baseOffsetZ = (Math.random() - 0.5) * 1.5;
+
+                // Gentle movement parameters
+                mesh.userData.floatSpeedX = 0.5 + Math.random() * 1.0;
+                mesh.userData.floatSpeedY = 0.5 + Math.random() * 1.0;
+                mesh.userData.floatAmplitude = 0.1 + Math.random() * 0.15;
+                mesh.userData.phaseOffset = Math.random() * Math.PI * 2;
+                mesh.userData.rotSpeed = (Math.random() - 0.5) * 0.05;
+
+                // Initial position
+                mesh.position.x = letterData.xPos + mesh.userData.baseOffsetX;
+                mesh.position.y = letterData.yPos + mesh.userData.baseOffsetY;
+                mesh.position.z = mesh.userData.baseOffsetZ;
+                // Pop animation parameters
+                mesh.userData.targetScale = 1;
+                mesh.userData.currentScale = 0; // Start at 0 for pop effect
+                mesh.userData.scaleVelocity = 0;
+                mesh.scale.set(0, 0, 0); // Start invisible
+
+                scene.add(mesh);
+                letterData.orbitParticles.push(mesh);
+            }
+        }
+
+        function updateOrbitingParticles(letterData, time) {
+            if (!letterData.orbitParticles || !letterData.glbMesh) return;
+
+            for (const p of letterData.orbitParticles) {
+                // Gentle floating motion
+                const floatX = Math.sin(time * p.userData.floatSpeedX + p.userData.phaseOffset) * p.userData.floatAmplitude;
+                const floatY = Math.cos(time * p.userData.floatSpeedY + p.userData.phaseOffset) * p.userData.floatAmplitude;
+
+                p.position.x = letterData.xPos + p.userData.baseOffsetX + floatX;
+                p.position.y = letterData.yPos + p.userData.baseOffsetY + floatY;
+
+                // Slow rotation
+                p.rotation.x += p.userData.rotSpeed;
+                p.rotation.y += p.userData.rotSpeed;
+
+                // Pop animation (spring effect)
+                const springStrength = 0.2;
+                const damping = 0.7;
+                const d = p.userData.targetScale - p.userData.currentScale;
+                p.userData.scaleVelocity += d * springStrength;
+                p.userData.scaleVelocity *= damping;
+                p.userData.currentScale += p.userData.scaleVelocity;
+                const s = Math.max(0, p.userData.currentScale);
+                p.scale.set(s, s, s);
+            }
+        }
+
+        function removeOrbitingParticles(letterData) {
+            if (!letterData.orbitParticles) return;
+            for (const p of letterData.orbitParticles) {
+                scene.remove(p);
+                p.geometry.dispose();
+                p.material.dispose();
+            }
+            letterData.orbitParticles = [];
+        }
+        // ========== END ORBITING PARTICLES SYSTEM ==========
+
+        // Store all letter data
+        const letters = [];
+
+        // Store preloaded models for each letter { 'A': [mesh1, mesh2, ...], 'B': [...], ... }
+        const preloadedModels = {};
+
+        // Store preloaded small element models (single GLB containing multiple objects)
+        const smallElementModels = [];
+        const smallElementFile = '3delements_lowpoly.glb';
+
+        // Generate simple planar UVs only if the model has none
+        function ensureUVs(geometry) {
+            if (geometry.getAttribute('uv')) return; // keep original UVs if present
+            const pos = geometry.getAttribute('position');
+            if (!pos) return;
+
+            geometry.computeBoundingBox();
+            if (!geometry.boundingBox) return;
+            const { min, max } = geometry.boundingBox;
+
+            const rangeX = Math.max(1e-4, max.x - min.x);
+            const rangeY = Math.max(1e-4, max.y - min.y);
+
+            const uv = new Float32Array(pos.count * 2);
+
+            for (let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i);
+                const y = pos.getY(i);
+                const u = (x - min.x) / rangeX;
+                const v = (y - min.y) / rangeY;
+                uv[i * 2] = u;
+                uv[i * 2 + 1] = v;
+            }
+
+            geometry.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+        }
+
+        // Store preloaded frame models
+        const loadedFrameModels = [];
+        const frameFile = 'all_frames.glb';
+        const frameColors = [0x9b5de5, 0xf15bb5, 0xfee440, 0x00bbf9, 0x00f5d4]; // Purple, Pink, Yellow, Blue, Cyan
+
+        // Function to get a random point on ANY mesh surface (all sides)
+        function getRandomPointOnMesh(geometry) {
+            const positionAttribute = geometry.getAttribute('position');
+            const indexAttribute = geometry.getIndex();
+
+            let totalTriangles;
+            if (indexAttribute) {
+                totalTriangles = indexAttribute.count / 3;
+            } else {
+                totalTriangles = positionAttribute.count / 3;
+            }
+
+            // Pick a random triangle from ALL triangles (all sides)
+            const triangleIndex = Math.floor(Math.random() * totalTriangles);
+
+            const v0 = new THREE.Vector3();
+            const v1 = new THREE.Vector3();
+            const v2 = new THREE.Vector3();
+
+            if (indexAttribute) {
+                const i0 = indexAttribute.getX(triangleIndex * 3);
+                const i1 = indexAttribute.getX(triangleIndex * 3 + 1);
+                const i2 = indexAttribute.getX(triangleIndex * 3 + 2);
+                v0.fromBufferAttribute(positionAttribute, i0);
+                v1.fromBufferAttribute(positionAttribute, i1);
+                v2.fromBufferAttribute(positionAttribute, i2);
+            } else {
+                v0.fromBufferAttribute(positionAttribute, triangleIndex * 3);
+                v1.fromBufferAttribute(positionAttribute, triangleIndex * 3 + 1);
+                v2.fromBufferAttribute(positionAttribute, triangleIndex * 3 + 2);
+            }
+
+            // Calculate normal
+            const edge1 = new THREE.Vector3().subVectors(v1, v0);
+            const edge2 = new THREE.Vector3().subVectors(v2, v0);
+            const normal = new THREE.Vector3().crossVectors(edge1, edge2).normalize();
+
+            // Generate random barycentric coordinates
+            let r1 = Math.random();
+            let r2 = Math.random();
+            if (r1 + r2 > 1) {
+                r1 = 1 - r1;
+                r2 = 1 - r2;
+            }
+            const r3 = 1 - r1 - r2;
+
+            // Calculate the point using barycentric coordinates
+            const point = new THREE.Vector3();
+            point.x = v0.x * r1 + v1.x * r2 + v2.x * r3;
+            point.y = v0.y * r1 + v1.y * r2 + v2.y * r3;
+            point.z = v0.z * r1 + v1.z * r2 + v2.z * r3;
+
+            return { point, normal };
+        }
+
+        // Create and attach multiple 3D elements to letter mesh
+        function attachElementsToMesh(letterData) {
+            // Remove old elements first
+            for (const element of letterData.attachedElements) {
+                letterData.glbMesh.remove(element);
+                if (element.geometry) element.geometry.dispose();
+                if (element.material) element.material.dispose();
+            }
+            letterData.attachedElements = [];
+
+            // Skip if small elements not yet loaded
+            if (smallElementModels.length === 0) {
+                console.log('Small elements not loaded yet, skipping attachment');
+                return;
+            }
+
+            const elementCount = 3 + Math.floor(Math.random() * 3); // 3-5 elements
+
+            // Get random indices without repeats
+            const usedIndices = [];
+            const placedPositions = []; // Track placed element positions to avoid overlaps
+            const baseSize = 0.4 * 0.7; // 30% smaller than before
+            const maxSizeJitter = 0.2; // up to +20% variation
+
+            for (let i = 0; i < elementCount && usedIndices.length < smallElementModels.length; i++) {
+                // Try multiple times to find a non-overlapping position
+                let attempts = 0;
+                let validPosition = false;
+                let point, normal, size;
+
+                while (!validPosition && attempts < 20) {
+                    const result = getRandomPointOnMesh(letterData.glbMesh.geometry);
+                    point = result.point;
+                    normal = result.normal;
+
+                    // Only use front-facing surfaces (normal pointing toward camera, positive Z)
+                    if (normal.z < 0.3) {
+                        attempts++;
+                        continue;
+                    }
+
+                    size = baseSize * (1 + Math.random() * maxSizeJitter); // 30% smaller, up to +20% randomization
+
+                    // Check distance from all placed elements
+                    validPosition = true;
+                    for (const placed of placedPositions) {
+                        const dist = point.distanceTo(placed.point);
+                        const minDist = (size + placed.size) * 0.2; // Minimum distance between centers
+                        if (dist < minDist) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                    attempts++;
+                }
+
+                if (!validPosition) continue; // Skip if couldn't find valid position
+
+                // Pick a random model that hasn't been used yet
+                let validIndices = [];
+                for (let j = 0; j < smallElementModels.length; j++) {
+                    if (!usedIndices.includes(j)) {
+                        validIndices.push(j);
+                    }
+                }
+                if (validIndices.length === 0) break;
+
+                const randomIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+                usedIndices.push(randomIdx);
+
+                const elementData = smallElementModels[randomIdx];
+
+                // Clone the geometry and create material with specular only + boosted saturation/brightness
+                const elementGeometry = elementData.geometry.clone();
+                const originalMat = elementData.material;
+                const elementMaterial = new THREE.MeshPhongMaterial({
+                    map: originalMat.map, // Keep original texture
+                    color: 0xffffff,
+                    emissive: 0x333333, // Boost brightness/saturation
+                    emissiveMap: originalMat.map, // Apply texture to emissive too
+                    specular: 0x444444, // Subtle specular
+                    shininess: 80, // Sharp specular highlight
+                    reflectivity: 0.5
+                });
+
+                const element = new THREE.Mesh(elementGeometry, elementMaterial);
+
+                element.scale.set(size, size, size);
+
+                // Position element outside the surface (tiny offset along normal)
+                element.position.copy(point);
+                element.position.add(normal.clone().multiplyScalar(size * 0.05)); // Push outward very slightly
+
+                // Track this position
+                placedPositions.push({ point: element.position.clone(), size: size });
+
+                // Apply fixed rotation
+                element.rotation.set(0, -Math.PI / 2, 0);
+
+                // Add as child of the mesh so it moves/scales with it
+                letterData.glbMesh.add(element);
+                letterData.attachedElements.push(element);
+            }
+
+            console.log(`Attached ${letterData.attachedElements.length} elements to ${letterData.char}`);
+        }
+
+        // Spring configuration
+        const springStrength = 0.15;
+        const damping = 0.75;
+
+        // Textures atlas
+        const atlasImagePath = './assets/atlas.png';
+        const atlasMetaPath = './assets/atlas.json';
+        let atlasTexture = null;
+        let atlasRegions = [];
+        let atlasWidth = 1;
+        let atlasHeight = 1;
+        let atlasSubTextures = [];
+
+        function buildAtlasSubTextures() {
+            if (!atlasTexture || !atlasRegions.length) return;
+            atlasSubTextures = atlasRegions.map((region) => {
+                const u = region.x / atlasWidth;
+                const v = region.y / atlasHeight;
+                const du = region.w / atlasWidth;
+                const dv = region.h / atlasHeight;
+                const tex = atlasTexture.clone();
+                tex.wrapS = THREE.ClampToEdgeWrapping;
+                tex.wrapT = THREE.ClampToEdgeWrapping;
+                tex.offset.set(u, 1 - v - dv);
+                tex.repeat.set(du, dv);
+                tex.needsUpdate = true;
+                return tex;
+            });
+            console.log(`Built ${atlasSubTextures.length} atlas sub-textures`);
+        }
+
+        function applyAtlasRegion(material, regionIndex) {
+            if (!atlasTexture || !atlasRegions.length) return;
+            const region = atlasRegions[regionIndex % atlasRegions.length];
+            if (!region) return;
+            const cached = atlasSubTextures[regionIndex % atlasSubTextures.length];
+            if (cached) {
+                material.map = cached;
+            } else {
+                const u = region.x / atlasWidth;
+                const v = region.y / atlasHeight;
+                const du = region.w / atlasWidth;
+                const dv = region.h / atlasHeight;
+                const tex = atlasTexture.clone();
+                tex.wrapS = THREE.ClampToEdgeWrapping;
+                tex.wrapT = THREE.ClampToEdgeWrapping;
+                tex.offset.set(u, 1 - v - dv);
+                tex.repeat.set(du, dv);
+                tex.needsUpdate = true;
+                material.map = tex;
+            }
+            material.color.setHex(0xffffff);
+            material.needsUpdate = true;
+        }
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        let pendingAssets = 0;
+        let fontLoaded = null;
+        let loadingComplete = false;
+
+        function hideLoadingOverlay() {
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('hide');
+            }
+        }
+
+        function maybeStartApp() {
+            if (loadingComplete) return;
+            if (pendingAssets <= 0 && fontLoaded) {
+                createAllLetters();
+                startAnimationLoop();
+                loadingComplete = true;
+                hideLoadingOverlay();
+                // Render default text after a short delay to ensure assets/textures are ready
+                setTimeout(() => {
+                    const renderDefault = window.__renderDefaultText__;
+                    if (typeof renderDefault === 'function') {
+                        renderDefault();
+                    }
+                }, 500);
+            }
+        }
+
+        function incPending(count = 1) {
+            pendingAssets += count;
+        }
+
+        function markLoaded() {
+            pendingAssets = Math.max(0, pendingAssets - 1);
+            maybeStartApp();
+        }
+
+        const manager = new THREE.LoadingManager();
+
+        manager.onLoad = () => {
+            maybeStartApp();
+        };
+
+        const texLoader = new THREE.TextureLoader(manager);
+        function loadAtlas() {
+            incPending(2);
+            fetch(atlasMetaPath)
+                .then(res => res.json())
+                .then(meta => {
+                    atlasRegions = meta.images || [];
+                    atlasWidth = meta.width;
+                    atlasHeight = meta.height;
+                    console.log(`Atlas metadata loaded: ${atlasRegions.length} regions`);
+                    buildAtlasSubTextures();
+                    markLoaded();
+                })
+                .catch(() => markLoaded());
+
+            texLoader.load(atlasImagePath, (tex) => {
+                tex.colorSpace = THREE.SRGBColorSpace;
+                tex.flipY = false;
+                tex.generateMipmaps = true;
+                tex.minFilter = THREE.LinearMipmapLinearFilter;
+                tex.magFilter = THREE.LinearFilter;
+                tex.wrapS = THREE.ClampToEdgeWrapping;
+                tex.wrapT = THREE.ClampToEdgeWrapping;
+                tex.repeat.set(1, 1);
+                const maxAniso = renderer.capabilities.getMaxAnisotropy();
+                tex.anisotropy = isMobile ? Math.max(1, Math.min(2, maxAniso)) : maxAniso;
+                atlasTexture = tex;
+                console.log('Atlas texture loaded');
+                buildAtlasSubTextures();
+                markLoaded();
+            }, undefined, () => markLoaded());
+        }
+
+        // Load Font
+        const fontLoader = new FontLoader(manager);
+        incPending(1);
+        fontLoader.load('https://unpkg.com/three@0.160.0/examples/fonts/droid/droid_sans_mono_regular.typeface.json', function (font) {
+            fontLoaded = font;
+            markLoaded();
+        }, undefined, () => {
+            markLoaded();
+        });
+
+        const glbLoader = new GLTFLoader();
+
+        // Preload ALL models for ALL letters
+        function preloadAllModels() {
+            let loadedCount = 0;
+            const totalCount = alphabet.length;
+
+            // Prep buckets
+            for (const letter of alphabet) {
+                preloadedModels[letter] = [];
+            }
+
+            console.log(`Preloading ${totalCount} letter GLBs...`);
+            incPending(totalCount);
+
+            for (const letter of alphabet) {
+                const fileBase = letterModelFiles[letter];
+                const modelPath = `./3d_models/${fileBase}.glb`;
+                glbLoader.load(modelPath, function (gltf) {
+                    const meshes = [];
+                    gltf.scene.traverse((child) => {
+                        if (child.isMesh) {
+                            meshes.push(child);
+                        }
+                    });
+
+                    if (meshes.length === 0) {
+                        console.warn(`No meshes found in ${modelPath}`);
+                    }
+
+                    meshes.forEach((mesh, idx) => {
+                        const geom = mesh.geometry.clone();
+                        ensureUVs(geom);
+                        geom.computeVertexNormals(); // Smooth shading
+                        const meshName = (mesh.name && mesh.name.trim().length > 0)
+                            ? mesh.name
+                            : `${letter}_variant_${idx + 1}`;
+                        preloadedModels[letter].push({
+                            name: meshName,
+                            geometry: geom
+                        });
+                    });
+                    loadedCount++;
+                    markLoaded();
+                    if (loadedCount === totalCount) {
+                        console.log('All letter GLBs preloaded!');
+                    }
+                }, undefined, () => {
+                    // On error still mark as loaded to avoid blocking
+                    loadedCount++;
+                    markLoaded();
+                });
+            }
+        }
+
+        // Preload small element models
+        function preloadSmallElements() {
+            console.log('Preloading small element models from single GLB...');
+            incPending(1);
+            const modelPath = './3d_models/3delements_lowpoly.glb';
+            glbLoader.load(modelPath, function (gltf) {
+                gltf.scene.traverse((child) => {
+                    if (child.isMesh) {
+                        const geom = child.geometry.clone();
+                        geom.center();
+                        ensureUVs(geom);
+                        geom.computeVertexNormals(); // Smooth shading
+                        smallElementModels.push({
+                            name: child.name || 'element',
+                            geometry: geom,
+                            material: child.material.clone() // Keep original material
+                        });
+                    }
+                });
+                markLoaded();
+                console.log(`Loaded ${smallElementModels.length} small elements from ${smallElementFile}`);
+            }, undefined, () => {
+                markLoaded();
+            });
+        }
+
+        // Preload Frame models
+        function preloadFrames() {
+            console.log('Preloading frame models from single GLB...');
+            incPending(1);
+            const modelPath = './3d_models/all_frames.glb';
+            glbLoader.load(modelPath, function (gltf) {
+                gltf.scene.traverse((child) => {
+                    if (child.isMesh) {
+                        const geom = child.geometry.clone();
+                        geom.center();
+                        geom.computeVertexNormals();
+                        loadedFrameModels.push({
+                            name: child.name || 'frame',
+                            geometry: geom
+                        });
+                    }
+                });
+                console.log(`Loaded ${loadedFrameModels.length} frames from ${frameFile}`);
+                markLoaded();
+            }, undefined, () => {
+                markLoaded();
+            });
+        }
+
+        // Call preloads
+        loadAtlas();
+        preloadAllModels();
+        preloadSmallElements();
+        preloadFrames();
+
+        function createAllLetters() {
+            const copiesPerLetter = isMobile ? 2 : 8; // even fewer copies on mobile for perf
+
+            // Spread letters across the screen in 3D space (extends beyond screen edges)
+            const spreadX = isMobile ? 17.5 : 35; // Narrower on mobile
+            const spreadY = 18; // Vertical spread (reduced to fit upper 80%)
+            const spreadZ = 10;  // Depth spread
+            const yOffset = 3; // Shift up to leave bottom 20% clean
+
+            for (let copy = 0; copy < copiesPerLetter; copy++) {
+                for (let i = 0; i < alphabet.length; i++) {
+                    const char = alphabet[i];
+
+                    // Random position in 3D space (shifted up)
+                    const xPos = (Math.random() - 0.5) * spreadX;
+                    const yPos = (Math.random() - 0.5) * spreadY + yOffset; // Shifted up
+                    const zPos = (Math.random() - 0.5) * spreadZ;
+
+                    // Create letter data object
+                    const letterData = {
+                        char: char,
+                        xPos: xPos,
+                        yPos: yPos,
+                        zPos: zPos,
+                        fontMesh: null,
+                        glbMesh: null,
+                        hitBox: null,
+                        attachedElements: [],
+                        scale: { val: 0 },
+                        velocity: { val: 0 },
+                        wasHovered: false,
+                        lastModelIdx: -1,
+                        lastTextureIdx: -1,
+                        scaleMult: 0.8 + Math.random() * 0.4,
+                        // Floating animation parameters
+                        floatSpeed: 0.6 + Math.random() * 0.6, // Stronger sway speed
+                        floatAmplitude: 0.2 + Math.random() * 0.3, // Larger motion
+                        floatPhase: Math.random() * Math.PI * 2
+                    };
+
+                    // Create 2D font mesh (the "seed")
+                    const geometry = new TextGeometry(char, {
+                        font: fontLoaded,
+                        size: 1.8,
+                        height: 0.01,
+                        curveSegments: 12,
+                        bevelEnabled: false
+                    });
+                    geometry.center();
+
+                    const fontMesh = new THREE.Mesh(geometry, matBlack.clone());
+                    fontMesh.position.x = xPos;
+                    fontMesh.position.y = yPos;
+                    fontMesh.position.z = zPos;
+                    fontMesh.scale.set(0.3, 0.3, 0.3);
+                    scene.add(fontMesh);
+                    letterData.fontMesh = fontMesh;
+
+                    // Create hit box
+                    const hitGeom = new THREE.BoxGeometry(1.2, 1.5, 1);
+                    const hitMat = new THREE.MeshBasicMaterial({ visible: false });
+                    const hitBox = new THREE.Mesh(hitGeom, hitMat);
+                    hitBox.position.x = xPos;
+                    hitBox.position.y = yPos;
+                    hitBox.position.z = zPos;
+                    scene.add(hitBox);
+                    letterData.hitBox = hitBox;
+
+                    // Load random 3D model for this letter from its single GLB (multiple meshes inside)
+                    const availableModels = preloadedModels[char] || [];
+                    const randomIndex = availableModels.length > 0 ? getNonRepeatingIndex(availableModels.length, letterData.lastModelIdx) : -1;
+                    letterData.lastModelIdx = randomIndex;
+
+                    const buildLetterMesh = (geometrySource) => {
+                        const geom = geometrySource.clone();
+                        ensureUVs(geom);
+                        geom.center();
+                        geom.computeVertexNormals();
+
+                        const mat = matTextured.clone();
+                        if (atlasTexture && atlasRegions.length > 0) {
+                            const texIdx = getNonRepeatingIndex(atlasRegions.length, letterData.lastTextureIdx);
+                            letterData.lastTextureIdx = texIdx;
+                            applyAtlasRegion(mat, texIdx);
+                        } else {
+                            mat.map = null;
+                            mat.color = new THREE.Color(getRandomPaletteColor());
+                        }
+
+                        const mesh = new THREE.Mesh(geom, mat);
+                        mesh.position.x = xPos;
+                        mesh.position.y = yPos;
+                        mesh.position.z = zPos;
+                        mesh.scale.set(0, 0, 0);
+                        return mesh;
+                    };
+
+                    const maybeAttachFrame = () => {
+                        if (loadedFrameModels.length > 0 && Math.random() < 0.33) {
+                            const randomFrameData = loadedFrameModels[Math.floor(Math.random() * loadedFrameModels.length)];
+                            const randomColor = frameColors[Math.floor(Math.random() * frameColors.length)];
+
+                            const frameGeom = randomFrameData.geometry.clone();
+                            const frameMat = new THREE.MeshPhongMaterial({
+                                color: randomColor,
+                                shininess: 80,
+                                transparent: true,
+                                opacity: 0.9
+                            });
+
+                            const frameMesh = new THREE.Mesh(frameGeom, frameMat);
+                            // FIX: Add userData to prevent crash
+                            frameMesh.userData.isFrame = true;
+                            frameMesh.userData.baseRotY = Math.PI / 2; // 90deg on Y
+                            frameMesh.userData.baseRotX = 0; // No tilt on X
+                            frameMesh.userData.baseRotZ = 0; // No tilt on Z
+                            frameMesh.userData.rotSpeed = 0; // No spin
+                            frameMesh.userData.scaleMult = 1; // No random scale
+                            frameMesh.position.set(xPos, yPos, zPos - 0.3); // Slightly behind the letter
+                            frameMesh.rotation.x = 0; // Force no X rotation
+                            frameMesh.rotation.z = frameMesh.userData.baseRotZ;
+                            frameMesh.scale.set(0, 0, 0);
+
+                            // Add INDEPENDENTLY (Fix)
+                            scene.add(frameMesh);
+                            letterData.frameMesh = frameMesh;
+                        }
+                    };
+
+                    if (availableModels.length > 0) {
+                        const chosenModel = availableModels[randomIndex];
+                        letterData.glbMesh = buildLetterMesh(chosenModel.geometry);
+                        scene.add(letterData.glbMesh);
+
+                        // Attach 3D elements to random surface locations
+                        attachElementsToMesh(letterData);
+                        maybeAttachFrame();
+                    } else {
+                        // Fallback: load the file directly and pick a random mesh from inside it
+                        const fileBase = letterModelFiles[char] || char.toLowerCase();
+                        const modelPath = `./3d_models/${fileBase}.glb`;
+                        glbLoader.load(modelPath, function (gltf) {
+                            const meshes = [];
+                            gltf.scene.traverse((child) => {
+                                if (child.isMesh) {
+                                    meshes.push(child);
+                                }
+                            });
+
+                            if (meshes.length > 0) {
+                                const chosenMesh = meshes[Math.floor(Math.random() * meshes.length)];
+                                letterData.glbMesh = buildLetterMesh(chosenMesh.geometry);
+                                scene.add(letterData.glbMesh);
+
+                                attachElementsToMesh(letterData);
+                                maybeAttachFrame();
+                            }
+                        });
+                    }
+
+                    letters.push(letterData);
+                }
+            }
+            console.log(`Created ${letters.length} floating letters`);
+        }
+
+        // Interaction Logic
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2(999, 999);
+
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            // Resize text renderer to fill the panel width
+            try {
+                const resizeTextRenderer = window.__resizeTextRenderer__;
+                if (typeof resizeTextRenderer === 'function') {
+                    resizeTextRenderer();
+                }
+            } catch (e) {
+                console.warn('resizeTextRenderer not available', e);
+            }
+        });
+
+        const clock = new THREE.Clock();
+
+        function startAnimationLoop() {
+            function animate() {
+                requestAnimationFrame(animate);
+
+                const time = clock.getElapsedTime();
+
+                // Check each letter for hover
+                raycaster.setFromCamera(mouse, camera);
+
+                // Raycast against ALL hitboxes at once to find the closest one
+                const allHitBoxes = letters.map(l => l.hitBox).filter(h => h);
+                const intersects = raycaster.intersectObjects(allHitBoxes);
+
+                // Find which letter is closest (first in sorted intersects)
+                let closestHitBox = null;
+                if (intersects.length > 0) {
+                    closestHitBox = intersects[0].object;
+                }
+
+                for (const letterData of letters) {
+                    // Only hover if this is the CLOSEST hit box
+                    const isHovered = (letterData.hitBox === closestHitBox);
+
+                    // Handle hover enter - randomize model, texture and spheres
+                    if (isHovered && !letterData.wasHovered) {
+                        // Swap to a random preloaded model (different from last)
+                        const availableModels = preloadedModels[letterData.char];
+                        if (availableModels && availableModels.length > 0 && letterData.glbMesh) {
+                            // Get valid indices (exclude last used model)
+                            let validIndices = [];
+                            for (let i = 0; i < availableModels.length; i++) {
+                                if (i !== letterData.lastModelIdx) {
+                                    validIndices.push(i);
+                                }
+                            }
+                            // If only one model exists, allow it
+                            if (validIndices.length === 0) {
+                                validIndices = [0];
+                            }
+
+                            const randomIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+                            letterData.lastModelIdx = randomIdx; // Remember this selection
+
+                            const newModel = availableModels[randomIdx];
+                            console.log(`Hover on ${letterData.char}: swapping to ${newModel.name}`);
+
+                            // Swap geometry
+                            letterData.glbMesh.geometry.dispose();
+                            letterData.glbMesh.geometry = newModel.geometry.clone();
+                            letterData.glbMesh.geometry.center();
+                        }
+
+                        // Randomize texture or flat color (50% chance for solid palette color)
+                        if (letterData.glbMesh) {
+                            const useSolidColor = Math.random() < 0.5;
+                            if (useSolidColor) {
+                                const randColor = new THREE.Color(getRandomPaletteColor());
+                                letterData.glbMesh.material.map = null;
+                                letterData.glbMesh.material.color.copy(randColor);
+                                letterData.glbMesh.material.needsUpdate = true;
+                            } else if (atlasTexture && atlasRegions.length > 0) {
+                                const texIdx = getNonRepeatingIndex(atlasRegions.length, letterData.lastTextureIdx);
+                                letterData.lastTextureIdx = texIdx;
+                                applyAtlasRegion(letterData.glbMesh.material, texIdx);
+                                console.log(`Applying atlas region ${texIdx} to letter ${letterData.char}`);
+                            }
+                        }
+
+                        // Frame visibility is re-rolled on every hover
+                        if (loadedFrameModels.length > 0) {
+                            const showFrame = Math.random() < 0.33;
+                            if (showFrame) {
+                                // Create new frame if missing
+                                if (!letterData.frameMesh) {
+                                    const randomFrameData = loadedFrameModels[Math.floor(Math.random() * loadedFrameModels.length)];
+                                    const randomColor = frameColors[Math.floor(Math.random() * frameColors.length)];
+                                    const frameGeom = randomFrameData.geometry.clone();
+                                    const frameMat = new THREE.MeshPhongMaterial({
+                                        color: randomColor,
+                                        shininess: 80,
+                                        transparent: true,
+                                        opacity: 0.9
+                                    });
+                                    const frameMesh = new THREE.Mesh(frameGeom, frameMat);
+                                    frameMesh.userData.isFrame = true;
+                                    frameMesh.userData.baseRotY = Math.PI / 2; // 90deg on Y
+                                    frameMesh.userData.baseRotX = 0; // No tilt on X
+                                    frameMesh.userData.baseRotZ = 0; // No tilt on Z
+                                    frameMesh.userData.rotSpeed = 0; // No spin
+                                    frameMesh.userData.scaleMult = 1; // No random scale
+                                    frameMesh.rotation.x = 0; // Force no X rotation
+                                    frameMesh.rotation.z = frameMesh.userData.baseRotZ;
+                                    frameMesh.position.set(letterData.xPos, letterData.yPos, (letterData.glbMesh ? letterData.glbMesh.position.z : letterData.zPos) - 0.3);
+                                    frameMesh.scale.set(0, 0, 0);
+                                    scene.add(frameMesh);
+                                    letterData.frameMesh = frameMesh;
+                                } else {
+                                    // Swap geometry/color if frame already exists
+                                    const randomFrameData = loadedFrameModels[Math.floor(Math.random() * loadedFrameModels.length)];
+                                    letterData.frameMesh.geometry.dispose();
+                                    letterData.frameMesh.geometry = randomFrameData.geometry.clone();
+                                    letterData.frameMesh.geometry.center();
+                                    const randomColor = frameColors[Math.floor(Math.random() * frameColors.length)];
+                                    letterData.frameMesh.material.color.setHex(randomColor);
+                                    letterData.frameMesh.userData.baseRotX = 0;
+                                    letterData.frameMesh.userData.baseRotZ = 0;
+                                    letterData.frameMesh.userData.scaleMult = 1;
+                                    letterData.frameMesh.rotation.x = 0;
+                                    letterData.frameMesh.rotation.z = letterData.frameMesh.userData.baseRotZ;
+                                }
+                            } else if (letterData.frameMesh) {
+                                // Remove frame on this hover
+                                scene.remove(letterData.frameMesh);
+                                letterData.frameMesh.geometry.dispose();
+                                letterData.frameMesh.material.dispose();
+                                letterData.frameMesh = null;
+                            }
+                        }
+
+                        // Re-randomize attached 3D elements on each hover
+                        if (letterData.glbMesh) {
+                            attachElementsToMesh(letterData);
+                        }
+                        // Create orbiting particles on hover enter
+                        createOrbitingParticles(letterData);
+                    }
+
+                    // Handle hover exit - remove particles
+                    if (!isHovered && letterData.wasHovered) {
+                        removeOrbitingParticles(letterData);
+                    }
+
+                    // Update orbiting particles while hovering
+                    if (isHovered && letterData.orbitParticles) {
+                        updateOrbitingParticles(letterData, time);
+                    }
+
+                    letterData.wasHovered = isHovered;
+
+                    // Spring animation for GLB Mesh - 3x larger pop
+                    const targetScale = isHovered ? 9 : 0;
+
+                    const d = targetScale - letterData.scale.val;
+                    letterData.velocity.val += d * springStrength;
+                    letterData.velocity.val *= damping;
+                    letterData.scale.val += letterData.velocity.val;
+
+                    // Apply scale to GLB Mesh
+                    if (letterData.glbMesh) {
+                        const s = Math.max(0, letterData.scale.val) * letterData.scaleMult;
+                        letterData.glbMesh.scale.set(s, s, s);
+
+                        const baseRotY = 0; // Rotated 180 degrees from before
+
+                        if (isHovered) {
+                            const wiggleX = Math.sin(time * 5) * 0.2;
+                            const wiggleY = Math.cos(time * 3) * 0.3;
+                            letterData.glbMesh.rotation.x = wiggleX;
+                            letterData.glbMesh.rotation.y = baseRotY + wiggleY;
+                        } else {
+                            letterData.glbMesh.rotation.x += (0 - letterData.glbMesh.rotation.x) * 0.15;
+                            letterData.glbMesh.rotation.y += (baseRotY - letterData.glbMesh.rotation.y) * 0.15;
+                            letterData.glbMesh.rotation.z += (0 - letterData.glbMesh.rotation.z) * 0.15;
+                        }
+                    }
+
+                    // Font Mesh Visibility Logic
+                    if (letterData.fontMesh) {
+                        const targetFontScale = isHovered ? 0 : 0.3;
+                        letterData.fontMesh.scale.x += (targetFontScale - letterData.fontMesh.scale.x) * 0.2;
+                        letterData.fontMesh.scale.y += (targetFontScale - letterData.fontMesh.scale.y) * 0.2;
+                        letterData.fontMesh.scale.z += (targetFontScale - letterData.fontMesh.scale.z) * 0.2;
+                    }
+
+                    // Gentle floating animation for all letters
+                    const floatY = Math.sin(time * letterData.floatSpeed + letterData.floatPhase) * letterData.floatAmplitude;
+                    const floatX = Math.cos(time * letterData.floatSpeed * 0.7 + letterData.floatPhase) * letterData.floatAmplitude * 0.5;
+
+                    const newX = letterData.xPos + floatX;
+                    const newY = letterData.yPos + floatY;
+
+                    if (letterData.fontMesh) {
+                        letterData.fontMesh.position.x = newX;
+                        letterData.fontMesh.position.y = newY;
+                    }
+                    if (letterData.hitBox) {
+                        letterData.hitBox.position.x = newX;
+                        letterData.hitBox.position.y = newY;
+                    }
+                    if (letterData.glbMesh) {
+                        letterData.glbMesh.position.x = newX;
+                        letterData.glbMesh.position.y = newY;
+                    }
+
+                    // Sync Frame (Main Scene)
+                    if (letterData.frameMesh) {
+                        // Follow position with offset
+                        letterData.frameMesh.position.x = newX;
+                        letterData.frameMesh.position.y = newY;
+                        letterData.frameMesh.position.z = letterData.glbMesh ? letterData.glbMesh.position.z - 0.3 : -0.3;
+
+                        // Sync Scale
+                        const s = Math.max(0, letterData.scale.val);
+                        const scaleMult = letterData.frameMesh.userData.scaleMult || 1;
+                        const fs = s * 1.4 * scaleMult;
+                        letterData.frameMesh.scale.set(fs, fs, fs);
+
+                        // Static rotation (force X=0, random Z)
+                        letterData.frameMesh.rotation.x = 0;
+                        letterData.frameMesh.rotation.y = (letterData.frameMesh.userData.baseRotY !== undefined) ? letterData.frameMesh.userData.baseRotY : 0;
+                        letterData.frameMesh.rotation.z = (letterData.frameMesh.userData.baseRotZ !== undefined) ? letterData.frameMesh.userData.baseRotZ : 0;
+                    }
+                }
+
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        // ==========================================
+        // TEXT INPUT 3D LETTERS SYSTEM
+        // ==========================================
+
+        const textLetters = []; // Store 3D letters for text input
+        let particlesEnabled = true; // Global state for particles visibility
+        let defaultTextRendered = false;
+
+        // Drag & Drop State
+        let draggedLetter = null;
+        let isDragging = false;
+        let dragOffset = 0;
+        const textRaycaster = new THREE.Raycaster();
+        const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // Plane at Z=0 for dragging logic
+        const textContainer = document.getElementById('text3DContainer');
+        let hasStoppedGoBlink = false;
+
+        function stopGoBlink() {
+            if (hasStoppedGoBlink) return;
+            const btn = document.getElementById('generateBtn');
+            if (btn) {
+                btn.classList.remove('blink-go');
+            }
+            hasStoppedGoBlink = true;
+        }
+
+        let textScene, textCamera, textRenderer;
+        function setTextCameraDistance(count) {
+            if (!textCamera) return;
+            // Bring camera much closer for short text and ease back gently as letters grow
+            const base = isMobile ? 4 : 1;
+            const z = base + count * 0.25; // tighter base and slower growth
+            // Clamp between base and max distance (mobile starts farther back)
+            const clamped = Math.max(base, Math.min(9, z));
+            textCamera.position.z = clamped;
+            textCamera.updateProjectionMatrix();
+        }
+
+        // Only initialize if container exists
+        if (textContainer) {
+            // Create a separate scene and renderer for the text panel
+            textScene = new THREE.Scene();
+            textScene.background = null; // Transparent background
+
+            const textRenderHeight = 200;
+
+            textCamera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+            textCamera.setFocalLength(150); // Set focal distance for text panel camera
+            textCamera.position.z = isMobile ? 4 : 1; // Start farther on mobile
+
+            textRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            textRenderer.setClearColor(0x000000, 0);
+            textContainer.appendChild(textRenderer.domElement);
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            function resizeTextRenderer() {
+                if (!textRenderer || !textCamera || !textContainer) return;
+                const width = Math.max(320, textContainer.clientWidth || 760);
+                const height = textRenderHeight;
+                textRenderer.setSize(width, height);
+                textCamera.aspect = width / height;
+                textCamera.updateProjectionMatrix();
+            }
+
+            resizeTextRenderer();
+            // expose for outer resize handler
+            window.__resizeTextRenderer__ = resizeTextRenderer;
+
+            // Apply initial UI theme for text panel/input/button
+            applyTextUITheme();
+
+            // Delay default text render to allow textures/models to finish loading
+            const defaultText = 'WELCOME';
+            const inputEl = document.getElementById('textInput');
+            if (inputEl) inputEl.value = defaultText.toLowerCase();
+
+            function renderDefaultText() {
+                if (defaultTextRendered) return;
+                defaultTextRendered = true;
+                updateText3DLetters(defaultText);
+            }
+
+            // Add lighting to text scene
+            const textAmbient = new THREE.AmbientLight(0xffffff, 1.5);
+            textScene.add(textAmbient);
+            const textKeyLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            textKeyLight.position.set(5, 5, 10);
+            textScene.add(textKeyLight);
+
+            // Download PNG of the text panel
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => {
+                    if (!textRenderer || !textScene || !textCamera) return;
+                    // Render once to ensure latest state
+                    textRenderer.render(textScene, textCamera);
+
+                    // Capture at higher resolution
+                    const captureScale = 2;
+                    const sourceCanvas = textRenderer.domElement;
+                    const oldWidth = sourceCanvas.width;
+                    const oldHeight = sourceCanvas.height;
+                    const oldAspect = textCamera.aspect;
+
+                    const targetWidth = oldWidth * captureScale;
+                    const targetHeight = oldHeight * captureScale;
+
+                    textRenderer.setSize(targetWidth, targetHeight, false);
+                    textCamera.aspect = targetWidth / targetHeight;
+                    textCamera.updateProjectionMatrix();
+                    textRenderer.render(textScene, textCamera);
+
+                    // Composite on a fresh canvas with background by mode
+                    const outCanvas = document.createElement('canvas');
+                    outCanvas.width = targetWidth;
+                    outCanvas.height = targetHeight;
+                    const ctx = outCanvas.getContext('2d');
+                    if (ctx) {
+                        ctx.fillStyle = isDarkMode ? '#0f0f0f' : '#e5e5e5';
+                        ctx.fillRect(0, 0, targetWidth, targetHeight);
+                        ctx.drawImage(textRenderer.domElement, 0, 0, targetWidth, targetHeight);
+                    }
+
+                    const dataURL = outCanvas.toDataURL('image/png');
+
+                    // Restore renderer size/aspect
+                    textRenderer.setSize(oldWidth, oldHeight, false);
+                    textCamera.aspect = oldAspect;
+                    textCamera.updateProjectionMatrix();
+
+                    const link = document.createElement('a');
+                    link.href = dataURL;
+                    link.download = textInputEl.value ? textInputEl.value + '.png' : 'hover_pop_title.png';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+            }
+
+            // Expose to trigger after assets are ready
+            window.__renderDefaultText__ = renderDefaultText;
+        }
+
+        // Function to clear existing text letters
+        function clearTextLetters() {
+            if (!textScene) return;
+            for (const letter of textLetters) {
+                if (letter.mesh) {
+                    textScene.remove(letter.mesh);
+                    letter.mesh.geometry.dispose();
+                    letter.mesh.material.dispose();
+                }
+                // Remove attached elements
+                if (letter.attachedElements) {
+                    for (const el of letter.attachedElements) {
+                        letter.mesh.remove(el); // Remove from parent mesh
+                        if (el.geometry) el.geometry.dispose();
+                        if (el.material) el.material.dispose();
+                    }
+                }
+                // Remove particles
+                if (letter.orbitParticles) {
+                    for (const p of letter.orbitParticles) {
+                        textScene.remove(p);
+                        p.geometry.dispose();
+                        p.material.dispose();
+                    }
+                    letter.orbitParticles = [];
+                }
+
+                // Remove frame (independent mesh)
+                if (letter.frameMesh) {
+                    textScene.remove(letter.frameMesh);
+                    letter.frameMesh.geometry.dispose();
+                    letter.frameMesh.material.dispose();
+                }
+            }
+            textLetters.length = 0;
+        }
+
+        // Function to create 3D letters from input text (like main letters with elements and pop)
+        function updateText3DLetters(text) {
+            if (!textScene) return;
+            clearTextLetters();
+
+            const chars = text.toUpperCase().split('');
+            const baseScale = 1.0;
+            const letterSpacing = 0.28 * 0.9; // 10% tighter spacing (relative to original)
+            const wordSpacingMult = 0.7; // Spaces are 30% narrower than letters
+
+            // Build items including spaces (spaces add gap only)
+            const items = [];
+            for (const char of chars) {
+                if (char === ' ') {
+                    items.push({ isSpace: true });
+                } else if (letterModelFiles[char]) {
+                    items.push({ char });
+                }
+            }
+
+            if (items.length === 0) return;
+
+            // Update camera distance based on total items (including spaces)
+            setTextCameraDistance(items.length);
+
+            // Compute total width with custom spacing for spaces
+            const itemWidths = items.map(it => it.isSpace ? letterSpacing * wordSpacingMult : letterSpacing);
+            const totalWidth = itemWidths.reduce((a, b) => a + b, 0);
+            let cursorX = -totalWidth / 2;
+
+            items.forEach((item, i) => {
+                const w = itemWidths[i];
+                const xPos = cursorX + w / 2;
+                cursorX += w;
+
+                // Space placeholder to keep spacing
+                if (item.isSpace) {
+                    textLetters.push({
+                        isSpace: true,
+                        xPos,
+                        targetX: xPos,
+                        mesh: null,
+                        frameMesh: null,
+                        attachedElements: [],
+                        orbitParticles: [],
+                        scale: { val: 0 },
+                        velocity: { val: 0 },
+                        targetScale: 1.0
+                    });
+                    return;
+                }
+
+                const char = item.char;
+
+                // Random scale variation ą20%
+                const scaleVariation = 0.8 + Math.random() * 0.4;
+                const targetScale = 1.0; // TRUE SCALE 1.0 (Same as main scene)
+
+                const letterData = {
+                    char: char,
+                    xPos: xPos,
+                    targetX: xPos, // For Drag & Drop reordering (Goal position)
+                    mesh: null,
+                    frameMesh: null,
+                    attachedElements: [],
+                    orbitParticles: [],
+                    scale: { val: 0 },
+                    velocity: { val: 0 },
+                    targetScale: targetScale
+                };
+                textLetters.push(letterData);
+
+                const availableModels = preloadedModels[char] || [];
+                const randomIndex = availableModels.length > 0 ? Math.floor(Math.random() * availableModels.length) : -1;
+                letterData.lastModelIdx = randomIndex;
+
+                const buildTextMesh = (geometrySource) => {
+                    const clonedGeom = geometrySource.clone();
+                    ensureUVs(clonedGeom);
+                    clonedGeom.center();
+                    clonedGeom.computeVertexNormals();
+
+                    const meshMaterial = matTextured.clone();
+                    const useSolidColor = Math.random() < 0.5;
+                    if (useSolidColor) {
+                        meshMaterial.map = null;
+                        meshMaterial.color = new THREE.Color(getRandomPaletteColor());
+                    } else if (atlasTexture && atlasRegions.length > 0) {
+                        const texIdx = Math.floor(Math.random() * atlasRegions.length);
+                        letterData.lastTextureIdx = texIdx;
+                        applyAtlasRegion(meshMaterial, texIdx);
+                    } else {
+                        meshMaterial.map = null;
+                        meshMaterial.color = new THREE.Color(getRandomPaletteColor());
+                    }
+
+                    const mesh = new THREE.Mesh(clonedGeom, meshMaterial);
+                    mesh.position.x = xPos;
+                    mesh.position.y = 0;
+                    mesh.position.z = 0;
+                    mesh.scale.set(0, 0, 0);
+                    return mesh;
+                };
+
+                const maybeAttachFrame = () => {
+                    // Attach Frame (Background element) - 20% Chance
+                    if (loadedFrameModels.length > 0 && Math.random() < 0.2) {
+                        const randomFrameData = loadedFrameModels[Math.floor(Math.random() * loadedFrameModels.length)];
+                        const randomColor = frameColors[Math.floor(Math.random() * frameColors.length)];
+
+                        const frameGeom = randomFrameData.geometry.clone();
+                        const frameMat = new THREE.MeshPhongMaterial({
+                            color: randomColor,
+                            shininess: 80,
+                            transparent: true,
+                            opacity: 0.9
+                        });
+
+                        const frameMesh = new THREE.Mesh(frameGeom, frameMat);
+
+                        // Setup Frame Data
+                        frameMesh.userData.isFrame = true;
+                        frameMesh.userData.baseRotY = Math.PI / 2; // 90deg on Y
+                        frameMesh.userData.baseRotX = 0; // No tilt on X
+                        frameMesh.userData.baseRotZ = 0; // No tilt on Z
+                        frameMesh.userData.rotSpeed = 0; // No spin
+                        frameMesh.userData.scaleMult = 0.8 + Math.random() * 0.4; // 20% size variance
+
+                        // Initial Transform
+                        frameMesh.rotation.y = frameMesh.userData.baseRotY;
+                        frameMesh.rotation.x = frameMesh.userData.baseRotX;
+                        frameMesh.rotation.z = frameMesh.userData.baseRotZ;
+                        frameMesh.position.set(xPos, 0, -0.3); // Slightly behind
+                        frameMesh.scale.set(0, 0, 0);
+
+                        // Add INDEPENDENTLY to scene
+                        textScene.add(frameMesh);
+                        letterData.frameMesh = frameMesh;
+                    }
+                };
+
+                if (availableModels.length > 0) {
+                    const chosenModel = availableModels[randomIndex];
+                    const mesh = buildTextMesh(chosenModel.geometry);
+                    letterData.mesh = mesh;
+                    textScene.add(mesh);
+
+                    attachElementsToTextLetter(letterData);
+                    createTextLetterParticles(letterData);
+                    maybeAttachFrame();
+                } else {
+                    // Fallback: load the GLB and pick a mesh inside it
+                    const fileBase = letterModelFiles[char] || char.toLowerCase();
+                    const modelPath = './3d_models/' + fileBase + '.glb';
+                    glbLoader.load(modelPath, (gltf) => {
+                        const meshes = [];
+                        gltf.scene.traverse((child) => {
+                            if (child.isMesh) {
+                                meshes.push(child);
+                            }
+                        });
+
+                        if (meshes.length > 0) {
+                            const chosenMesh = meshes[Math.floor(Math.random() * meshes.length)];
+                            const mesh = buildTextMesh(chosenMesh.geometry);
+                            letterData.mesh = mesh;
+                            textScene.add(mesh);
+
+                            attachElementsToTextLetter(letterData);
+                            createTextLetterParticles(letterData);
+                            maybeAttachFrame();
+                        }
+                    });
+                }
+            });
+        }
+        // Attach elements to text panel letters (Updated to match main scene logic)
+        function attachElementsToTextLetter(letterData) {
+            if (!letterData.mesh || smallElementModels.length === 0) return;
+
+            // Remove old elements first
+            if (letterData.attachedElements) {
+                for (const element of letterData.attachedElements) {
+                    letterData.mesh.remove(element); // Remove from parent mesh
+                    if (element.geometry) element.geometry.dispose();
+                    if (element.material) element.material.dispose();
+                }
+            }
+            letterData.attachedElements = [];
+
+            const elementCount = 3 + Math.floor(Math.random() * 3); // 3-5 elements
+            const usedIndices = [];
+            const placedPositions = [];
+            const baseSize = 0.4 * 0.7; // 30% smaller
+            const maxSizeJitter = 0.2; // up to +20% variation
+
+            for (let i = 0; i < elementCount && usedIndices.length < smallElementModels.length; i++) {
+                let attempts = 0;
+                let validPosition = false;
+                let point, normal, size;
+
+                while (!validPosition && attempts < 20) {
+                    const result = getRandomPointOnMesh(letterData.mesh.geometry);
+                    point = result.point;
+                    normal = result.normal;
+
+                    // Only use front-facing surfaces (stick to front faces)
+                    if (normal.z < 0.7) {
+                        attempts++;
+                        continue;
+                    }
+
+                    // Scaled relative to the PARENT mesh (Scale 1.0)
+                    size = baseSize * (1 + Math.random() * maxSizeJitter);
+
+                    // Check distance from all placed elements
+                    validPosition = true;
+                    for (const placed of placedPositions) {
+                        const dist = point.distanceTo(placed.point);
+                        const minDist = (size + placed.size) * 0.2; // Match main scene min dist
+                        if (dist < minDist) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                    attempts++;
+                }
+
+                if (!validPosition) continue;
+
+                // Select random model
+                let validIndices = [];
+                for (let j = 0; j < smallElementModels.length; j++) {
+                    if (!usedIndices.includes(j)) validIndices.push(j);
+                }
+                if (validIndices.length === 0) break;
+
+                const randomIdx = validIndices[Math.floor(Math.random() * validIndices.length)];
+                usedIndices.push(randomIdx);
+                const elementData = smallElementModels[randomIdx];
+
+                // Create element
+                const elementGeometry = elementData.geometry.clone();
+                const originalMat = elementData.material;
+                const elementMaterial = new THREE.MeshPhongMaterial({
+                    map: originalMat.map,
+                    color: 0xffffff,
+                    emissive: 0x333333,
+                    emissiveMap: originalMat.map,
+                    specular: 0x444444,
+                    shininess: 80,
+                    reflectivity: 0.5
+                });
+
+                const element = new THREE.Mesh(elementGeometry, elementMaterial);
+
+                // Set scale (relative to parent)
+                element.scale.set(size, size, size);
+
+                // Set Position (local to parent mesh)
+                element.position.copy(point);
+
+                // Keep fixed rotation to match main scene orientation
+                element.rotation.set(0, -Math.PI / 2, 0);
+
+                // Add to PARENT MESH (important!)
+                letterData.mesh.add(element);
+                letterData.attachedElements.push(element);
+
+                placedPositions.push({ point: point, size: size });
+            }
+        }
+
+        // Create particles for text panel letters (Exact match to main scene)
+        function createTextLetterParticles(letterData) {
+            const particleCount = 3 + Math.floor(Math.random() * 4); // 3-6 particles
+            const particleColors = [0xff6b6b, 0x4ecdc4, 0xffe66d, 0x95e1d3, 0xf38181, 0xaa96da, 0xfcbad3, 0xa8d8ea];
+
+            for (let i = 0; i < particleCount; i++) {
+                const shapeType = Math.floor(Math.random() * 4);
+                let geometry;
+                // Micro-particles (3x smaller as requested)
+                const sizeMultiplier = 0.005 + Math.random() * 0.01;
+
+                if (shapeType === 0) {
+                    geometry = new THREE.SphereGeometry(sizeMultiplier, 8, 8);
+                } else if (shapeType === 1) {
+                    geometry = new THREE.BoxGeometry(sizeMultiplier * 1.2, sizeMultiplier * 1.2, sizeMultiplier * 1.2);
+                } else if (shapeType === 2) {
+                    geometry = new THREE.OctahedronGeometry(sizeMultiplier);
+                } else {
+                    // Star shape
+                    const starShape = new THREE.Shape();
+                    const outerRadius = sizeMultiplier;
+                    const innerRadius = sizeMultiplier * 0.4;
+                    const points = 5;
+                    for (let j = 0; j < points * 2; j++) {
+                        const radius = j % 2 === 0 ? outerRadius : innerRadius;
+                        const angle = (j * Math.PI) / points - Math.PI / 2;
+                        if (j === 0) {
+                            starShape.moveTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        } else {
+                            starShape.lineTo(Math.cos(angle) * radius, Math.sin(angle) * radius);
+                        }
+                    }
+                    starShape.closePath();
+                    geometry = new THREE.ExtrudeGeometry(starShape, { depth: sizeMultiplier * 0.3, bevelEnabled: false });
+                    geometry.center();
+                }
+
+                const color = particleColors[Math.floor(Math.random() * particleColors.length)];
+                const material = new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.9 });
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.visible = particlesEnabled;
+
+                // Ultra-tight spread (Hugging the letter)
+                mesh.userData.baseOffsetX = (Math.random() - 0.5) * 0.15;
+                mesh.userData.baseOffsetY = (Math.random() - 0.5) * 0.15;
+                mesh.userData.baseOffsetZ = (Math.random() - 0.5) * 0.1;
+
+                // Slow motion (Calm float)
+                mesh.userData.floatSpeedX = 0.1 + Math.random() * 0.2;
+                mesh.userData.floatSpeedY = 0.1 + Math.random() * 0.2;
+                mesh.userData.floatAmplitude = 0.05 + Math.random() * 0.05;
+
+                mesh.userData.phaseOffset = Math.random() * Math.PI * 2;
+                mesh.userData.rotSpeed = (Math.random() - 0.5) * 0.01;
+                mesh.userData.currentScale = 0;
+                mesh.userData.targetScale = 1;
+                mesh.userData.scaleVelocity = 0;
+
+                mesh.position.set(letterData.xPos + mesh.userData.baseOffsetX, mesh.userData.baseOffsetY, mesh.userData.baseOffsetZ);
+                mesh.scale.set(0, 0, 0);
+
+                textScene.add(mesh);
+                letterData.orbitParticles.push(mesh);
+            }
+        }
+
+        // Generate function
+        function generateText() {
+            stopGoBlink();
+            const textInputEl = document.getElementById('textInput');
+            if (textInputEl && textInputEl.value.trim()) {
+                updateText3DLetters(textInputEl.value);
+            }
+        }
+
+        // Listen for Enter key
+        const textInputEl = document.getElementById('textInput');
+        if (textInputEl) {
+            textInputEl.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    stopGoBlink();
+                    generateText();
+                }
+            });
+        }
+
+        // Listen for GO button click (with initial blink until first click)
+        const generateBtn = document.getElementById('generateBtn');
+        if (generateBtn) {
+            generateBtn.classList.add('blink-go');
+            generateBtn.addEventListener('click', () => {
+                stopGoBlink();
+                generateText();
+            });
+        }
+
+        // Drag & Drop Event Handlers
+        function onMouseDown(event) {
+            if (!textScene || !textCamera || textLetters.length === 0) return;
+
+            // Update mouse coordinates for text panel (Projected from full window for simplicity, 
+            // but strictly should be relative to container if strict bounds needed. 
+            // Since container is overlay, window coords work if raycaster set from camera).
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            textRaycaster.setFromCamera(mouse, textCamera);
+
+            // Check intersection with any letter mesh or its hitBox
+            const hitMeshes = [];
+            textLetters.forEach(l => {
+                if (l.mesh) hitMeshes.push(l.mesh);
+            });
+
+            const intersects = textRaycaster.intersectObjects(hitMeshes, true);
+
+            if (intersects.length > 0) {
+                // Find which letter was hit
+                const hitObject = intersects[0].object;
+                // Traverse up to find parent mesh if needed, or matched against stored meshes
+                const hitLetter = textLetters.find(l => l.mesh === hitObject || l.mesh === hitObject.parent);
+
+                if (hitLetter) {
+                    isDragging = true;
+                    draggedLetter = hitLetter;
+
+                    // Calculate offset
+                    const intersectionPoint = new THREE.Vector3();
+                    textRaycaster.ray.intersectPlane(dragPlane, intersectionPoint);
+                    dragOffset = hitLetter.xPos - intersectionPoint.x;
+
+                    // Disable particles popping while dragging? Optional.
+                }
+            }
+        }
+
+        function onMouseMove(event) {
+            if (!isDragging || !draggedLetter) return;
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            textRaycaster.setFromCamera(mouse, textCamera);
+            const intersectionPoint = new THREE.Vector3();
+            textRaycaster.ray.intersectPlane(dragPlane, intersectionPoint);
+
+            if (intersectionPoint) {
+                // Update dragged letter position directly
+                draggedLetter.xPos = intersectionPoint.x + dragOffset;
+
+                // REORDER LOGIC
+                const currentIndex = textLetters.indexOf(draggedLetter);
+                const letterSpacing = 0.28;
+                const totalWidth = textLetters.length * letterSpacing;
+                const startX = -totalWidth / 2 + letterSpacing / 2;
+
+                // Check if we should swap with neighbors
+                // We calculate where the letter "should" be based on its visual X
+                // Approximate index = (currentX - startX) / spacing
+                let newIndex = Math.round((draggedLetter.xPos - startX) / letterSpacing);
+
+                // Clamp index
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex >= textLetters.length) newIndex = textLetters.length - 1;
+
+                if (newIndex !== currentIndex) {
+                    // Move letter in array
+                    textLetters.splice(currentIndex, 1);
+                    textLetters.splice(newIndex, 0, draggedLetter);
+
+                    // Recalculate targetX for ALL letters based on new order
+                    textLetters.forEach((letter, i) => {
+                        letter.targetX = startX + i * letterSpacing;
+                    });
+                }
+            }
+        }
+
+        function onMouseUp(event) {
+            isDragging = false;
+            draggedLetter = null;
+        }
+
+        // Add listeners
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mouseup', onMouseUp);
+
+
+        // Animation loop for text scene
+        function animateTextScene() {
+            requestAnimationFrame(animateTextScene);
+            if (!textRenderer || !textScene || !textCamera) return;
+
+            const time = clock.getElapsedTime();
+            const springStrength = 0.15;
+            const damping = 0.75;
+
+            for (const letter of textLetters) {
+                // Pop animation for letter mesh
+                if (letter.mesh) {
+                    // LERP Position to TargetX (Smooth reordering)
+                    if (letter !== draggedLetter) {
+                        letter.xPos += (letter.targetX - letter.xPos) * 0.2;
+                    }
+
+                    // Apply Position
+                    letter.mesh.position.x = letter.xPos;
+                    letter.mesh.position.y = 0; // No bobbing
+                    const d = letter.targetScale - letter.scale.val;
+                    letter.velocity.val += d * springStrength;
+                    letter.velocity.val *= damping;
+                    letter.scale.val += letter.velocity.val;
+
+                    const s = Math.max(0, letter.scale.val);
+                    letter.mesh.scale.set(s, s, s);
+
+                    // Wobble animation
+                    letter.mesh.rotation.y = Math.sin(time * 2 + letter.xPos) * 0.15;
+                    letter.mesh.rotation.x = Math.cos(time * 1.5 + letter.xPos) * 0.08;
+
+                    // Sync Frame Position & Scale (Independent Motion)
+                    if (letter.frameMesh) {
+                        // Position: Follow letter horizontally, keep steady on Y, and stay behind
+                        letter.frameMesh.position.x = letter.mesh.position.x;
+                        letter.frameMesh.position.y = 0;
+                        letter.frameMesh.position.z = letter.mesh.position.z - 0.3; // Slightly behind
+
+                        // Scale: Matches letter scale * 1.4
+                        const scaleMult = letter.frameMesh.userData.scaleMult || 1;
+                        const frameScale = s * 1.4 * scaleMult;
+                        letter.frameMesh.scale.set(frameScale, frameScale, frameScale);
+
+                        // Rotation: keep static
+                        letter.frameMesh.rotation.x = (letter.frameMesh.userData.baseRotX !== undefined) ? letter.frameMesh.userData.baseRotX : 0;
+                        letter.frameMesh.rotation.y = (letter.frameMesh.userData.baseRotY !== undefined) ? letter.frameMesh.userData.baseRotY : 0;
+                        letter.frameMesh.rotation.z = (letter.frameMesh.userData.baseRotZ !== undefined) ? letter.frameMesh.userData.baseRotZ : 0;
+                    }
+                }
+
+                // Scale attached elements with letter
+                // Removed manual element scaling (lines 1395-1401)
+                // Attached elements are children of letter.mesh, so they inherit scale automatically!
+
+                // Animate particles with pop and float
+                if (letter.orbitParticles) {
+                    for (const p of letter.orbitParticles) {
+                        // Pop animation for particles
+                        const pd = p.userData.targetScale - p.userData.currentScale;
+                        p.userData.scaleVelocity += pd * 0.2;
+                        p.userData.scaleVelocity *= 0.7;
+                        p.userData.currentScale += p.userData.scaleVelocity;
+                        const ps = Math.max(0, p.userData.currentScale);
+                        p.scale.set(ps, ps, ps);
+
+                        // Float motion
+                        const floatX = Math.sin(time * p.userData.floatSpeedX + p.userData.phaseOffset) * p.userData.floatAmplitude;
+                        const floatY = Math.cos(time * p.userData.floatSpeedY + p.userData.phaseOffset) * p.userData.floatAmplitude;
+
+                        p.position.x = letter.xPos + p.userData.baseOffsetX + floatX;
+                        p.position.y = p.userData.baseOffsetY + floatY;
+
+                        // Rotation
+                        p.rotation.x += p.userData.rotSpeed;
+                        p.rotation.y += p.userData.rotSpeed;
+                    }
+                }
+            }
+
+            textRenderer.render(textScene, textCamera);
+        }
+        animateTextScene();
+
+    </script>
+</body>
+
+</html>
