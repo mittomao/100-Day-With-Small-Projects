@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90 - Create Room Gallery Only CSS</title>
+    <style>
+        :root {
+            --base-height: 900px;
+            --base-width: 900px;
+            --side-height: calc(calc(var(--base-height) / 2) - 100px);
+        }
+
+        body {
+            height: 100vh;
+            width: 100vw;
+            background: black;
+        }
+
+        .scene {
+            min-width: 1400px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-perspective: 47em;
+            perspective: 47em;
+            -webkit-perspective-origin: 26% 20%;
+            perspective-origin: 26% 20%;
+        }
+
+        .base {
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            -webkit-transform: rotatex(90deg) rotatez(-10deg) translate(-15%, 0%);
+            -ms-transform: rotatex(90deg) rotate(-10deg) translate(-15%, 0%);
+            transform: rotatex(90deg) rotatez(-10deg) translate(-15%, 0%);
+            height: var(--base-height);
+            width: var(--base-width);
+            outline: dashed;
+            position: relative;
+            background-image: -o-linear-gradient(45deg, #525252, black 90%);
+            background-image: linear-gradient(45deg, #525252, black 90%);
+        }
+
+        .leftside {
+            position: absolute;
+            width: calc(var(--base-width) / 2);
+            height: var(--side-height);
+            top: 40%;
+            float: left;
+            -webkit-transform: rotatex(-90deg) rotatey(10deg) translate(0%, -50%);
+            -ms-transform: rotatex(-90deg) rotatey(10deg) translate(0%, -50%);
+            transform: rotatex(-90deg) rotatey(10deg) translate(0%, -50%);
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .leftside.ground {
+            opacity: 0.2;
+            -webkit-transform: translate(30px, 50%) rotateZ(-10deg);
+            -ms-transform: translate(30px, 50%) rotate(-10deg);
+            transform: translate(30px, 50%) rotateZ(-10deg);
+        }
+
+        .rightside {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            position: absolute;
+            right: 0;
+            -webkit-transform: translateZ(calc(var(--side-height) / 2)) translate(50%, 0%) rotateY(90deg);
+            transform: translateZ(calc(var(--side-height) / 2)) translate(50%, 0%) rotateY(90deg);
+            height: 100%;
+            width: var(--side-height);
+            outline: dashed;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .rightsidebar {
+            display: -ms-grid;
+            display: grid;
+            -ms-grid-columns: 1fr 6;
+            grid-template-columns: repeat(6, 1fr);
+            position: absolute;
+            right: 0;
+            -webkit-transform: translateZ(calc(var(--side-height) / 2)) translate(50%, 0%) rotateY(90deg);
+            transform: translateZ(calc(var(--side-height) / 2)) translate(50%, 0%) rotateY(90deg);
+            height: 100%;
+            width: var(--side-height);
+            outline: dashed;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .leftwall {
+            position: absolute;
+            left: 0;
+            height: 100%;
+            width: var(--side-height);
+            -webkit-transform: rotateY(90deg) translateZ(calc(-1 * calc(calc(var(--side-height) / 2) - 10px))) translate(calc(-1 * calc(var(--side-height) / 2)));
+            transform: rotateY(90deg) translateZ(calc(-1 * calc(calc(var(--side-height) / 2) - 10px))) translate(calc(-1 * calc(var(--side-height) / 2)));
+            background: #4e4e4e;
+        }
+
+        .ground {
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+            -webkit-transform: none;
+            -ms-transform: none;
+            transform: none;
+            opacity: 0.1;
+        }
+
+        .inner {
+            display: -ms-grid;
+            display: grid;
+            -ms-grid-rows: 1fr 6;
+            grid-template-rows: repeat(6, 1fr);
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .inner .image {
+            -webkit-transform: rotatez(-90deg);
+            -ms-transform: rotate(-90deg);
+            transform: rotatez(-90deg);
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+            -webkit-box-shadow: -6px 6px 2px -3px #605d5d;
+            box-shadow: -6px 6px 2px -3px #605d5d;
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid black;
+        }
+
+        .inner .img {
+            display: block;
+            height: 60px;
+            width: 60px;
+            max-width: 100%;
+            margin: 0 auto;
+            -webkit-filter: sepia(75%);
+        }
+
+        .inner .image img {
+            height: 60px;
+            width: 60px;
+            object-fit: cover;
+        }
+
+        .rightside .image img {
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+        }
+
+        .inner.left {
+            -ms-grid-columns: unset;
+            grid-template-columns: unset;
+            -ms-grid-rows: unset;
+            grid-template-rows: unset;
+            display: "flex";
+        }
+
+        .inner.left>*:nth-child(1) {
+            -ms-grid-row: 1;
+            -ms-grid-column: 1;
+        }
+
+        .imagewrapper {
+            position: relative;
+            width: 100%;
+            text-align: center;
+            background: -o-radial-gradient(circle, #efeffa 30%, #292828 100%);
+            background: radial-gradient(circle, #efeffa 30%, #292828 100%);
+            /* max-width: 100%; */
+            height: 100%;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+        }
+
+        .imagewrapper.wrapper-left-side {
+            background: -o-radial-gradient(circle, #efeffa 10%, #292828 95%);
+            background: radial-gradient(circle, #efeffa 10%, #292828 95%);
+        }
+
+        .image.img-left-side {
+            margin: 1em;
+            -webkit-transform: rotateZ(0deg);
+            -ms-transform: rotate(0deg);
+            transform: rotateZ(0deg);
+        }
+
+        .chat {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            -webkit-transform: translateZ(var(--side-height));
+            transform: translateZ(var(--side-height));
+            background: -o-linear-gradient(45deg, #4e4e4e, transparent);
+            background: linear-gradient(45deg, #4e4e4e, transparent);
+        }
+
+        .walllight {
+            z-index: 3;
+            position: absolute;
+            height: 50%;
+            width: 25%;
+            left: 0;
+            border-radius: 5px;
+            /* border: 5px solid; */
+            border-right: 7px solid white;
+        }
+
+        .walllight:after {
+            -webkit-box-shadow: -3px 3px #696666;
+            box-shadow: -3px 3px #696666;
+            -webkit-transform: translate(3px, -3px);
+            -ms-transform: translate(3px, -3px);
+            transform: translate(3px, -3px);
+            /* border-radius: 5px; */
+            z-index: 2;
+            right: 0;
+            height: 107%;
+            background: #3f3e3e;
+            width: 10px;
+            content: "";
+            position: absolute;
+            border-radius: 2px 2px;
+        }
+
+        .walllight.leftlight {
+            width: unset;
+            height: 45%;
+            top: 0;
+            left: 50%;
+            -webkit-transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            transform: rotate(90deg);
+        }
+
+        .man {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+
+            transform: translateX(-50%) translateZ(30px) rotateX(-90deg) rotateZ(0deg);
+
+            transform-origin: bottom center;
+            height: 150px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .man img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scene">
+        <div class="base">
+            <div class="leftwall"></div>
+            <div class="leftside">
+                <div class="inner left">
+                    <div class="imagewrapper wrapper-left-side">
+                        <div class="walllight leftlight"></div>
+                        <div class="image img-left-side">
+                            <img src="./images/1.jpg" alt="Nature">
+                        </div>
+                        <div class="image img-left-side">
+                            <img src="./images/2.jpg" alt="Nature">
+                        </div>
+                        <div class="image img-left-side">
+                            <img src="./images/3.jpg" alt="Nature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="leftside ground">
+                <div class="inner left">
+                    <div class="imagewrapper wrapper-left-side">
+                        <div class="image img-left-side">
+                            <img src="./images/1.jpg" alt="Nature">
+                        </div>
+                        <div class="image img-left-side">
+                            <img src="./images/2.jpg" alt="Nature">
+                        </div>
+                        <div class="image img-left-side">
+                            <img src="./images/3.jpg" alt="Nature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rightside ground">
+                <div class="inner">
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/4.jpg" alt="Nature">
+                        </div>
+                    </div>
+
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/5.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/6.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/7.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/8.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="image">
+                            <img src="./images/9.jpg" alt="Nature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rightside">
+                <div class="inner">
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/4.jpg" alt="Nature">
+                        </div>
+                    </div>
+
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/5.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/6.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/7.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/8.jpg" alt="Nature">
+                        </div>
+                    </div>
+                    <div class="imagewrapper">
+                        <div class="walllight"></div>
+                        <div class="image">
+                            <img src="./images/9.jpg" alt="Nature">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat">
+            </div>
+            <div class="man">
+                <img src="./images/man.png" alt="">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
