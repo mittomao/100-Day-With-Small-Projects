@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>91 - Custom curved corner scrollbars</title>
+    <style>
+        @import url(https://fonts.bunny.net/css?family=krub:200i,300);
+
+        .wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            height: 650px;
+            width: min(100%, 800px);
+            margin: 0 auto;
+        }
+
+        .scroll-container {
+            --card-border-radius: 50px;
+
+            --thumb-color: rgb(0, 188, 255);
+            --thumb-color-active: dodgerblue;
+            --thumb-width: 4;
+            --thumb-width-active: 6;
+
+            --track-color: transparent;
+            --track-color-active: #eee;
+            --track-width: 4;
+            --track-width-active: 6;
+
+            position: relative;
+            width: 100%;
+            contain: size;
+            margin: 3rem auto;
+            border: 1px solid var(--clr-lines);
+            border-radius: var(--card-border-radius);
+            overflow: hidden;
+        }
+
+        /* variant */
+        .scroll-container.box-2 {
+            --card-border-radius: 20px;
+            --thumb-color: rgb(154, 230, 0);
+            --thumb-color-active: rgb(124, 207, 0);
+        }
+
+        .scroll-container h2 {
+            text-wrap: balance;
+            font-size: 1.1rem;
+        }
+
+        .scroll-container img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .scroll-content {
+            height: 100%;
+            padding: 1rem 1.5rem 1rem 1rem;
+            overflow-y: scroll;
+
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE & Edge legacy */
+        }
+
+        .scroll-content::-webkit-scrollbar {
+            display: none;
+            /* Chrome, Safari */
+        }
+
+        .scrollbar-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .scrollbar-svg:has(:active) {
+            --thumb-width: var(--thumb-width-active);
+            --track-width: var(--track-width-active);
+            --track-color: var(--track-color-active);
+        }
+
+        .scrollbar-track {
+            fill: none;
+            stroke: var(--track-color);
+            stroke-width: var(--track-width);
+            stroke-linecap: round;
+            transition: stroke-width 150ms ease-in-out,
+                stroke 150ms ease-in-out;
+        }
+
+        .scrollbar-thumb {
+            fill: none;
+            stroke: var(--thumb-color);
+            stroke-width: var(--thumb-width);
+            stroke-linecap: round;
+            pointer-events: auto;
+            cursor: grab;
+            transition: stroke-width 150ms ease-in-out,
+                stroke 150ms ease-in-out;
+        }
+
+        .scrollbar-thumb:active {
+            stroke: var(--thumb-color-active);
+            cursor: grabbing;
+        }
+
+        /* ===================== BASE ===================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            color-scheme: light dark;
+
+            --bg-dark: rgb(11, 11, 11);
+            --bg-light: rgb(248, 244, 238);
+            --txt-light: rgb(10, 10, 10);
+            --txt-dark: rgb(245, 245, 245);
+            --line-light: rgba(0, 0, 0, 0.15);
+            --line-dark: rgba(255, 255, 255, 0.25);
+
+            --clr-bg: var(--bg-light);
+            --clr-txt: var(--txt-light);
+            --clr-lines: var(--line-light);
+            --clr-accent: dodgerblue;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --clr-bg: var(--bg-dark);
+                --clr-txt: var(--txt-dark);
+                --clr-lines: var(--line-dark);
+            }
+        }
+
+        html,
+        body {
+            background-color: var(--clr-bg);
+            color: var(--clr-txt);
+            font-family: "Krub", sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100svh;
+        }
+
+        body {
+            display: grid;
+            place-content: center;
+            padding: 1rem;
+            line-height: 1.4;
+        }
+
+        header {
+            text-align: center;
+            width: min(100%, 80ch);
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin: 0;
+            text-align: center;
+            text-transform: capitalize;
+        }
+
+        p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Custom curved scroll bar for cards</h1>
+        <p>The scrollbar follows the border-radius of the container, it's length being calculated by the amount of
+            content</p>
+    </header>
+
+
+    <div class="wrapper">
+        <section class="scroll-container " data-scrollbar>
+            <div class="scroll-content">
+
+                <h2>Grab the scrollbar thumb and scroll up or down.</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi placeat rem at esse reiciendis ullam
+                    veritatis sapiente sit ducimus ea magnam nihil vero corrupti quo quae, tempore dolor, reprehenderit
+                    debitis?
+                </p>
+                <img src='https://cdn.tgdd.vn/Files/2017/01/19/939425/cach-cai-hinh-nen-may-tinh-khong-bi-mo_1280x720-800-resize.jpg'
+                    alt='random' width="100%" height="auto" style="object-fit: cover;" />
+                <p>Veritatis et repellendus, consequatur dicta saepe vel natus aliquam reprehenderit accusamus
+                    voluptatem commodi, minus eos nihil quae. Odit eveniet quia a minus natus qui reiciendis unde! Quam,
+                    odit temporibus? Illo.
+                </p>
+                <p>
+                    Sunt consectetur asperiores fuga quasi nobis vitae et commodi error deserunt perspiciatis, modi
+                    eaque iste eligendi quod esse aliquam. Vitae debitis minima, laborum incidunt ex corporis odit eaque
+                    consequatur beatae.
+                </p>
+                <p>Suscipit possimus mollitia ut minus commodi facilis distinctio assumenda corrupti voluptate, ipsa
+                    voluptates minima ex nam exercitationem? Laborum, sequi ducimus! Sunt repellendus dolorum suscipit
+                    similique accusamus eius ad laborum sed.</p>
+                <p>
+                    Laboriosam beatae consequatur omnis repellat consequuntur obcaecati! Voluptatibus sunt quibusdam
+                    optio nihil delectus cumque unde omnis voluptatum laborum temporibus, labore perspiciatis quis
+                    impedit sapiente animi adipisci, explicabo velit nesciunt similique?</p>
+
+
+                <p>In id itaque ullam totam, dolor blanditiis praesentium, at laborum esse molestias fugit dolorum
+                    sapiente dolores quo animi ducimus provident deserunt tempora, voluptatem recusandae aliquid.
+                    Tenetur harum doloremque provident excepturi!</p>
+                <p>
+                    Et suscipit dolores, non ullam consequuntur illo cumque perspiciatis quos voluptate impedit quas?
+                    Similique omnis magnam iste quasi aspernatur neque. Quis porro consequuntur facere odio sapiente
+                    praesentium sed harum dignissimos.
+                </p>
+                <p>Quisquam porro esse fuga ducimus inventore, repellendus ad omnis perferendis velit atque commodi
+                    natus fugit, aliquid incidunt, eveniet odit. Sunt blanditiis expedita, laudantium fugit dignissimos
+                    eius provident aperiam cum deleniti!</p>
+            </div>
+        </section>
+
+        <section class="scroll-container box-2 " data-scrollbar>
+            <div class="scroll-content">
+                <h2>Less border radius on this one</h2>
+                <p>
+                    Ut quasi magni rerum magnam, earum officiis asperiores placeat maiores ullam sint debitis culpa!
+                    Nemo est, modi dolor eos, blanditiis, neque ullam facere voluptates accusamus quasi nostrum
+                    similique. Quod, itaque.
+                </p>
+                <p>Est rem voluptates nihil culpa fugiat possimus provident a adipisci facilis, molestias quos sed
+                    pariatur cum aperiam vitae. Repellat natus iure omnis, sed nisi laboriosam ullam pariatur aliquam
+                    dolore! Hic.
+                </p>
+                <p>In id itaque ullam totam, dolor blanditiis praesentium, at laborum esse molestias fugit dolorum
+                    sapiente dolores quo animi ducimus provident deserunt tempora, voluptatem recusandae aliquid.
+                    Tenetur harum doloremque provident excepturi!</p>
+                <p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi placeat rem at esse reiciendis ullam
+                    veritatis sapiente sit ducimus ea magnam nihil vero corrupti quo quae, tempore dolor, reprehenderit
+                    debitis?
+                </p>
+                <p>Veritatis et repellendus, consequatur dicta saepe vel natus aliquam reprehenderit accusamus
+                    voluptatem commodi, minus eos nihil quae. Odit eveniet quia a minus natus qui reiciendis unde! Quam,
+                    odit temporibus? Illo.
+                </p>
+                <p>
+                    Sunt consectetur asperiores fuga quasi nobis vitae et commodi error deserunt perspiciatis, modi
+                    eaque iste eligendi quod esse aliquam. Vitae debitis minima, laborum incidunt ex corporis odit eaque
+                    consequatur beatae.
+                </p>
+                <p>Suscipit possimus mollitia ut minus commodi facilis distinctio assumenda corrupti voluptate, ipsa
+                    voluptates minima ex nam exercitationem? Laborum, sequi ducimus! Sunt repellendus dolorum suscipit
+                    similique accusamus eius ad laborum sed.</p>
+                <p>
+                    Laboriosam beatae consequatur omnis repellat consequuntur obcaecati! Voluptatibus sunt quibusdam
+                    optio nihil delectus cumque unde omnis voluptatum laborum temporibus, labore perspiciatis quis
+                    impedit sapiente animi adipisci, explicabo velit nesciunt similique?</p>
+                <p>
+                    Ut quasi magni rerum magnam, earum officiis asperiores placeat maiores ullam sint debitis culpa!
+                    Nemo est, modi dolor eos, blanditiis, neque ullam facere voluptates accusamus quasi nostrum
+                    similique. Quod, itaque.
+                </p>
+                <p>Est rem voluptates nihil culpa fugiat possimus provident a adipisci facilis, molestias quos sed
+                    pariatur cum aperiam vitae. Repellat natus iure omnis, sed nisi laboriosam ullam pariatur aliquam
+                    dolore! Hic.
+                </p>
+                <p>In id itaque ullam totam, dolor blanditiis praesentium, at laborum esse molestias fugit dolorum
+                    sapiente dolores quo animi ducimus provident deserunt tempora, voluptatem recusandae aliquid.
+                    Tenetur harum doloremque provident excepturi!</p>
+                <p>
+                    Et suscipit dolores, non ullam consequuntur illo cumque perspiciatis quos voluptate impedit quas?
+                    Similique omnis magnam iste quasi aspernatur neque. Quis porro consequuntur facere odio sapiente
+                    praesentium sed harum dignissimos.
+                </p>
+                <p>Quisquam porro esse fuga ducimus inventore, repellendus ad omnis perferendis velit atque commodi
+                    natus fugit, aliquid incidunt, eveniet odit. Sunt blanditiis expedita, laudantium fugit dignissimos
+                    eius provident aperiam cum deleniti!</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi placeat rem at esse reiciendis ullam
+                    veritatis sapiente sit ducimus ea magnam nihil vero corrupti quo quae, tempore dolor, reprehenderit
+                    debitis?
+                </p>
+                <p>Veritatis et repellendus, consequatur dicta saepe vel natus aliquam reprehenderit accusamus
+                    voluptatem commodi, minus eos nihil quae. Odit eveniet quia a minus natus qui reiciendis unde! Quam,
+                    odit temporibus? Illo.
+                </p>
+                <p>
+                    Sunt consectetur asperiores fuga quasi nobis vitae et commodi error deserunt perspiciatis, modi
+                    eaque iste eligendi quod esse aliquam. Vitae debitis minima, laborum incidunt ex corporis odit eaque
+                    consequatur beatae.
+                </p>
+                <p>Suscipit possimus mollitia ut minus commodi facilis distinctio assumenda corrupti voluptate, ipsa
+                    voluptates minima ex nam exercitationem? Laborum, sequi ducimus! Sunt repellendus dolorum suscipit
+                    similique accusamus eius ad laborum sed.</p>
+                <p>
+                    Laboriosam beatae consequatur omnis repellat consequuntur obcaecati! Voluptatibus sunt quibusdam
+                    optio nihil delectus cumque unde omnis voluptatum laborum temporibus, labore perspiciatis quis
+                    impedit sapiente animi adipisci, explicabo velit nesciunt similique?</p>
+
+                Et suscipit dolores, non ullam consequuntur illo cumque perspiciatis quos voluptate impedit quas?
+                Similique omnis magnam iste quasi aspernatur neque. Quis porro consequuntur facere odio sapiente
+                praesentium sed harum dignissimos.
+                </p>
+                <p>Quisquam porro esse fuga ducimus inventore, repellendus ad omnis perferendis velit atque commodi
+                    natus fugit, aliquid incidunt, eveniet odit. Sunt blanditiis expedita, laudantium fugit dignissimos
+                    eius provident aperiam cum deleniti!</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        console.clear();
+
+        // config
+        const OFFSET = 7; // distance from edge of container
+        const EXTRA_INSET = 2;
+        const MIN_START_RATIO = 0.8;
+        const MIN_THUMB = 20;
+        const SEGMENTS = 50;
+
+        // init scrollbars - each has their own scoped functions and settings
+        document.querySelectorAll('[data-scrollbar]').forEach(container => {
+            initCurvedScrollbar(container);
+        });
+
+        // function - init scrolled container
+        function initCurvedScrollbar(container) {
+            const content = container.querySelector('.scroll-content');
+
+            // create and add SVG
+            svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.classList.add('scrollbar-svg');
+            svg.setAttribute('aria-hidden', 'true');
+
+            const trackPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            trackPath.classList.add('scrollbar-track');
+
+            const thumbPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            thumbPath.classList.add('scrollbar-thumb');
+
+            svg.appendChild(trackPath);
+            svg.appendChild(thumbPath);
+            container.appendChild(svg);
+
+            // state
+            let pathLength = 0;
+            let thumbLength = 50;
+            let dragging = false;
+            let pointerId = null;
+
+            // function - update
+            function updatePath() {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                const r = parseFloat(getComputedStyle(container).borderRadius) || 0;
+
+                const effectiveRadius = Math.max(r - OFFSET, 0);
+                const trackX = w - OFFSET;
+                const topY = OFFSET;
+                const bottomY = h - OFFSET;
+                const cornerX = trackX - effectiveRadius;
+
+                // calculate x start point - ensure that it is never higher than the corner radius start point
+                const minStartX = w * MIN_START_RATIO;
+                let startX = trackX - effectiveRadius * EXTRA_INSET;
+                if (startX < minStartX) startX = minStartX;
+                if (startX > cornerX) startX = cornerX;
+
+                // create the dynamic path
+                const d = `
+                    M ${startX} ${topY}
+                    L ${cornerX} ${topY}                     
+                    A ${effectiveRadius} ${effectiveRadius} 0 0 1 ${trackX} ${topY + effectiveRadius} 
+                    L ${trackX} ${bottomY - effectiveRadius} 
+                    A ${effectiveRadius} ${effectiveRadius} 0 0 1 ${cornerX} ${bottomY} 
+                    L ${startX} ${bottomY}
+                `;
+                trackPath.setAttribute('d', d);
+
+                // calculate length of thumb based on content height
+                pathLength = trackPath.getTotalLength();
+                const ratio = content.clientHeight / content.scrollHeight;
+                thumbLength = Math.max(MIN_THUMB, pathLength * ratio);
+
+                updateThumb();
+            }
+
+            // function - thumb update
+            function updateThumb() {
+                const scrollableHeight = content.scrollHeight - content.clientHeight || 1;
+                const scrollRatio = content.scrollTop / scrollableHeight;
+                const startOffset = (pathLength - thumbLength) * scrollRatio;
+                const endOffset = startOffset + thumbLength;
+
+                // the thumb needs to follow the path so we get the generated path points
+                // NOTE - the high number of segments help follow the curves
+                const points = [];
+                for (let i = 0; i <= SEGMENTS; i++) {
+                    const t = startOffset + ((endOffset - startOffset) / SEGMENTS) * i;
+                    const p = trackPath.getPointAtLength(t);
+                    points.push(`${p.x} ${p.y}`);
+                }
+
+                const segmentD = `M ${points[0]} ${points.slice(1).map(pt => `L ${pt}`).join(' ')}`;
+                thumbPath.setAttribute('d', segmentD);
+            }
+
+            //  function - grab thumb
+            thumbPath.addEventListener('pointerdown', e => {
+                e.preventDefault();
+                dragging = true;
+                pointerId = e.pointerId;
+                thumbPath.setPointerCapture(pointerId);
+            });
+
+            // function - drag thumb
+            window.addEventListener('pointermove', e => {
+                if (!dragging || e.pointerId !== pointerId) return;
+                const rect = container.getBoundingClientRect();
+                let ratio = (e.clientY - rect.top) / rect.height;
+                ratio = Math.max(0, Math.min(1, ratio));
+                content.scrollTop = ratio * (content.scrollHeight - content.clientHeight);
+                updateThumb();
+            });
+
+            // function - release thumb
+            window.addEventListener('pointerup', e => {
+                if (!dragging || e.pointerId !== pointerId) return;
+                dragging = false;
+                try { thumbPath.releasePointerCapture(pointerId); } catch { }
+                pointerId = null;
+            });
+
+            // events
+            content.addEventListener('scroll', updateThumb);
+            window.addEventListener('resize', updatePath);
+
+            updatePath();
+        }
+
+    </script>
+</body>
+
+</html>
